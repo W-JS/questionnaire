@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.QuestionMapper">
+
+    <!-- 查询 question 表所有字段 -->
+    <sql id="selectQuestionFields">
+        question_id, question_title, question_description,
+        question_status, pre_question_id, pre_option_id,
+        questionnaire_id, questiontype_id, question_create_time
+    </sql>
+
+    <!-- 插入 question 表字段 -->
+    <sql id="insertQuestionFields">
+        question_id, question_title, question_description,
+        question_status,
+        questionnaire_id, questiontype_id, question_create_time
+    </sql>
+
+    <!-- 插入 question 表字段 -->
+    <sql id="insertQuestionsFields">
+        question_id, question_title, question_description,
+        question_status, pre_question_id, pre_option_id,
+        questionnaire_id, questiontype_id, question_create_time
+    </sql>
+
+    <!-- 获取所有问题信息列表 -->
+    <!-- List<QuestionEntity> findAllQuestionList(); -->
+    <select id="findAllQuestionList" resultType="QuestionEntity">
+        select
+        <include refid="selectQuestionFields"></include>
+        from question
+        order by question_create_time desc
+    </select>
+
+    <!-- 根据 qnId 查询当前问卷的所有问题 -->
+    <!-- List<QuestionEntity> findQuestionByQnId(String qnId); -->
+    <select id="findQuestionByQnId" resultType="QuestionEntity">
+        select
+        <include refid="selectQuestionFields"></include>
+        from question
+        where questionnaire_id = #{questionnaireId}
+        order by question_create_time asc
+    </select>
+
+    <!-- 保存问题信息 -->
+    <!-- int insertQuestion(QuestionEntity qn); -->
+    <insert id="insertQuestion" parameterType="QuestionEntity">
+        insert into question(<include refid="insertQuestionFields"></include>)
+        values(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
+    </insert>
+
+    <!-- 保存问题信息 -->
+    <!-- int insertQuestion(QuestionEntity qn); -->
+    <insert id="insertQuestions" parameterType="QuestionEntity">
+        insert into question(<include refid="insertQuestionsFields"></include>)
+        values(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{preQuestionId}, #{preOptionId}, #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
+    </insert>
+
+</mapper>

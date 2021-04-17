@@ -1,0 +1,47 @@
+.body {
+    position: relative;
+    height: auto;
+    min-height: 100%;
+    font-size: 15px;
+    background-color: #efefef;
+    font-family: "Microsoft Yahei", 微软雅黑;
+}
+
+.header {
+    width: 100%;
+    background-color: #ee7419;
+    height: 40px;
+    color: #fff;
+    line-height: 40px;
+}
+
+.header_title {
+    float: left;
+    font-size: 18px;
+    margin-left: 83px;
+}
+
+.header_title span {
+    font-size: 13px;
+    color: #ee7419;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 10px;
+    background-color: #fff;
+    line-height: 21px;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.header_my {
+    float: left;
+    text-indent: 82px;
+}
+
+.header_my a {
+    color: #fff;
+    text-decoration: none;
+}

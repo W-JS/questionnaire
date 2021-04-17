@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>全选全不选</title>
+        <script type="text/javascript" src="../questionnaire/assets/js/jquery-3.6.0.min.js"></script>
+
+        <script type="text/javascript">
+            function setChecked(obj) {
+                let cbs = document.getElementsByName("cb[]");//获取所有复选框对象
+
+                //JS的if判断中Undefined类型视为false，其他类型视为true；
+                //obj.id是定义过的值，类型为非Undefined，所以视为true。
+                if (obj.id) {
+                    for (let i = 1; i < cbs.length; i++) {
+                        if (obj.checked == true) {
+                            //全选
+                            cbs[i].checked = true;
+                        } else {
+                            //全不选
+                            cbs[i].checked = false;
+                        }
+                    }
+                } else {
+                    //先假设子选择全选，那么使全选框选中。
+                    cbs[0].checked = true;
+
+                    //若子选项没有全选，全选框不选中。
+                    for (let i = 1; i < cbs.length; i++) {
+                        if (cbs[i].checked == false) {
+                            cbs[0].checked = false;
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td><input type="checkbox" name="cb[]" id="all" onclick="setChecked(this)"/>全选</td>
+            </tr>
+            <tr><td><input type="checkbox" name="cb[]" onclick="setChecked(this)"/>1选</td></tr>
+            <tr><td><input type="checkbox" name="cb[]" onclick="setChecked(this)"/>2选</td></tr>
+            <tr><td><input type="checkbox" name="cb[]" onclick="setChecked(this)"/>3选</td></tr>
+            <tr><td><input type="checkbox" name="cb[]" onclick="setChecked(this)"/>4选</td></tr>
+        </table>
+    </body>
+</html>

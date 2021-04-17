@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Jquery动态添加标签元素</title>
+        <script type="text/javascript" src="../questionnaire/assets/js/jquery-3.6.0.min.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#add").click(Add);
+                $("#show").click(Show);
+                Hide();
+                $("#hide").click(Hide);
+            });
+
+            function Add() {
+                $("p").prepend("<b>test01</b>"); //prepend() 方法在被选元素的开头插入指定内容。
+
+                // $("<b>test02</b>").prependTo("#a"); //prependTo() 方法在被选元素的开头插入 HTML 元素。
+                // $("#b").prependTo("#a"); //prependTo() 方法在被选元素的开头插入 HTML 元素。
+
+                // $("<b>test03</b>").appendTo(".b"); //appendTo() 方法在被选元素的结尾插入 HTML 元素。
+                // $(".a").appendTo(".b"); //appendTo() 方法在被选元素的结尾插入 HTML 元素。
+
+                // $("#a").append("<b>test04</b>."); //append() 方法在被选元素的结尾插入指定内容。
+            }
+
+            function Show() {
+                $("#input").show();
+            }
+
+            function Hide() {
+                $("#input").hide();
+            }
+        </script>
+    </head>
+    <body>
+        <button id="add">Jquery动态添加标签元素</button>
+        <p id="a"> A </p>
+        <b id="b"> B1 </b>
+
+        <div class="a"> C </div>
+        <div class="b"> D </div>
+
+        <button id="show">Jquery动态显示标签元素</button>
+        <button id="hide">Jquery动态隐藏标签元素</button>
+        <span id="input">如果点击“隐藏”按钮，我就会消失。</span>
+    </body>
+</html>

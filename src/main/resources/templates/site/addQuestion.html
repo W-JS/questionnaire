@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/question.css}">
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>
+        <title>调查问卷后台管理-新建问题</title>
+    </head>
+    <body>
+        <!-- 头部 -->
+        <header th:replace="/site/index::header"></header>
+
+        <!-- 中部 -->
+        <div class="am-cf admin-main">
+            <!-- 左侧边栏 -->
+            <sidebar th:replace="/site/index::sidebar"></sidebar>
+
+            <!-- 内容 -->
+            <div class="admin-content">
+                <!-- 内容头部 -->
+                <contentHeader th:replace="/site/index::contentHeader"></contentHeader>
+
+
+            </div><!-- 内容 -->
+            <div class="admin">
+                <div class="admin-biaogelist">
+
+                    <!-- 内容顶部 -->
+                    <div id="top" class="listbiaoti am-cf">
+                        <ul class="am-icon-book"> 调查问卷管理</ul>
+                        <ul>
+                            <p class="currentQN">当前问卷：</p>
+                        </ul>
+                        <ul>
+                            <p class="qnTitle" th:text="${questionnaire.questionnaireTitle}">问卷标题</p>
+                        </ul>
+                        <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
+                            <a th:href="@{/question/addQuestion}">新建问题</a>
+                        </dl>
+                    </div>
+
+                    <!-- 内容正文 -->
+                    <div class="fbneirong">
+                        <div class="am-form">
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题标题：</div>
+                                <div class="you">
+                                    <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题描述：</div>
+                                <div class="you">
+                                    <textarea id="qDescription" class="am-input-my" rows="2" placeholder="请输入问题描述"></textarea>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">是否必填：</div>
+                                <div class="you" style="margin-top: 5px;">
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="1"> 是
+                                    </label>
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="0" checked> 否
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">前置问题：</div>
+                                <div class="you">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9999;">
+                                        <select id="pQ" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">前置选项：</div>
+                                <div class="you">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9998;">
+                                        <select id="pO" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题类型：</div>
+                                <!-- <div id="qt" class="you" style="margin-top: 5px;"></div>单选按钮 -->
+                                <div class="you">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9997;">
+                                        <select id="qt" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group am-cf">
+                                <div class="zuo"></div>
+                                <div class="you">
+                                    <button type="button" class="am-btn am-btn-success am-radius" id="save">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="am-btn am-btn-default am-radius" id="cancel">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 尾部 -->
+                    <footer th:replace="/site/index::footer"></footer>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!--        <script th:src="@{/assets/js/index.js}"></script>-->
+        <!--        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+        <!--        <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>-->
+        <!--        <script src="assets/js/polyfill/rem.min.js"></script>-->
+        <!--        <script src="assets/js/polyfill/respond.min.js"></script>-->
+        <!--        <script src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.legacy.js"></script>-->
+        <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/addQuestion.js}"></script>
+    </body>
+</html>

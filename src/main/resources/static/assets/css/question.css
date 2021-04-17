@@ -1,0 +1,46 @@
+ul .currentQN{
+    color: green;
+    font-family: 等线;
+}
+
+ul .qnTitle{
+    color: blue;
+    font-family: 等线;
+}
+
+thead .qTitle{
+    width: 500px;
+    text-align: center;
+}
+
+thead .qDescription{
+    width: auto;
+    text-align: center;
+}
+
+thead .operating{
+    width: 150px;
+    text-align: center;
+}
+
+
+tbody .qTitle{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .qTitle a{
+    text-decoration: none;
+}
+
+tbody .qDescription{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+ }
+
+tbody .operating{
+    display:flex;
+    justify-content:center;
+}

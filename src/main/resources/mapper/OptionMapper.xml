@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.OptionMapper">
+
+    <!-- 查询 option 表所有字段 -->
+    <sql id="selectOptionFields">
+        option_id, option_content, question_id, option_create_time
+    </sql>
+
+    <!-- 插入 option 表字段 -->
+    <sql id="insertOptionFields">
+        option_id, option_content, question_id, option_create_time
+    </sql>
+
+    <!-- 获取所有选项信息列表 -->
+    <!-- List<OptionEntity> findAllOptionList(); -->
+    <select id="findAllOptionList" resultType="OptionEntity">
+        select
+        <include refid="selectOptionFields"></include>
+        from `option`
+        order by option_create_time desc
+    </select>
+
+    <!-- 根据 qId 查询当前问题的所有选项 -->
+    <!-- List<OptionEntity> findOptionByQId(String qId); -->
+    <select id="findOptionByQId" resultType="OptionEntity">
+        select
+        <include refid="selectOptionFields"></include>
+        from `option`
+        where question_id = #{questionId}
+        order by option_create_time asc
+    </select>
+
+    <!-- 保存选项信息 -->
+    <!-- int insertOption(OptionEntity q); -->
+    <insert id="insertOption" parameterType="OptionEntity">
+        insert into `option`(<include refid="insertOptionFields"></include>)
+        values(#{optionId}, #{optionContent}, #{questionId}, #{optionCreateTime})
+    </insert>
+
+</mapper>

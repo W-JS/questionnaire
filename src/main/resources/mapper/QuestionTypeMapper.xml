@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.QuestionTypeMapper">
+
+    <!-- 查询 questiontype 表所有字段 -->
+    <sql id="selectQuestionTypeFields">
+        questiontype_id, questiontype_name, questiontype_create_time
+    </sql>
+
+    <!-- 插入 questiontype 表字段 -->
+    <sql id="insertQuestionTypeFields">
+        questiontype_id, questiontype_name, questiontype_create_time
+    </sql>
+
+    <!-- 获取所有题型信息列表 -->
+    <!-- List<QuestionTypeEntity> findAllQuestionTypeList(); -->
+    <select id="findAllQuestionTypeList" resultType="QuestionTypeEntity">
+        select
+        <include refid="selectQuestionTypeFields"></include>
+        from questiontype
+        order by questiontype_create_time asc
+    </select>
+
+    <!-- 保存题型信息 -->
+    <!-- int insertQuestionType(QuestionTypeEntity qt); -->
+    <insert id="insertQuestionType" parameterType="QuestionTypeEntity">
+        insert into questiontype(<include refid="insertQuestionTypeFields"></include>)
+        values(#{questiontypeId}, #{questiontypeName}, #{questiontypeCreateTime})
+    </insert>
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.UserMapper">
+
+    <!-- 查询 user 表所有字段 -->
+    <sql id="selectUserFields">
+        user_id, user_name, user_phone,
+        user_email, user_password, user_sex,
+        user_birthday, user_status, user_type,
+        user_create_time, user_update_time, user_delete_time, user_last_login_time
+    </sql>
+
+    <!-- 插入 user 表字段 -->
+    <sql id="insertUserFields">
+        user_id, user_name, user_phone,
+        user_email, user_password, user_sex,
+        user_birthday, user_status, user_type, user_create_time
+    </sql>
+
+    <!-- 获取所有用户信息列表 -->
+    <!-- List<UserEntity> findAllUserList(); -->
+    <select id="findAllUserList" resultType="UserEntity">
+        select
+        <include refid="selectUserFields"></include>
+        from user
+    </select>
+
+    <!-- 根据 userId 查找 User -->
+    <!-- UserEntity findUserByUserId(String userId); -->
+    <select id="findUserByUserId" resultType="UserEntity">
+        select
+        <include refid="selectUserFields"></include>
+        from user
+        where user_id = #{userId}
+    </select>
+
+    <!-- 根据 userName 查找 User -->
+    <!-- UserEntity findUserByUserName(String userName); -->
+    <select id="findUserByUserName" resultType="UserEntity">
+        select
+        <include refid="selectUserFields"></include>
+        from user
+        where user_name = #{userName}
+    </select>
+
+    <!-- 根据 userPhone 查找 User -->
+    <!-- UserEntity findUserByUserPhone(String userPhone); -->
+    <select id="findUserByUserPhone" resultType="UserEntity">
+        select
+        <include refid="selectUserFields"></include>
+        from user
+        where user_phone = #{userPhone}
+    </select>
+
+    <!-- 根据 userEmail 查找 User -->
+    <!-- UserEntity findUserByUserEmail(String userEmail); -->
+    <select id="findUserByUserEmail" resultType="UserEntity">
+        select
+        <include refid="selectUserFields"></include>
+        from user
+        where user_email = #{userEmail}
+    </select>
+
+    <!-- 用户注册 -->
+    <!-- int insertUser(UserEntity user); -->
+    <insert id="insertUser" parameterType="UserEntity">
+        insert into user(<include refid="insertUserFields"></include>)
+        values(#{userId}, #{userName}, #{userPhone}, #{userEmail}, #{userPassword}, #{userSex},
+        #{userBirthday}, #{userStatus}, #{userType}, #{userCreateTime})
+    </insert>
+
+    <!-- 修改用户状态 -->
+    <!-- int updateUserStatus(Integer userStatus, String userId); -->
+    <update id="updateUserStatus">
+        update user set user_status = #{userStatus} where user_id = #{userId}
+    </update>
+
+    <!-- 修改用户最后一次登录时间 -->
+    <!-- int updateUserLastLoginTime(Date userLastLoginTime, String userId); -->
+    <update id="updateUserLastLoginTime">
+        update user set user_last_login_time = #{userLastLoginTime} where user_id = #{userId}
+    </update>
+
+</mapper>

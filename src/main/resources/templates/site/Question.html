@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/question.css}">
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>
+        <title>调查问题后台管理-问题</title>
+    </head>
+    <body>
+        <!-- 头部 -->
+        <header th:replace="/site/index::header"></header>
+
+        <!-- 中部 -->
+        <div class="am-cf admin-main">
+            <!-- 左侧边栏 -->
+            <sidebar th:replace="/site/index::sidebar"></sidebar>
+
+            <!-- 内容 -->
+            <div class="admin-content">
+                <!-- 内容头部 -->
+                <contentHeader th:replace="/site/index::contentHeader"></contentHeader>
+
+                <!-- 内容中部 -->
+                <!-- <div class="admin"> -->
+
+                <!-- 修改问题弹出层 -->
+                <div class="am-popup am-popup-inner" id="updateQuestion">
+                    <div class="am-popup-hd">
+                        <h4 class="am-popup-title">修改问题</h4>
+                        <span data-am-modal-close class="am-close">&times;</span>
+                    </div>
+                    <div class="am-popup-bd">
+                        <div class="am-form tjlanmu">
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题标题：</div>
+                                <div class="you">
+                                    <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题描述：</div>
+                                <div class="you">
+                                    <textarea id="qDescription" class="am-input-my" rows="2" placeholder="请输入问题描述"></textarea>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">是否必填：</div>
+                                <div class="you" style="margin-top: 5px;">
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="1"> 是
+                                    </label>
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="0" checked> 否
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">前置问题：</div>
+                                <div class="you">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9999;">
+                                        <select id="pQId" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                            <option th:value="${map.question.questionId}" th:each="map:${questions}">
+                                                <p th:text="${map.question.questionTitle}">问题标题</p>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">前置选项：</div>
+                                <div class="you">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my">
+                                        <select id="pOId" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="zuo am-text-my">问题类型：</div>
+                                <div id="qt" class="you" style="margin-top: 5px;"></div>
+                            </div>
+
+                            <div class="am-form-group am-cf">
+                                <div class="you">
+                                    <p>
+                                        <button type="button" class="am-btn am-btn-success am-radius" id="update">修改</button>
+                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius">取消</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 删除问题弹出层 -->
+                <div class="am-popup am-popup-inner" id="deleteQuestion">
+                    <div class="am-popup-hd">
+                        <h4 class="am-popup-title">删除问题</h4>
+                        <span data-am-modal-close class="am-close">&times;</span>
+                    </div>
+                    <div class="am-popup-bd">
+                        <div class="am-form tjlanmu">
+                            <div class="am-form-group am-cf">
+                                <div class="zuo">问题标题：</div>
+                                <div class="you">
+                                    <input type="text" class="am-input-sm" placeholder="请输入问题标题">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="you">
+                                    <p>
+                                        <button type="button" class="am-btn am-btn-success am-radius" id="delete">删除</button>
+                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius">取消</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-biaogelist">
+
+                    <!-- 内容顶部 -->
+                    <div id="top" class="listbiaoti am-cf">
+                        <ul class="am-icon-book"> 调查问卷管理</ul>
+                        <ul>
+                            <p class="currentQN">当前问卷：</p>
+                        </ul>
+                        <ul>
+                            <p class="qnTitle" th:text="${questionnaire.questionnaireTitle}">问卷标题</p>
+                        </ul>
+                        <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
+                            <a th:href="@{/question/Question}">问题</a>
+                        </dl>
+                    </div>
+
+                    <!-- 内容正文 -->
+                    <div class="am-form am-g">
+                        <!-- 表格 -->
+                        <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover"
+                               style="table-layout: fixed;">
+                            <thead>
+                                <tr class="am-success">
+                                    <th class="table-check"><input type="checkbox" name="cb[]" id="all" value="all" onclick="setChecked(this)"/></th>
+                                    <th class="qTitle">问题标题</th>
+                                    <th class="qDescription">问题描述</th>
+
+                                    <th class="operating">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                                <tr th:each="map:${questions}">
+                                    <td>
+                                        <input type="checkbox" name="cb[]" th:value="${map.question.questionId}" onclick="setChecked(this)"/>
+                                    </td>
+                                    <td class="qTitle">
+                                        <a th:text="${map.question.questionTitle}" th:title="${map.question.questionTitle}">问题标题</a>
+                                    </td>
+                                    <td class="qDescription">
+                                        <a th:text="${map.question.questionDescription}" th:title="${map.question.questionDescription}">问题描述</a>
+                                    </td>
+
+                                    <td class="operating">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#updateQuestion'}" title="修改问题">
+                                                    <span class="am-icon-pencil-square-o"></span>
+                                                </button>
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        data-am-modal="{target: '#deleteQuestion'}" title="删除问题">
+                                                    <span class="am-icon-trash-o"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 多个操作按钮 -->
+                        <div class="am-btn-group am-btn-group-xs">
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 删除</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 上架</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 下架</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 移动</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动</button>
+                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
+                        </div>
+
+                        <!-- 分页 -->
+                        <ul class="am-pagination am-fr">
+                            <li>
+                                <a href="#">«</a>
+                            </li>
+                            <li class="am-active">
+                                <a href="#">1</a>
+                            </li>
+                            <li>
+                                <a href="#">2</a>
+                            </li>
+                            <li>
+                                <a href="#">3</a>
+                            </li>
+                            <li>
+                                <a href="#">4</a>
+                            </li>
+                            <li>
+                                <a href="#">5</a>
+                            </li>
+                            <li>
+                                <a href="#">»</a>
+                            </li>
+                        </ul>
+
+                        <!-- 备注 -->
+                        <p>
+                            备注：操作图标含义
+                            <a class="am-text-success am-icon-file" title="添加子栏目"> 添加子栏目</a>
+                            <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改栏目</a>
+                            <a class="am-icon-copy am-text-warning" title="复制"> 复制栏目</a>
+                            <a class="am-icon-trash-o am-text-danger" title="删除"> 删除栏目</a>
+
+                        </p>
+                    </div>
+
+                    <!-- 尾部 -->
+                    <footer th:replace="/site/index::footer"></footer>
+
+                </div>
+
+                <!-- </div> -->
+            </div>
+
+        </div>
+
+        <!--        <script th:src="@{/assets/js/index.js}"></script>-->
+        <!--        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+        <!--        <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>-->
+        <!--        <script src="assets/js/polyfill/rem.min.js"></script>-->
+        <!--        <script src="assets/js/polyfill/respond.min.js"></script>-->
+        <!--        <script src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.legacy.js"></script>-->
+        <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Question.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/addQuestion.js}"></script>
+    </body>
+</html>

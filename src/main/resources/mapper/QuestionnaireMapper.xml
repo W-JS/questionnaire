@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.QuestionnaireMapper">
+
+    <!-- 查询 questionnaire 表所有字段 -->
+    <sql id="selectQuestionnaireFields">
+        questionnaire_id, questionnaire_title, questionnaire_fu_title,
+        questionnaire_description, questionnaire_full_count, questionnaire_status,
+        questionnaire_create_time, questionnaire_start_time, questionnaire_end_time, questionnaire_delete_time, user_id
+    </sql>
+
+    <!-- 插入 questionnaire 表字段 -->
+    <sql id="insertQuestionnaireFields">
+        questionnaire_id, questionnaire_title, questionnaire_fu_title,
+        questionnaire_description, questionnaire_status, questionnaire_create_time, user_id
+    </sql>
+
+    <!-- 获取所有问卷信息列表 -->
+    <!-- List<QuestionnaireEntity> findAllQuestionnaireList(); -->
+    <select id="findAllQuestionnaireList" resultType="QuestionnaireEntity">
+        select
+        <include refid="selectQuestionnaireFields"></include>
+        from questionnaire
+        ORDER BY questionnaire_create_time DESC
+    </select>
+
+    <!-- 根据 qnId 得到问卷信息 -->
+    <!-- QuestionnaireEntity findQuestionnaireByQnId(String qnId); -->
+    <select id="findQuestionnaireByQnId" resultType="QuestionnaireEntity">
+        select
+        <include refid="selectQuestionnaireFields"></include>
+        from questionnaire
+        where questionnaire_id = #{questionnaireId}
+    </select>
+
+    <!-- 保存问卷信息 -->
+    <!-- int insertQuestionnaire(QuestionnaireEntity qn); -->
+    <insert id="insertQuestionnaire" parameterType="QuestionnaireEntity">
+        insert into questionnaire(<include refid="insertQuestionnaireFields"></include>)
+        values(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus}, #{questionnaireCreateTime}, #{userId})
+    </insert>
+
+</mapper>

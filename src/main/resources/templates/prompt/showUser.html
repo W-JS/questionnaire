@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>用户信息</title>
+<!--        <link rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>-->
+        <link type="text/css" rel="styleSheet" href="../assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css"/>
+    </head>
+    <body>
+        <div style="width: 1000px; border: 1px solid black; margin: 0 auto; margin-top: 120px;">
+<!--            <button id="btn_add" type="button" class="btn btn-primary">新　增</button>-->
+            <table class="table table-hover">
+                <thead>
+                    <tr style="font-size: 20px; font-weight: bold; text-align: center; border-top: 1px red solid;">
+                        <td>用户编号</td>
+                        <td>用户名称</td>
+                        <td>手机号码</td>
+                        <td>用户操作</td>
+                    </tr>
+                </thead>
+                <tbody id="user" style="text-align: center;">
+                    <tr style="font-size: 15px;">
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+<!--        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>-->
+        <script type="text/javascript" src="../assets/js/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                showAllUserList();
+            })
+
+            //遍历数据
+            function showAllUserList() {
+                $.ajax({
+                    async: true, // 默认true同步请求
+                    url: "/questionnaire/user/allUser",
+                    type: "get",
+                    data: {},
+                    dataType: "json",
+                    success: function (json) {
+                        console.log("测试！！！");
+                        var list = json.data;
+                        $("#user").empty();
+                        for (var i = 0; i < list.length; i++) {
+                            var html = '<tr>' +
+                                '<td id="userId">#{userId}</td>' +
+                                '<td id="userName">#{userName}</td>' +
+                                '<td id="userPhone">#{userPhone}</td>' +
+                                '<td>' +
+                                '<button id="" type="button" class="btn btn-default" data-toggle="modal" data-target="#updateModal"><a href="javascript:btn_update(' + list[i].userId + ')">修改</a></button>' +
+                                '<button data-id="12" id="btn_delete" type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" onclick="btn_delete(#{userId})">删除</button>' +
+                                '</td>' +
+                                '</tr>';
+                            html = html.replace(/#{userId}/g, list[i].userId);
+                            html = html.replace(/#{userName}/g, list[i].userName);
+                            html = html.replace(/#{userPhone}/g, list[i].userPhone);
+                            $("#user").append(html);
+                        }
+                    }
+                })
+            }
+        </script>
+    </body>
+</html>

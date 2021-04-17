@@ -1,0 +1,247 @@
+body, h1, h2, h3, h4, h5, h6, p, ol, dl, dt, dd, b, input {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+button {
+    outline: none;
+    border: none;
+    background: none;
+}
+
+input {
+    outline: none;
+}
+
+img {
+    border: none;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.box {
+    margin: 0 auto;
+    text-align: left;
+    width: 920px;
+}
+
+.clearfix, .clear {
+    zoom: 1;
+    clear: both;
+}
+
+.clearfix:after, .clear:after {
+    content: '';
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.font {
+    font-family: 微软雅黑;
+    font-size: 50px;
+    font-style: normal;
+    color: blue;
+}
+
+/*.bgimg {
+    margin: 0;
+    padding: 0;
+    background-image: url(../img/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}*/
+
+.myStyle01 {
+    padding: 0px 0px 0px 45px;
+    border: 1px solid #696969;
+    background-color: #ffffff;
+}
+
+.myStyle01 input {
+    width: 25px;
+    height: 25px;
+}
+
+.myStyle01 label {
+    vertical-align: middle;
+    font-size: 15px;
+    width: 25px;
+    height: 25px;
+}
+
+.myStyle02 {
+    font-size: 15px;
+}
+
+.icon {
+    width: 3em;
+    height: 4em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.myStyle {
+    box-sizing: border-box;
+    width: 400px;
+    height: 54px;
+    border: 2px solid #DDD;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+input {
+    box-sizing: border-box;
+    margin-bottom: 1px;
+    outline: none;
+    width: 346px;
+    height: 50px;
+    padding-left: 10px;
+    border: 0;
+}
+
+.myStyle div:first-child {
+    box-sizing: border-box;
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-position: 8px 10px;
+    border-right: 2px solid #DDD;
+
+    justify-xontent: center;
+    display: flex;
+    align_items: center;
+}
+
+.myStyle div:last-child {
+    box-sizing: border-box;
+    float: right;
+    width: 90px;
+    height: 50px;
+
+    justify-xontent: center;
+    display: flex;
+    align_items: center;
+}
+
+.myStyle svg {
+    width: 45px;
+    height: 45px;
+    margin: 2px auto;
+    text-align: center;
+}
+
+.transparency {
+    /*background:rgba(0, 0, 0, 0);*//*全透明*/
+    background-color: white;
+    opacity: 0.6;
+}
+
+.canvas-style {
+    background: #393D49;
+    position: absolute;
+    top: 0px;
+}
+
+.from-style {
+    position: relative;
+    width: 86%;
+    margin: 10% auto;
+    max-width: 400px;
+    text-align: center;
+}
+
+.div-style01 {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.div-style02 {
+    position: relative;
+}
+
+.div-style03 {
+    position: absolute;
+    width: 150px;
+    margin-left: 145px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.input-style01 {
+    width: 256px;
+    position: relative;
+}
+
+.input-style02 {
+    width: 25px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.button-style {
+    position: absolute;
+    font-size: 15px;
+    margin: 0px auto;
+    text-align: center;
+    background-color: blue;
+    color: white;
+    width: 90px;
+    height: 50px;
+    border: 2px solid blue;
+    border-radius: 5px;
+}
+
+.label-style01 {
+    float: left;
+    margin-right: 20px;
+    font-size: 15px;
+}
+
+.label-style02 {
+    float: right;
+    margin-left: 20px;
+    font-size: 15px;
+}
+
+.login, .register {
+    width: 400px;
+    height: 50px;
+    background: blue;
+    color: black;
+    border-radius: 10px;
+    font-size: 25px;
+    cursor: pointer;
+}
