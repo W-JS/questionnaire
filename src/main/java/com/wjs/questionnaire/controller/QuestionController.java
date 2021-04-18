@@ -127,7 +127,7 @@ public class QuestionController {
         pageUtil.setCurrent(Integer.valueOf(current));
         pageUtil.setRows(questionService.getQuestionRowsByQnId(qnId));
 
-        List<QuestionEntity> data = questionService.getQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+        List<QuestionEntity> data = questionService.getQuestionPageNotFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
 
         JSONResult jsonResult;
         if (data != null) {
