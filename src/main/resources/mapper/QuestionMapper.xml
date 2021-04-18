@@ -45,12 +45,42 @@
     <!-- 根据 qnId 查询当前问卷的所有问题 -->
     <!-- List<QuestionEntity> findQuestionPageByQnId(String qnId, int offset, int limit); -->
     <select id="findQuestionPageByQnId" resultType="QuestionEntity">
-        select
+
+        <!-- 根据 qnId 查询当前问卷的所有问题 -->
+        <!--select
         <include refid="selectQuestionFields"></include>
-        from question
-        where questionnaire_id = #{qnId}
-        order by question_create_time asc
+        from question q
+        where q.questionnaire_id = #{qnId}
+        order by q.question_create_time asc
+        limit #{offset}, #{limit}-->
+
+        <!-- 查询未被前置的问题 -->
+        <!-- 法一 -->
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM question q2
+        WHERE q2.question_id NOT IN
+        (SELECT q1.pre_question_id
+        FROM question q1
+        WHERE q1.questionnaire_id = #{qnId}
+        AND q1.pre_question_id IS NOT NULL)
+        AND q2.questionnaire_id = #{qnId}
+        ORDER BY q2.question_create_time ASC
         limit #{offset}, #{limit}
+
+        <!-- 法二 -->
+        <!--SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question` q2
+        WHERE NOT EXISTS
+        (SELECT q1.pre_question_id
+        FROM `question` q1
+        WHERE q1.questionnaire_id = #{qnId}
+        AND q1.pre_question_id IS NOT NULL
+        AND q1.pre_question_id = q2.question_id)
+        AND q2.questionnaire_id = #{qnId}
+        ORDER BY q2.question_create_time ASC
+        limit #{offset}, #{limit}-->
     </select>
 
     <!-- 根据 qnId 查询当前问卷的所有问题的行数 -->
