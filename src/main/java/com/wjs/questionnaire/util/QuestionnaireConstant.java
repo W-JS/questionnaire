@@ -70,6 +70,11 @@ public final class QuestionnaireConstant {
     /**
      * 在线问题状态：在线问题ID
      */
+    public static final String OnlineQTID = "OnlineQTID";
+
+    /**
+     * 在线问题状态：在线问题ID
+     */
     public static final String OnlineQID = "OnlineQID";
 
     /**

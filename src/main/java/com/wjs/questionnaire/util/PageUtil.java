@@ -14,6 +14,9 @@ public class PageUtil {
     // 查询路径(用于复用分页链接)
     private String path;
 
+    public PageUtil() {
+    }
+
     public int getCurrent() {
         return current;
     }

@@ -2,9 +2,13 @@ $(function () {
     isURL();
     HideAddQuestion();// 隐藏新建问题
 
-    PQ();// 动态生成前置问题
-    $("#pQ").change(PO);// 根据前置问题动态生成前置选项
-    QT();// 动态生成问题类型
+    GeneratePQP();// 动态生成前置问题的页数
+    $("#pQP").change(PQPGeneratePQ);// 根据前置问题的页数动态生成前置问题
+
+    // PQ();// 动态生成前置问题
+    $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
+
+    GenerateQT();// 动态生成问题类型
 
     $("#qTitle").blur(QTitle);
     $("#qDescription").blur(QDescription);
@@ -50,7 +54,32 @@ function HideAddQuestion() {
     });
 }
 
-// 动态生成前置问题
+// 动态生成前置问题的页数
+function GeneratePQP() {
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/question/getQuestionRowsByQnId',
+        data: {},
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                // $('#pQP option').remove();
+                let html = "";
+                for (let i = 1; i <= result.data.total; i++) {
+                    html += "<option value=\"" + i + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;" + i + "&nbsp;页</option>";
+                }
+                $(html).appendTo($('#pQP'));
+
+                $("#pQP option:first").prop("selected", 'selected');
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
+/*// 动态生成前置问题
 function PQ() {
     $.ajax({
         async: true, // 异步请求
@@ -71,13 +100,50 @@ function PQ() {
             }
         }
     });
+}*/
+
+// 根据前置问题的页数动态生成前置问题
+function PQPGeneratePQ() {
+    let pQPVal = $.trim($('#pQP option:selected').val());
+    let pQPText = $.trim($('#pQP option:selected').text());
+
+    if (pQPVal != "null") {
+        $.ajax({
+            async: true, // 异步请求
+            type: "get",
+            url: CONTEXT_PATH + '/question/getQuestionPageByQnId',
+            data: {
+                'current': pQPVal,
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.state == 1) {
+                    $('#pQ option').remove();
+                    let html = "";
+                    for (let i = 0; i < result.data.length; i++) {
+                        html += "<option value=\"" + result.data[i].questionId + "\">" + result.data[i].questionTitle + "</option>";
+                    }
+                    $(html).appendTo($('#pQ'));
+                    $("#pQ option:first").prop("selected", 'selected');
+                } else {
+                    ShowFailure("前置问题： " + pQPText + " " + result.message);
+                }
+            }
+        });
+    } else {
+        $('#pQ option').remove();
+        let html1 = "<option value=\"null\" selected>&nbsp;</option>";
+        $(html1).appendTo($('#pQ'));
+        $('#pO option').remove();
+        let html2 = "<option value=\"null\" selected>&nbsp;</option>";
+        $(html2).appendTo($('#pO'));
+    }
 }
 
 // 根据前置问题动态生成前置选项
-function PO() {
+function PQGeneratePO() {
     let pQVal = $.trim($('#pQ option:selected').val());
     let pQText = $.trim($('#pQ option:selected').text());
-    // console.log(pQText);
 
     if (pQVal != "null") {
         $.ajax({
@@ -102,7 +168,7 @@ function PO() {
                 }
             }
         });
-    }else{
+    } else {
         $('#pO option').remove();
         let html = "<option value=\"null\" selected>&nbsp;</option>";
         $(html).appendTo($('#pO'));
@@ -110,7 +176,7 @@ function PO() {
 }
 
 // 动态生成问题类型
-function QT() {
+function GenerateQT() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
@@ -128,13 +194,25 @@ function QT() {
                 }
                 $(html).appendTo($('#qt'));*/
 
-                $('#qt option').remove();
-                let html = "";
                 for (let i = 0; i < result.data.length; i++) {
-                    html += "<option value=\"" + result.data[i].questiontypeId + "\">" + result.data[i].questiontypeName + "</option>";
+                    if (i == 0) {
+                        $('#qt option').remove();
+                        let html = "";
+                        for (let j = 0; j < result.data[i].list.length; j++) {
+                            html += "<option value=\"" + result.data[i].list[j].questiontypeId + "\">" + result.data[i].list[j].questiontypeName + "</option>";
+                        }
+                        $(html).appendTo($('#qt'));
+                    }
+                    if (i == 1) {
+                        let qtId = result.data[i].qtId;
+                        // 遍历select的option，然后设置一项为选中
+                        $("#qt option").each(function () {
+                            if ($(this).val() == qtId) {
+                                $(this).attr("selected", true);
+                            }
+                        });
+                    }
                 }
-                $(html).appendTo($('#qt'));
-                $("#qt option:first").prop("selected", 'selected');
             } else {
                 ShowFailure(result.message);
             }
@@ -220,6 +298,7 @@ function saveSubmit() {
     let pOVal = $.trim($('#pO option:selected').val());
     // let qt = $.trim($("input[name='qt']:checked").val());
     let qt = $.trim($('#qt option:selected').val());
+    console.log(qt)
 
     $.ajax({
         async: true, // 异步请求

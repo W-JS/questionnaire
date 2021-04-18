@@ -4,7 +4,6 @@ $(function () {
     HideQuestion();// 隐藏问题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
-
 });
 
 // 判断url是否正确
@@ -52,6 +51,9 @@ function Checkbox() {
     let column = $(this).index();// 列数，从 0 开始
     let columns = $(this).parent().find("td").length;// 总列数
 
+    console.log("第 " + (row + 1) + " 行的qId：" + checkbox.val());
+    $("#qId").val(checkbox.val());
+
     if (column > 0 && column < columns - 1) {
         // 判断当前tr下的复选框是否被选中
         if (checkbox.prop("checked")) {
@@ -64,8 +66,9 @@ function Checkbox() {
             cbs[i].checked = false;
         }
         cbs[row + 1].checked = true;
+
+        SetUpdateQuestion();
     }
-    // console.log("第 " + (row + 1) + " 行的qId：" + checkbox.val());
     setChecked(this);
 }
 
@@ -97,4 +100,32 @@ function setChecked(obj) {
             }
         }
     }
+}
+
+function SetUpdateQuestion() {
+    let qId = $("#qId").val();
+    console.log("修改问题: " + qId)
+
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/question/getQuestionByQnId',
+        data: {
+            'qId': qId,
+            'qCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                let html = "";
+                for (let i = 0; i < result.data.length; i++) {
+                    html += "<option value=\"" + result.data[i].questionId + "\">" + result.data[i].questionTitle + "</option>";
+                }
+                $(html).appendTo($('#pQ'));
+                $("#pQ option:first").prop("selected", 'selected');
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
 }

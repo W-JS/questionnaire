@@ -13,6 +13,8 @@
         <title>调查问题后台管理-问题</title>
     </head>
     <body>
+        <input type="hidden" id="qId" name="qId" value="">
+
         <!-- 头部 -->
         <header th:replace="/site/index::header"></header>
 
@@ -42,51 +44,6 @@
                                 <div class="you">
                                     <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题">
                                 </div>
-                            </div>
-                            <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题描述：</div>
-                                <div class="you">
-                                    <textarea id="qDescription" class="am-input-my" rows="2" placeholder="请输入问题描述"></textarea>
-                                </div>
-                            </div>
-                            <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">是否必填：</div>
-                                <div class="you" style="margin-top: 5px;">
-                                    <label class="am-checkbox-inline am-text-my">
-                                        <input type="radio" name="qStatus" value="1"> 是
-                                    </label>
-                                    <label class="am-checkbox-inline am-text-my">
-                                        <input type="radio" name="qStatus" value="0" checked> 否
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">前置问题：</div>
-                                <div class="you">
-                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9999;">
-                                        <select id="pQId" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
-                                            <option value="null" selected>&nbsp;</option>
-                                            <option th:value="${map.question.questionId}" th:each="map:${questions}">
-                                                <p th:text="${map.question.questionTitle}">问题标题</p>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">前置选项：</div>
-                                <div class="you">
-                                    <div class="am-btn-group am-btn-group-xs am-text-my">
-                                        <select id="pOId" data-am-selected="{btnWidth: 170, btnSize: 'zm', btnStyle: 'default'}">
-                                            <option value="null" selected>&nbsp;</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题类型：</div>
-                                <div id="qt" class="you" style="margin-top: 5px;"></div>
                             </div>
 
                             <div class="am-form-group am-cf">
@@ -200,29 +157,6 @@
                         </div>
 
                         <!-- 分页 -->
-                        <!--<ul class="am-pagination am-fr">
-                            <li>
-                                <a href="#">«</a>
-                            </li>
-                            <li class="am-active">
-                                <a href="#">1</a>
-                            </li>
-                            <li>
-                                <a href="#">2</a>
-                            </li>
-                            <li>
-                                <a href="#">3</a>
-                            </li>
-                            <li>
-                                <a href="#">4</a>
-                            </li>
-                            <li>
-                                <a href="#">5</a>
-                            </li>
-                            <li>
-                                <a href="#">»</a>
-                            </li>
-                        </ul>-->
                         <nav class="mt-5" th:if="${pageUtil.rows>0}" th:fragment="pagination">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item">
@@ -281,6 +215,5 @@
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Question.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/addQuestion.js}"></script>
     </body>
 </html>
