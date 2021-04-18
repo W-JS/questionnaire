@@ -77,6 +77,7 @@ function PQ() {
 function PO() {
     let pQVal = $.trim($('#pQ option:selected').val());
     let pQText = $.trim($('#pQ option:selected').text());
+    // console.log(pQText);
 
     if (pQVal != "null") {
         $.ajax({

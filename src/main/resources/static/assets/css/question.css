@@ -1,46 +1,50 @@
-ul .currentQN{
+ul .currentQN {
     color: green;
     font-family: 等线;
 }
 
-ul .qnTitle{
+ul .qnTitle {
     color: blue;
     font-family: 等线;
 }
 
-thead .qTitle{
+thead .qTitle {
     width: 500px;
     text-align: center;
 }
 
-thead .qDescription{
+thead .qDescription {
     width: auto;
     text-align: center;
 }
 
-thead .operating{
+thead .operating {
     width: 150px;
     text-align: center;
 }
 
 
-tbody .qTitle{
+tbody .qTitle {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-tbody .qTitle a{
+tbody .qTitle a {
     text-decoration: none;
 }
 
-tbody .qDescription{
+tbody .qDescription {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
- }
+}
 
-tbody .operating{
-    display:flex;
-    justify-content:center;
+tbody .operating {
+    display: flex;
+    justify-content: center;
+}
+
+.mt-5 .page {
+    margin-left: 5px;
 }

@@ -9,6 +9,7 @@ import com.wjs.questionnaire.service.IQuestionService;
 import com.wjs.questionnaire.service.IQuestionnaireService;
 import com.wjs.questionnaire.service.IUserService;
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.PageUtil;
 import com.wjs.questionnaire.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -53,13 +54,16 @@ public class QuestionController {
      * @return 进入 调查问卷后台管理-问题
      */
     @GetMapping(value = "/Question")
-    public String getMyOptionsPage(Model model) {
+    public String getMyOptionsPage(Model model, PageUtil pageUtil) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
         QuestionnaireEntity questionnaire = questionnaireService.getQuestionnaireByQnId(qnId);
 
+        pageUtil.setRows(questionService.getQuestionRowsByQnId(qnId));
+        pageUtil.setPath("/question/Question");
+
         List<Map<String, Object>> questions = new ArrayList<>();
         // 根据 qnId 查询当前问卷的所有问题
-        List<QuestionEntity> questionList = questionService.getQuestionByQnId(qnId);
+        List<QuestionEntity> questionList = questionService.getQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
 //        List<QuestionEntity> questionList = questionService.getAllQuestionList();
         if (questionList != null) {
             for (QuestionEntity question : questionList) {

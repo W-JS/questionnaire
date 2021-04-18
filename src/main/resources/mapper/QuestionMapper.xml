@@ -42,6 +42,25 @@
         order by question_create_time asc
     </select>
 
+    <!-- 根据 qnId 查询当前问卷的所有问题 -->
+    <!-- List<QuestionEntity> findQuestionPageByQnId(String qnId, int offset, int limit); -->
+    <select id="findQuestionPageByQnId" resultType="QuestionEntity">
+        select
+        <include refid="selectQuestionFields"></include>
+        from question
+        where questionnaire_id = #{qnId}
+        order by question_create_time asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 根据 qnId 查询当前问卷的所有问题的行数 -->
+    <!-- int findQuestionRowsByQnId(String qnId); -->
+    <select id="findQuestionRowsByQnId" resultType="int">
+        select count(question_id)
+        from question
+        where questionnaire_id = #{questionnaireId}
+    </select>
+
     <!-- 保存问题信息 -->
     <!-- int insertQuestion(QuestionEntity qn); -->
     <insert id="insertQuestion" parameterType="QuestionEntity">

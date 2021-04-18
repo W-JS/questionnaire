@@ -200,7 +200,7 @@
                         </div>
 
                         <!-- 分页 -->
-                        <ul class="am-pagination am-fr">
+                        <!--<ul class="am-pagination am-fr">
                             <li>
                                 <a href="#">«</a>
                             </li>
@@ -222,7 +222,31 @@
                             <li>
                                 <a href="#">»</a>
                             </li>
-                        </ul>
+                        </ul>-->
+                        <nav class="mt-5" th:if="${pageUtil.rows>0}" th:fragment="pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=1)}">首页</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==1?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current-1})}">上一页</a>
+                                </li>
+                                <li th:class="|page-item page ${i==pageUtil.current?'active':''}|"
+                                    th:each="i:${#numbers.sequence(pageUtil.from,pageUtil.to)}">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=${i})}"
+                                       th:text="${i}">1</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==pageUtil.total?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current+1})}">下一页</a>
+                                </li>
+                                <li class="page-item page">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.getTotal()})}">末页</a>
+                                </li>
+                            </ul>
+                        </nav>
 
                         <!-- 备注 -->
                         <p>

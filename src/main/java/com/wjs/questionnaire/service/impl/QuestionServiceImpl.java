@@ -36,6 +36,30 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
+     * 根据 qnId 查询当前问卷的所有问题
+     *
+     * @param qnId   当前问卷编号
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 问题信息列表
+     */
+    @Override
+    public List<QuestionEntity> getQuestionPageByQnId(String qnId, int offset, int limit) {
+        return questionMapper.findQuestionPageByQnId(qnId, offset, limit);
+    }
+
+    /**
+     * 根据 qnId 查询当前问卷的所有问题的行数
+     *
+     * @param qnId 当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    @Override
+    public int getQuestionRowsByQnId(String qnId) {
+        return questionMapper.findQuestionRowsByQnId(qnId);
+    }
+
+    /**
      * 保存问题信息
      *
      * @param q 问题信息
