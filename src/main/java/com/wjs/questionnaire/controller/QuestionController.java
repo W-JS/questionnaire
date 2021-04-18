@@ -127,6 +127,7 @@ public class QuestionController {
         pageUtil.setCurrent(Integer.valueOf(current));
         pageUtil.setRows(questionService.getQuestionRowsByQnId(qnId));
 
+        // 根据 qnId 查询当前问卷未被前置的问题
         List<QuestionEntity> data = questionService.getQuestionPageNotFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
 
         JSONResult jsonResult;
