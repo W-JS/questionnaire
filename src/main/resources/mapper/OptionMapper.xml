@@ -15,27 +15,27 @@
     <!-- 获取所有选项信息列表 -->
     <!-- List<OptionEntity> findAllOptionList(); -->
     <select id="findAllOptionList" resultType="OptionEntity">
-        select
+        SELECT
         <include refid="selectOptionFields"></include>
-        from `option`
-        order by option_create_time desc
+        FROM `option`
+        ORDER BY option_create_time DESC
     </select>
 
     <!-- 根据 qId 查询当前问题的所有选项 -->
     <!-- List<OptionEntity> findOptionByQId(String qId); -->
     <select id="findOptionByQId" resultType="OptionEntity">
-        select
+        SELECT
         <include refid="selectOptionFields"></include>
-        from `option`
-        where question_id = #{questionId}
-        order by option_create_time asc
+        FROM `option`
+        WHERE question_id = #{questionId}
+        ORDER BY option_create_time ASC
     </select>
 
     <!-- 保存选项信息 -->
     <!-- int insertOption(OptionEntity q); -->
     <insert id="insertOption" parameterType="OptionEntity">
-        insert into `option`(<include refid="insertOptionFields"></include>)
-        values(#{optionId}, #{optionContent}, #{questionId}, #{optionCreateTime})
+        INSERT INTO `option`(<include refid="insertOptionFields"></include>)
+        VALUES(#{optionId}, #{optionContent}, #{questionId}, #{optionCreateTime})
     </insert>
 
 </mapper>

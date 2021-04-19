@@ -3,12 +3,18 @@ $(function () {
     HideAddQuestion();// 隐藏新建问题
 
     GeneratePQP();// 动态生成前置问题的页数
+
     $("#pQP").change(PQPGeneratePQ);// 根据前置问题的页数动态生成前置问题
+    // 新建问题的前置问题为未被前置的问题
+    // 被前置的问题：问题A的 question_id 存在于（等于）问题B的 pre_question_id，说明问题A是被前置的问题
+    // 未被前置的问题：问题A的 question_id 不存在于（不等于）问题B的 pre_question_id，说明问题A是未被前置的问题
 
     // PQ();// 动态生成前置问题
     $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
 
     GenerateQT();// 动态生成问题类型
+
+    GenerateQNAndQ();// 动态生成当前问卷的所有问题
 
     $("#qTitle").blur(QTitle);
     $("#qDescription").blur(QDescription);
@@ -59,7 +65,7 @@ function GeneratePQP() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionRowsByQnId',
+        url: CONTEXT_PATH + '/question/getQuestionRowsNotFrontByQnId',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -111,7 +117,7 @@ function PQPGeneratePQ() {
         $.ajax({
             async: true, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/question/getQuestionPageByQnId',
+            url: CONTEXT_PATH + '/question/getQuestionPageNotFrontByQnId',
             data: {
                 'current': pQPVal,
             },
@@ -218,6 +224,21 @@ function GenerateQT() {
             }
         }
     });
+}
+
+// 动态生成当前问卷的所有问题
+function GenerateQNAndQ(){
+    let html = "";
+    for (let i = 0; i < 5; i++) {
+        html +=
+            "<div class=\"am-form-group am-cf\">\n" +
+            "    <div class=\"left am-text-my\">问题标题：</div>\n" +
+            "    <div class=\"right\">\n" +
+            "        <input type=\"text\" class=\"am-input-my\" placeholder=\"请输入问题标题\">\n" +
+            "    </div>\n" +
+            "</div>";
+    }
+    $(html).appendTo($('#showQNAndQ'));
 }
 
 // 验证问题标题是否正确

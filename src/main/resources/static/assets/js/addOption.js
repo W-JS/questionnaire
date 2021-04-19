@@ -2,14 +2,20 @@ $(function () {
     isURL();
     HideAddOption();// 隐藏新建选项
 
+    $("#oContent").focus();
+    GenerateQAndO();// 动态生成当前问题的所有选项
+
     $("#oContent").blur(OContent);
+
+    $('#oContent').bind('keypress', oContentEnter);
 
     $("#save").click(Save);
     $("#cancel").click(Cancel);
+
 });
 
 // 判断url是否正确
-function isURL(){
+function isURL() {
     let url = window.location.pathname;
     let index = url.lastIndexOf("/")
     url = url.substring(index + 1, url.length);
@@ -30,19 +36,34 @@ function addOption() {
             "    </button>\n" +
             "</li>";
         $(html).appendTo($('#show-hide'));
-    }else {
+    } else {
         $("#hideAddOption-li").show();
     }
 }
 
 // 隐藏新建选项
 function HideAddOption() {
-    $("#show-hide").on("mouseenter","#hideAddOption", function () {
+    $("#show-hide").on("mouseenter", "#hideAddOption", function () {
         $(this).click(function () {
             $("#hideAddOption-li").hide();
             window.location.href = CONTEXT_PATH + "/option/Option";
         })
     });
+}
+
+// 动态生成当前问题的所有选项
+function GenerateQAndO() {
+    let html = "";
+    for (let i = 0; i < 5; i++) {
+        html +=
+            "<div class=\"am-form-group am-cf\">\n" +
+            "    <div class=\"left am-text-my\">选项内容：</div>\n" +
+            "    <div class=\"right\">\n" +
+            "        <input type=\"text\" class=\"am-input-my\" placeholder=\"请输入选项内容\">\n" +
+            "    </div>\n" +
+            "</div>";
+    }
+    $(html).appendTo($('#showQAndO'));
 }
 
 // 验证选项内容是否正确
@@ -60,6 +81,12 @@ function OContent() {
         }
     }
     return flag;
+}
+
+function oContentEnter(event) {
+    if (event.keyCode == "13") {
+        Save();
+    }
 }
 
 // 验证选项内容是否存在
@@ -97,7 +124,9 @@ function saveSubmit() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                window.location.href = CONTEXT_PATH + "/option/addOption";
+                ShowSuccess("选项：" + oContent + " 保存成功！！！");
+                $("#oContent").val("");
+                $("#oContent").focus();
             } else {
                 ShowFailure(result.message);
             }

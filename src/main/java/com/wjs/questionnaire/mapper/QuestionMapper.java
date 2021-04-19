@@ -21,7 +21,15 @@ public interface QuestionMapper {
      * @param qnId 当前问卷编号
      * @return 问题信息列表
      */
-    List<QuestionEntity> findQuestionByQnId(String qnId);
+    List<QuestionEntity> findAllQuestionByQnId(String qnId);
+
+    /**
+     * 根据 qnId 查询当前问卷的所有问题的行数
+     *
+     * @param qnId 当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    int findQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷的所有问题
@@ -34,6 +42,14 @@ public interface QuestionMapper {
     List<QuestionEntity> findQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
+     * 根据 qnId 查询当前问卷未被前置的问题的行数
+     *
+     * @param qnId 当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    int findQuestionRowsNotFrontByQnId(String qnId);
+
+    /**
      * 根据 qnId 查询当前问卷未被前置的问题
      *
      * @param qnId   当前问卷编号
@@ -42,6 +58,14 @@ public interface QuestionMapper {
      * @return 问题信息列表
      */
     List<QuestionEntity> findQuestionPageNotFrontByQnId(String qnId, int offset, int limit);
+
+    /**
+     * 根据 qnId 查询当前问卷被前置的问题的行数
+     *
+     * @param qnId   当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    int findQuestionRowsFrontByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
@@ -54,12 +78,13 @@ public interface QuestionMapper {
     List<QuestionEntity> findQuestionPageFrontByQnId(String qnId, int offset, int limit);
 
     /**
-     * 根据 qnId 查询当前问卷的所有问题的行数
+     * 根据 qnId 和 qId 查询当前问卷指定的问题
      *
      * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @param qId  当前问题编号
+     * @return 问题信息
      */
-    int findQuestionRowsByQnId(String qnId);
+    QuestionEntity findQuestionByQnIdAndQId(String qnId, String qId);
 
     /**
      * 保存问题信息

@@ -4,6 +4,7 @@ $(function () {
     HideQuestion();// 隐藏问题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
+
 });
 
 // 判断url是否正确
@@ -67,7 +68,13 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
-        SetUpdateQuestion();
+        let udQId = $("#udQId").val();
+        if (udQId == "update") {
+            SetUpdateQuestion();
+        }
+        if (udQId == "delete") {
+            SetDeleteQuestion();
+        }
     }
     setChecked(this);
 }
@@ -102,11 +109,12 @@ function setChecked(obj) {
     }
 }
 
+// 将当前问题信息填充到修改问题弹出层中
 function SetUpdateQuestion() {
     let qId = $("#qId").val();
     console.log("修改问题: " + qId)
 
-    $.ajax({
+    /*$.ajax({
         async: true, // 异步请求
         type: "get",
         url: CONTEXT_PATH + '/question/getQuestionByQnId',
@@ -127,5 +135,44 @@ function SetUpdateQuestion() {
                 ShowFailure(result.message);
             }
         }
-    });
+    });*/
+}
+
+// 将当前问题信息填充到删除问题弹出层中
+function SetDeleteQuestion() {
+    let qId = $("#qId").val();
+    console.log("删除问题: " + qId)
+
+    /*$.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/question/getQuestionByQnId',
+        data: {
+            'qId': qId,
+            'qCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                let html = "";
+                for (let i = 0; i < result.data.length; i++) {
+                    html += "<option value=\"" + result.data[i].questionId + "\">" + result.data[i].questionTitle + "</option>";
+                }
+                $(html).appendTo($('#pQ'));
+                $("#pQ option:first").prop("selected", 'selected');
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });*/
+}
+
+// 点击修改问题按钮
+function UpdateQuestion() {
+    $("#udQId").val("update");
+}
+
+// 点击删除问题按钮
+function DeleteQuestion() {
+    $("#udQId").val("delete");
 }

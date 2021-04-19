@@ -30,6 +30,7 @@
                 <div class="admin">
                     <div class="tableList">
 
+                        <!-- 内容顶部 -->
                         <div id="top" class="moduleTitle am-cf">
                             <ul class="am-icon-book on"> 调查问卷管理</ul>
                             <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
@@ -37,8 +38,9 @@
                             </dl>
                         </div>
 
+                        <!-- 内容正文 -->
                         <div class="addOption">
-                            <form class="am-form">
+                            <div class="am-form">
                                 <div class="am-form-group am-cf">
                                     <div class="left am-text-my">选项内容：</div>
                                     <div class="right">
@@ -53,7 +55,19 @@
                                         <button type="button" class="am-btn am-btn-default am-radius" id="cancel">取消</button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+
+                        <!-- 显示当前问题的所有选项 -->
+                        <div class="showQAndO">
+                            <div id="showQAndO" class="am-form">
+                                <!--<div class="am-form-group am-cf">
+                                    <div class="left am-text-my">选项内容：</div>
+                                    <div class="right">
+                                        <input type="text" class="am-input-my" placeholder="请输入选项内容">
+                                    </div>
+                                </div>-->
+                            </div>
                         </div>
 
                         <!-- 尾部 -->

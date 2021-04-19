@@ -18,26 +18,26 @@
     <!-- 获取所有问卷信息列表 -->
     <!-- List<QuestionnaireEntity> findAllQuestionnaireList(); -->
     <select id="findAllQuestionnaireList" resultType="QuestionnaireEntity">
-        select
+        SELECT
         <include refid="selectQuestionnaireFields"></include>
-        from questionnaire
+        FROM `questionnaire`
         ORDER BY questionnaire_create_time DESC
     </select>
 
     <!-- 根据 qnId 得到问卷信息 -->
     <!-- QuestionnaireEntity findQuestionnaireByQnId(String qnId); -->
     <select id="findQuestionnaireByQnId" resultType="QuestionnaireEntity">
-        select
+        SELECT
         <include refid="selectQuestionnaireFields"></include>
-        from questionnaire
-        where questionnaire_id = #{questionnaireId}
+        FROM `questionnaire`
+        WHERE questionnaire_id = #{questionnaireId}
     </select>
 
     <!-- 保存问卷信息 -->
     <!-- int insertQuestionnaire(QuestionnaireEntity qn); -->
     <insert id="insertQuestionnaire" parameterType="QuestionnaireEntity">
-        insert into questionnaire(<include refid="insertQuestionnaireFields"></include>)
-        values(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus}, #{questionnaireCreateTime}, #{userId})
+        INSERT INTO `questionnaire`(<include refid="insertQuestionnaireFields"></include>)
+        VALUES(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus}, #{questionnaireCreateTime}, #{userId})
     </insert>
 
 </mapper>

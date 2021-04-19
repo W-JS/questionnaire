@@ -20,65 +20,65 @@
     <!-- 获取所有用户信息列表 -->
     <!-- List<UserEntity> findAllUserList(); -->
     <select id="findAllUserList" resultType="UserEntity">
-        select
+        SELECT
         <include refid="selectUserFields"></include>
-        from user
+        FROM `user`
     </select>
 
     <!-- 根据 userId 查找 User -->
     <!-- UserEntity findUserByUserId(String userId); -->
     <select id="findUserByUserId" resultType="UserEntity">
-        select
+        SELECT
         <include refid="selectUserFields"></include>
-        from user
-        where user_id = #{userId}
+        FROM `user`
+        WHERE user_id = #{userId}
     </select>
 
     <!-- 根据 userName 查找 User -->
     <!-- UserEntity findUserByUserName(String userName); -->
     <select id="findUserByUserName" resultType="UserEntity">
-        select
+        SELECT
         <include refid="selectUserFields"></include>
-        from user
-        where user_name = #{userName}
+        FROM `user`
+        WHERE user_name = #{userName}
     </select>
 
     <!-- 根据 userPhone 查找 User -->
     <!-- UserEntity findUserByUserPhone(String userPhone); -->
     <select id="findUserByUserPhone" resultType="UserEntity">
-        select
+        SELECT
         <include refid="selectUserFields"></include>
-        from user
-        where user_phone = #{userPhone}
+        FROM `user`
+        WHERE user_phone = #{userPhone}
     </select>
 
     <!-- 根据 userEmail 查找 User -->
     <!-- UserEntity findUserByUserEmail(String userEmail); -->
     <select id="findUserByUserEmail" resultType="UserEntity">
-        select
+        SELECT
         <include refid="selectUserFields"></include>
-        from user
-        where user_email = #{userEmail}
+        FROM `user`
+        WHERE user_email = #{userEmail}
     </select>
 
     <!-- 用户注册 -->
     <!-- int insertUser(UserEntity user); -->
     <insert id="insertUser" parameterType="UserEntity">
-        insert into user(<include refid="insertUserFields"></include>)
-        values(#{userId}, #{userName}, #{userPhone}, #{userEmail}, #{userPassword}, #{userSex},
+        INSERT INTO `user`(<include refid="insertUserFields"></include>)
+        VALUES(#{userId}, #{userName}, #{userPhone}, #{userEmail}, #{userPassword}, #{userSex},
         #{userBirthday}, #{userStatus}, #{userType}, #{userCreateTime})
     </insert>
 
     <!-- 修改用户状态 -->
     <!-- int updateUserStatus(Integer userStatus, String userId); -->
     <update id="updateUserStatus">
-        update user set user_status = #{userStatus} where user_id = #{userId}
+        UPDATE `user` SET user_status = #{userStatus} WHERE user_id = #{userId}
     </update>
 
     <!-- 修改用户最后一次登录时间 -->
     <!-- int updateUserLastLoginTime(Date userLastLoginTime, String userId); -->
     <update id="updateUserLastLoginTime">
-        update user set user_last_login_time = #{userLastLoginTime} where user_id = #{userId}
+        UPDATE `user` SET user_last_login_time = #{userLastLoginTime} WHERE user_id = #{userId}
     </update>
 
 </mapper>

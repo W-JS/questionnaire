@@ -64,7 +64,7 @@ tbody .operating {
     font-size: 14px;
 }
 
-.updateQuestion .zuo {
+.updateQuestion .left {
     width: 19%;
     text-align: right;
     margin-right: 1%;
@@ -73,13 +73,13 @@ tbody .operating {
     margin-bottom: 10px
 }
 
-.updateQuestion .you {
+.updateQuestion .right {
     width: 80%;
     float: right;
     margin-bottom: 10px
 }
 
-.updateQuestion .you .am-input-sm {
+.updateQuestion .right .am-input-sm {
     font-size: 1.2rem !important
 }
 

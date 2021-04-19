@@ -30,6 +30,7 @@
                 <div class="admin">
                     <div class="tableList">
 
+                        <!-- 内容顶部 -->
                         <div id="top" class="moduleTitle am-cf">
                             <ul class="am-icon-book on"> 调查问卷管理</ul>
                             <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
@@ -37,11 +38,14 @@
                             </dl>
                         </div>
 
+                        <!-- 内容正文-方块显示 -->
                         <div class="qns">
                             <a class="qn" href="#" th:each="map:${options}">
                                 <p class="qntitle" th:text="${map.option.optionContent}">选项内容</p>
                             </a>
                         </div>
+
+                        <!-- 内容正文-表格显示 -->
 
                         <!-- 尾部 -->
                         <footer th:replace="/site/index::footer"></footer>

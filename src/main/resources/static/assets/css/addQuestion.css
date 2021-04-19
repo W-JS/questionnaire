@@ -21,14 +21,13 @@ ul .qnTitle {
     padding: 20px;
     font-size: 14px;
     background-color: #fff;
-    min-height: 700px;
+    min-height: 400px;
 }
 
 .addQuestion .am-form-group {
     margin: 2px auto;
     width: 100%;
 }
-
 
 .addQuestion .left {
     width: 11%;
@@ -53,8 +52,52 @@ ul .qnTitle {
     font-size: 1.2rem !important
 }
 
-
 .addQuestion .right .am-btn-success, .addQuestion .right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: .65rem 1rem;
+}
+
+/*fbneirong*/
+.showQNAndQ {
+    width: 98%;
+    margin: 0 auto 15px auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    min-height: 700px;
+}
+
+.showQNAndQ .am-form-group {
+    margin: 2px auto;
+    width: 100%;
+}
+
+.showQNAndQ .left {
+    width: 11%;
+    text-align: left;
+    margin-right: 1%;
+    float: left;
+    line-height: 33px;
+    margin-bottom: 10px
+}
+
+.showQNAndQ .right {
+    width: 70%;
+    float: left;
+    margin-bottom: 10px
+}
+
+.showQNAndQ .right .am-input-my {
+    font-size: 1.5rem !important
+}
+
+.showQNAndQ .right .am-input-sm {
+    font-size: 1.2rem !important
+}
+
+.showQNAndQ .right .am-btn-success, .showQNAndQ .right .am-btn-default {
     font-size: 1.4rem !important;
     padding: .65rem 1rem;
 }

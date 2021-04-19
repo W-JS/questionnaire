@@ -14,6 +14,7 @@
     </head>
     <body>
         <input type="hidden" id="qId" name="qId" value="">
+        <input type="hidden" id="udQId" name="udQId" value="">
 
         <!-- 头部 -->
         <header th:replace="/site/index::header"></header>
@@ -40,14 +41,14 @@
                     <div class="am-popup-bd">
                         <div class="am-form updateQuestion">
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题标题：</div>
-                                <div class="you">
-                                    <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题">
+                                <div class="left am-text-my">问题标题：</div>
+                                <div class="right">
+                                    <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题" value="">
                                 </div>
                             </div>
 
                             <div class="am-form-group am-cf">
-                                <div class="you">
+                                <div class="right">
                                     <p>
                                         <button type="button" class="am-btn am-btn-success am-radius" id="update">修改</button>
                                         <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius">取消</button>
@@ -67,13 +68,13 @@
                     <div class="am-popup-bd">
                         <div class="am-form updateQuestion">
                             <div class="am-form-group am-cf">
-                                <div class="zuo">问题标题：</div>
-                                <div class="you">
+                                <div class="left">问题标题：</div>
+                                <div class="right">
                                     <input type="text" class="am-input-sm" placeholder="请输入问题标题">
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="you">
+                                <div class="right">
                                     <p>
                                         <button type="button" class="am-btn am-btn-success am-radius" id="delete">删除</button>
                                         <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius">取消</button>
@@ -104,7 +105,7 @@
                     <div class="am-form am-g">
                         <!-- 表格 -->
                         <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover"
-                               style="table-layout: fixed;">
+                               style="table-larightt: fixed;">
                             <thead>
                                 <tr class="am-success">
                                     <th class="table-check"><input type="checkbox" name="cb[]" id="all" value="all" onclick="setChecked(this)"/></th>
@@ -129,12 +130,12 @@
                                     <td class="operating">
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                        data-am-modal="{target: '#updateQuestion'}" title="修改问题">
+                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#updateQuestion'}" name="updateQuestion" onclick="UpdateQuestion()" title="修改问题">
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#deleteQuestion'}" title="删除问题">
+                                                <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        data-am-modal="{target: '#deleteQuestion'}" name="deleteQuestion" onclick="DeleteQuestion()" title="删除问题">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>
                                             </div>

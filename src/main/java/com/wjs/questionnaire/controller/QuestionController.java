@@ -96,15 +96,16 @@ public class QuestionController {
     }
 
     /**
-     * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题的行数
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题的行数
      */
-    @GetMapping("/getQuestionRowsByQnId")
+    @GetMapping("/getQuestionRowsNotFrontByQnId")
     @ResponseBody
-    public JSONResult getQuestionRowsByQnId() {
+    public JSONResult getQuestionRowsNotFrontByQnId() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         PageUtil data = new PageUtil();
-        data.setRows(questionService.getQuestionRowsByQnId(qnId));
+        data.setRows(questionService.getQuestionRowsNotFrontByQnId(qnId));
+//        data.setRows(questionService.getQuestionRowsFrontByQnId(qnId));
 
         JSONResult jsonResult;
         if (data != null) {
@@ -116,19 +117,20 @@ public class QuestionController {
     }
 
     /**
-     * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
      */
-    @GetMapping("/getQuestionPageByQnId")
+    @GetMapping("/getQuestionPageNotFrontByQnId")
     @ResponseBody
-    public JSONResult getQuestionPageByQnId(String current) {
+    public JSONResult getQuestionPageNotFrontByQnId(String current) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         PageUtil pageUtil = new PageUtil();
         pageUtil.setCurrent(Integer.valueOf(current));
-        pageUtil.setRows(questionService.getQuestionRowsByQnId(qnId));
+        pageUtil.setRows(questionService.getQuestionRowsNotFrontByQnId(qnId));
+//        pageUtil.setRows(questionService.getQuestionRowsFrontByQnId(qnId));
 
-        // 根据 qnId 查询当前问卷未被前置的问题
         List<QuestionEntity> data = questionService.getQuestionPageNotFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+//        List<QuestionEntity> data = questionService.getQuestionPageFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
 
         JSONResult jsonResult;
         if (data != null) {
@@ -146,7 +148,7 @@ public class QuestionController {
     @ResponseBody
     public JSONResult getQuestionByQnId() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-        List<QuestionEntity> data = questionService.getQuestionByQnId(qnId);
+        List<QuestionEntity> data = questionService.getAllQuestionByQnId(qnId);
 
         JSONResult jsonResult;
         if (data != null) {

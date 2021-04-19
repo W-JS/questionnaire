@@ -15,17 +15,17 @@
     <!-- 获取所有题型信息列表 -->
     <!-- List<QuestionTypeEntity> findAllQuestionTypeList(); -->
     <select id="findAllQuestionTypeList" resultType="QuestionTypeEntity">
-        select
+        SELECT
         <include refid="selectQuestionTypeFields"></include>
-        from questiontype
-        order by questiontype_create_time asc
+        FROM `questiontype`
+        ORDER BY questiontype_create_time ASC
     </select>
 
     <!-- 保存题型信息 -->
     <!-- int insertQuestionType(QuestionTypeEntity qt); -->
     <insert id="insertQuestionType" parameterType="QuestionTypeEntity">
-        insert into questiontype(<include refid="insertQuestionTypeFields"></include>)
-        values(#{questiontypeId}, #{questiontypeName}, #{questiontypeCreateTime})
+        INSERT INTO `questiontype`(<include refid="insertQuestionTypeFields"></include>)
+        VALUES(#{questiontypeId}, #{questiontypeName}, #{questiontypeCreateTime})
     </insert>
 
 </mapper>

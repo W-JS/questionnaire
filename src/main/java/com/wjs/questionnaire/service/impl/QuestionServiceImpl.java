@@ -31,8 +31,19 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> getQuestionByQnId(String qnId) {
-        return questionMapper.findQuestionByQnId(qnId);
+    public List<QuestionEntity> getAllQuestionByQnId(String qnId) {
+        return questionMapper.findAllQuestionByQnId(qnId);
+    }
+
+    /**
+     * 根据 qnId 查询当前问卷的所有问题的行数
+     *
+     * @param qnId 当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    @Override
+    public int getQuestionRowsByQnId(String qnId) {
+        return questionMapper.findQuestionRowsByQnId(qnId);
     }
 
     /**
@@ -49,6 +60,17 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
+     * 根据 qnId 查询当前问卷未被前置的问题的行数
+     *
+     * @param qnId 当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    @Override
+    public int getQuestionRowsNotFrontByQnId(String qnId) {
+        return questionMapper.findQuestionRowsNotFrontByQnId(qnId);
+    }
+
+    /**
      * 根据 qnId 查询当前问卷未被前置的问题
      *
      * @param qnId   当前问卷编号
@@ -59,6 +81,17 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public List<QuestionEntity> getQuestionPageNotFrontByQnId(String qnId, int offset, int limit) {
         return questionMapper.findQuestionPageNotFrontByQnId(qnId, offset, limit);
+    }
+
+    /**
+     * 根据 qnId 查询当前问卷被前置的问题的行数
+     *
+     * @param qnId   当前问卷编号
+     * @return 问题信息列表的行数
+     */
+    @Override
+    public int getQuestionRowsFrontByQnId(String qnId) {
+        return questionMapper.findQuestionRowsFrontByQnId(qnId);
     }
 
     /**
@@ -75,14 +108,15 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
-     * 根据 qnId 查询当前问卷的所有问题的行数
+     * 根据 qnId 和 qId 查询当前问卷指定的问题
      *
      * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @param qId  当前问题编号
+     * @return 问题信息
      */
     @Override
-    public int getQuestionRowsByQnId(String qnId) {
-        return questionMapper.findQuestionRowsByQnId(qnId);
+    public QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId) {
+        return questionMapper.findQuestionByQnIdAndQId(qnId, qId);
     }
 
     /**
