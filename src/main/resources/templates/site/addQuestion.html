@@ -29,10 +29,10 @@
 
             </div><!-- 内容 -->
             <div class="admin">
-                <div class="admin-biaogelist">
+                <div class="tableList">
 
                     <!-- 内容顶部 -->
-                    <div id="top" class="listbiaoti am-cf">
+                    <div id="top" class="moduleTitle am-cf">
                         <ul class="am-icon-book"> 调查问卷管理</ul>
                         <ul>
                             <p class="currentQN">当前问卷：</p>
@@ -46,23 +46,23 @@
                     </div>
 
                     <!-- 内容正文 -->
-                    <div class="fbneirong">
+                    <div class="addQuestion">
                         <div class="am-form">
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题标题：</div>
-                                <div class="you">
+                                <div class="left am-text-my">问题标题：</div>
+                                <div class="right">
                                     <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题">
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题描述：</div>
-                                <div class="you">
+                                <div class="left am-text-my">问题描述：</div>
+                                <div class="right">
                                     <textarea id="qDescription" class="am-input-my" rows="2" placeholder="请输入问题描述"></textarea>
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">是否必填：</div>
-                                <div class="you" style="margin-top: 5px;">
+                                <div class="left am-text-my">是否必填：</div>
+                                <div class="right" style="margin-top: 5px;">
                                     <label class="am-checkbox-inline am-text-my">
                                         <input type="radio" name="qStatus" value="1"> 是
                                     </label>
@@ -73,8 +73,8 @@
                             </div>
 
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">前置问题分页：</div>
-                                <div class="you">
+                                <div class="left am-text-my">前置问题分页：</div>
+                                <div class="right">
                                     <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9999;">
                                         <select id="pQP" data-am-selected="{btnWidth: 170, btnSize: 'xl', btnStyle: 'default'}">
                                             <option value="null" selected>&nbsp;</option>
@@ -83,8 +83,8 @@
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">前置问题：</div>
-                                <div class="you">
+                                <div class="left am-text-my">前置问题：</div>
+                                <div class="right">
                                     <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9998;">
                                         <select id="pQ" data-am-selected="{btnWidth: 170, btnSize: 'xl', btnStyle: 'default'}">
                                             <option value="null" selected>&nbsp;</option>
@@ -93,8 +93,8 @@
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">前置选项：</div>
-                                <div class="you">
+                                <div class="left am-text-my">前置选项：</div>
+                                <div class="right">
                                     <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9997;">
                                         <select id="pO" data-am-selected="{btnWidth: 170, btnSize: 'xl', btnStyle: 'default'}">
                                             <option value="null" selected>&nbsp;</option>
@@ -103,9 +103,9 @@
                                 </div>
                             </div>
                             <div class="am-form-group am-cf">
-                                <div class="zuo am-text-my">问题类型：</div>
-                                <!-- <div id="qt" class="you" style="margin-top: 5px;"></div>单选按钮 -->
-                                <div class="you">
+                                <div class="left am-text-my">问题类型：</div>
+                                <!-- <div id="qt" class="right" style="margin-top: 5px;"></div>单选按钮 -->
+                                <div class="right">
                                     <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9996;">
                                         <select id="qt" data-am-selected="{btnWidth: 170, btnSize: 'xl', btnStyle: 'default'}">
                                             <option value="null" selected>&nbsp;</option>
@@ -115,10 +115,21 @@
                             </div>
 
                             <div class="am-form-group am-cf">
-                                <div class="zuo"></div>
-                                <div class="you">
+                                <div class="left"></div>
+                                <div class="right">
                                     <button type="button" class="am-btn am-btn-success am-radius" id="save">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="button" class="am-btn am-btn-default am-radius" id="cancel">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="addQuestion">
+                        <div class="am-form">
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">问题标题：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-my" placeholder="请输入问题标题">
                                 </div>
                             </div>
                         </div>

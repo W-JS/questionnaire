@@ -48,3 +48,41 @@ tbody .operating {
 .mt-5 .page {
     margin-left: 5px;
 }
+
+.am-text-my {
+    font-size: 20px;
+}
+
+.table-check {
+    width: 30px
+}
+
+/*tjlanmu*/
+.updateQuestion {
+    width: 90%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.updateQuestion .zuo {
+    width: 19%;
+    text-align: right;
+    margin-right: 1%;
+    float: left;
+    line-height: 33px;
+    margin-bottom: 10px
+}
+
+.updateQuestion .you {
+    width: 80%;
+    float: right;
+    margin-bottom: 10px
+}
+
+.updateQuestion .you .am-input-sm {
+    font-size: 1.2rem !important
+}
+
+.updateQuestion .am-form-group {
+    margin: 2px auto
+}

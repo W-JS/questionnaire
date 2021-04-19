@@ -1,0 +1,40 @@
+.qns {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.qns a:hover {
+    color: blue; /*鼠标移动到链接的颜色*/
+    text-decoration: none; /*去掉下划线*/
+}
+
+.qn {
+    background-color: #42cac0;
+    height: 228px;
+    color: #fff;
+    box-sizing: border-box;
+    flex: 0 14%;
+    margin: 15px;
+    text-align: center;
+}
+
+.qns .qn .qntitle {
+    margin: 0px;
+    font-size: 20px;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qnfutitle {
+    margin: 0px;
+    font-size: 15px;
+    width: 100%;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qndes {
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+    margin: 0px 5px;
+}

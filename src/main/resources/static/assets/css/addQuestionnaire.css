@@ -1,19 +1,9 @@
-ul .currentQN {
-    color: green;
-    font-family: 等线;
-}
-
-ul .qnTitle {
-    color: blue;
-    font-family: 等线;
-}
-
 .am-text-my {
     font-size: 20px;
 }
 
 /*fbneirong*/
-.addQuestion {
+.addQuestionnaire {
     width: 98%;
     margin: 0 auto 15px auto;
     border-bottom-left-radius: 4px;
@@ -24,37 +14,37 @@ ul .qnTitle {
     min-height: 700px;
 }
 
-.addQuestion .am-form-group {
+.addQuestionnaire .am-form-group {
     margin: 2px auto;
     width: 100%;
 }
 
 
-.addQuestion .left {
-    width: 11%;
-    text-align: left;
+.addQuestionnaire .left {
+    width: 10%;
+    text-align: right;
     margin-right: 1%;
     float: left;
     line-height: 33px;
     margin-bottom: 10px
 }
 
-.addQuestion .right {
+.addQuestionnaire .right {
     width: 70%;
     float: left;
     margin-bottom: 10px
 }
 
-.addQuestion .right .am-input-my {
+.addQuestionnaire .right .am-input-my {
     font-size: 1.5rem !important
 }
 
-.addQuestion .right .am-input-sm {
+.addQuestionnaire .right .am-input-sm {
     font-size: 1.2rem !important
 }
 
 
-.addQuestion .right .am-btn-success, .addQuestion .right .am-btn-default {
+.addQuestionnaire .right .am-btn-success, .addQuestionnaire .right .am-btn-default {
     font-size: 1.4rem !important;
     padding: .65rem 1rem;
 }

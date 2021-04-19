@@ -5,6 +5,7 @@
         <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
         <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
         <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/questionnaire.css}">
         <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>
@@ -18,7 +19,7 @@
             <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
                 <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
 
-                    <li class="am-dropdown tognzhi" data-am-dropdown>
+                    <li class="am-dropdown notice" data-am-dropdown>
                         <button class="am-btn am-btn-primary am-dropdown-toggle am-btn-xs am-radius am-icon-bell-o"
                                 data-am-dropdown-toggle> 消息管理<span class="am-badge am-badge-danger am-round">6</span>
                         </button>
@@ -29,14 +30,14 @@
                         </ul>
                     </li>
 
-                    <li class="kuanjie">
+                    <li class="topMenu">
                         <input type="hidden" id="userId" name="userId" th:value="${map.user.userId}">
                         <a href="#" th:utext="${map.user.userName}" >在线用户</a>
                         <a href="#">个人中心</a>
                         <a href="#">系统设置</a>
                     </li>
 
-                    <li class="soso">
+                    <li class="topFunction">
                         <p>
                             <select data-am-selected="{btnWidth: 70, btnSize: 'sm', btnStyle: 'default'}">
                                 <option value="b">全部</option>
@@ -45,7 +46,7 @@
                             </select>
                         </p>
 
-                        <p class="ycfg"><input type="text" class="am-form-field am-input-sm" placeholder="圆角表单域"/></p>
+                        <p class="search"><input type="text" class="am-form-field am-input-sm" placeholder="圆角表单域"/></p>
                         <p>
                             <button class="am-btn am-btn-xs am-btn-default am-xiao"><i class="am-icon-search"></i>
                             </button>
@@ -123,7 +124,7 @@
             <!-- 内容 -->
             <div class="admin-content">
                 <!-- 内容头部 -->
-                <contentHeader class="daohang" th:fragment="contentHeader">
+                <contentHeader class="navigation" th:fragment="contentHeader">
                     <ul id="show-hide">
                         <li>
                             <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"><a th:href="@{/}">首页</a></button>
@@ -139,9 +140,9 @@
                 <!-- 内容 -->
                 <div class="admin">
 
-                    <div class="admin-biaogelist">
+                    <div class="tableList">
 
-                        <div id="top" class="listbiaoti am-cf">
+                        <div id="top" class="moduleTitle am-cf">
                             <ul class="am-icon-book on"> 调查问卷管理</ul>
                             <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                                 <a th:href="@{/questionnaire/index}">问卷</a>

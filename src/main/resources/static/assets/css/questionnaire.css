@@ -1,0 +1,150 @@
+.sideMenu {
+    padding: 0px;
+    margin: 0px
+}
+
+.sideMenu h3 {
+    height: 32px;
+    line-height: 32px;
+    color: #aeb2b7;
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    margin: 20px 0 0 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-weight: 400;
+    width: 100%
+}
+
+.sideMenu h3 em {
+    float: right;
+    display: block;
+    width: 40px;
+    height: 32px;
+    background: url(../img/icoAdd.png) 16px 12px no-repeat;
+    cursor: pointer
+}
+
+.sideMenu h3.on em {
+    background-position: 16px -57px
+}
+
+.sideMenu h3.on {
+    color: #ff6c60;
+    background: #35404d
+}
+
+.sideMenu h3 a {
+    color: #aeb2b7
+}
+
+.sideMenu ul {
+    line-height: 24px;
+    color: #999;
+    display: none; /* 默认都隐藏 */;
+    background: #35404d;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 0px 0 10px 0;
+    margin: 0px
+}
+
+.sideMenu li {
+    text-indent: 25px;
+    width: 100%
+}
+
+.sideMenu li {
+    text-indent: 25px;
+    width: 100%
+}
+
+.sideMenu li a {
+    color: #aeb2b7
+}
+
+.sideMenu li a:hover {
+    color: #f8675e
+}
+
+.qns {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.qns a:hover {
+    color: blue; /*鼠标移动到链接的颜色*/
+    text-decoration: none; /*去掉下划线*/
+}
+
+.qn {
+    background-color: #42cac0;
+    height: 228px;
+    color: #fff;
+    box-sizing: border-box;
+    flex: 0 14%;
+    margin: 15px;
+    text-align: center;
+}
+
+.qns .qn .qntitle {
+    margin: 0px;
+    font-size: 20px;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qnfutitle {
+    margin: 0px;
+    font-size: 15px;
+    width: 100%;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qndes {
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+    margin: 0px 5px;
+}
+
+.foods {
+    width: 100%;
+    background-color: #5b6e84;
+    height: 43px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    line-height: 43px;
+    color: #fff;
+    overflow: hidden;
+}
+
+.foods ul {
+    width: 95%;
+    float: left;
+    padding: 0px;
+    margin: 0px
+}
+
+.foods dl {
+    width: 5%;
+    float: right;
+    padding: 0px;
+    margin: 0px
+}
+
+.foods dl .am-icon-btn {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    font-size: 18px;
+    line-height: 23px;
+    border-radius: 50%;
+    background-color: #acb6c1;
+    color: #555;
+    text-align: center;
+    margin-top: 12px
+}
