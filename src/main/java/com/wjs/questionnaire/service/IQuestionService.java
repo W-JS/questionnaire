@@ -48,7 +48,7 @@ public interface IQuestionService {
      * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
-    int getNotFrontQuestionRowsByQnId(String qnId);
+    int getNoPrependedQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题
@@ -58,7 +58,7 @@ public interface IQuestionService {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> getNotFrontQuestionPageByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> getNoPrependedQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
@@ -66,7 +66,7 @@ public interface IQuestionService {
      * @param qnId   当前问卷编号
      * @return 问题信息列表的行数
      */
-   int getFrontQuestionRowsByQnId(String qnId);
+   int getPrependedQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
@@ -76,7 +76,7 @@ public interface IQuestionService {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> getFrontQuestionPageByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> getPrependedQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 和 qId 查询当前问卷指定的问题
@@ -86,6 +86,24 @@ public interface IQuestionService {
      * @return 问题信息
      */
     QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId);
+
+    /**
+     * 如果当前问题是前置问题，则找到当前问题的后置问题
+     *
+     * @param qnId 当前问卷编号
+     * @param qId  当前问题编号
+     * @return 问题信息
+     */
+    QuestionEntity getRearQuestionByPrependedByQnIdAndQId(String qnId, String qId);
+
+    /**
+     * 如果当前问题是后置问题，则找到当前问题的前置问题
+     *
+     * @param qnId 当前问卷编号
+     * @param qId  当前问题编号
+     * @return 问题信息
+     */
+    QuestionEntity getPrependedQuestionByRearByQnIdAndQId(String qnId, String qId);
 
     /**
      * 保存问题信息
@@ -102,4 +120,20 @@ public interface IQuestionService {
      * @return 问题是否保存成功
      */
     int addQuestions(QuestionEntity q);
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    int modifyQuestion(QuestionEntity q);
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    int modifyQuestions(QuestionEntity q);
 }

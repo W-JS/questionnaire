@@ -62,8 +62,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷未被前置的问题的行数 -->
-    <!-- int findNotFrontQuestionRowsByQnId(String qnId); -->
-    <select id="findNotFrontQuestionRowsByQnId" resultType="int">
+    <!-- int findNoPrependedQuestionRowsByQnId(String qnId); -->
+    <select id="findNoPrependedQuestionRowsByQnId" resultType="int">
         <!-- 查询未被前置的问题的行数 法一 -->
         SELECT COUNT(question_id)
         FROM `question` q2
@@ -87,8 +87,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷未被前置的问题 -->
-    <!-- List<QuestionEntity> findNotFrontQuestionPageByQnId(String qnId, int offset, int limit); -->
-    <select id="findNotFrontQuestionPageByQnId" resultType="QuestionEntity">
+    <!-- List<QuestionEntity> findNoPrependedQuestionPageByQnId(String qnId, int offset, int limit); -->
+    <select id="findNoPrependedQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询未被前置的问题 法一 -->
         SELECT
         <include refid="selectQuestionFields"></include>
@@ -118,8 +118,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷被前置的问题的行数 -->
-    <!-- int findFrontQuestionRowsByQnId(String qnId); -->
-    <select id="findFrontQuestionRowsByQnId" resultType="int">
+    <!-- int findPrependedQuestionRowsByQnId(String qnId); -->
+    <select id="findPrependedQuestionRowsByQnId" resultType="int">
         <!-- 查询被前置的问题的行数 法一 -->
         SELECT COUNT(question_id)
         FROM `question` q2
@@ -143,8 +143,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷被前置的问题 -->
-    <!-- List<QuestionEntity> findFrontQuestionPageByQnId(String qnId, int offset, int limit); -->
-    <select id="findFrontQuestionPageByQnId" resultType="QuestionEntity">
+    <!-- List<QuestionEntity> findPrependedQuestionPageByQnId(String qnId, int offset, int limit); -->
+    <select id="findPrependedQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询被前置的问题 法一 -->
         SELECT
         <include refid="selectQuestionFields"></include>
@@ -180,7 +180,33 @@
         <include refid="selectQuestionFields"></include>
         FROM `question` q1
         WHERE q1.questionnaire_id = #{qnId}
-        AND q1.question_id = #{qId};
+        AND q1.question_id = #{qId}
+    </select>
+
+    <!-- 如果当前问题是前置问题，则找到当前问题的后置问题 -->
+    <!-- QuestionEntity findRearQuestionByPrependedByQnIdAndQId(String qnId, String qId); -->
+    <select id="findRearQuestionByPrependedByQnIdAndQId" resultType="QuestionEntity">
+        SELECT *
+        FROM `question` q2
+        WHERE q2.pre_question_id IN
+        (SELECT q1.question_id
+        FROM `question` q1
+        WHERE q1.questionnaire_id = #{qnId}
+        AND q1.question_id = #{qId})
+        AND q2.questionnaire_id = #{qnId}
+    </select>
+
+    <!-- 如果当前问题是后置问题，则找到当前问题的前置问题 -->
+    <!-- QuestionEntity findPrependedQuestionByRearByQnIdAndQId(String qnId, String qId); -->
+    <select id="findPrependedQuestionByRearByQnIdAndQId" resultType="QuestionEntity">
+        SELECT *
+        FROM `question` q2
+        WHERE q2.question_id IN
+        (SELECT q1.pre_question_id
+        FROM `question` q1
+        WHERE q1.questionnaire_id = #{qnId}
+        AND q1.question_id = #{qId})
+        AND q2.questionnaire_id = #{qnId}
     </select>
 
     <!-- 保存问题信息 -->
@@ -198,5 +224,33 @@
         VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{preQuestionId}, #{preOptionId},
         #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
     </insert>
+
+    <!-- 更新问题信息 -->
+    <!-- int updateQuestion(QuestionEntity q); -->
+    <update id="updateQuestion" parameterType="QuestionEntity">
+        UPDATE `question` SET
+        question_title = #{questionTitle},
+        question_description = #{questionDescription},
+        question_status = #{questionStatus},
+        questiontype_id = #{questiontypeId},
+        question_create_time = #{questionCreateTime}
+        WHERE questionnaire_id = #{questionnaireId}
+        AND question_id = #{questionId}
+    </update>
+
+    <!-- 更新问题信息 -->
+    <!-- int updateQuestions(QuestionEntity q); -->
+    <update id="updateQuestions" parameterType="QuestionEntity">
+        UPDATE `question` SET
+        question_title = #{questionTitle},
+        question_description = #{questionDescription},
+        question_status = #{questionStatus},
+        pre_question_id = #{preQuestionId},
+        pre_option_id = #{preOptionId},
+        questiontype_id = #{questiontypeId},
+        question_create_time = #{questionCreateTime}
+        WHERE questionnaire_id = #{questionnaireId}
+        AND question_id = #{questionId}
+    </update>
 
 </mapper>

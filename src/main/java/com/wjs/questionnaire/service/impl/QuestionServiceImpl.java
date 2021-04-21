@@ -66,8 +66,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表的行数
      */
     @Override
-    public int getNotFrontQuestionRowsByQnId(String qnId) {
-        return questionMapper.findNotFrontQuestionRowsByQnId(qnId);
+    public int getNoPrependedQuestionRowsByQnId(String qnId) {
+        return questionMapper.findNoPrependedQuestionRowsByQnId(qnId);
     }
 
     /**
@@ -79,8 +79,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> getNotFrontQuestionPageByQnId(String qnId, int offset, int limit) {
-        return questionMapper.findNotFrontQuestionPageByQnId(qnId, offset, limit);
+    public List<QuestionEntity> getNoPrependedQuestionPageByQnId(String qnId, int offset, int limit) {
+        return questionMapper.findNoPrependedQuestionPageByQnId(qnId, offset, limit);
     }
 
     /**
@@ -90,8 +90,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表的行数
      */
     @Override
-    public int getFrontQuestionRowsByQnId(String qnId) {
-        return questionMapper.findFrontQuestionRowsByQnId(qnId);
+    public int getPrependedQuestionRowsByQnId(String qnId) {
+        return questionMapper.findPrependedQuestionRowsByQnId(qnId);
     }
 
     /**
@@ -103,8 +103,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> getFrontQuestionPageByQnId(String qnId, int offset, int limit) {
-        return questionMapper.findFrontQuestionPageByQnId(qnId, offset, limit);
+    public List<QuestionEntity> getPrependedQuestionPageByQnId(String qnId, int offset, int limit) {
+        return questionMapper.findPrependedQuestionPageByQnId(qnId, offset, limit);
     }
 
     /**
@@ -117,6 +117,30 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId) {
         return questionMapper.findQuestionByQnIdAndQId(qnId, qId);
+    }
+
+    /**
+     * 如果当前问题是前置问题，则找到当前问题的后置问题
+     *
+     * @param qnId 当前问卷编号
+     * @param qId  当前问题编号
+     * @return 问题信息
+     */
+    @Override
+    public QuestionEntity getRearQuestionByPrependedByQnIdAndQId(String qnId, String qId) {
+        return questionMapper.findRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+    }
+
+    /**
+     * 如果当前问题是后置问题，则找到当前问题的前置问题
+     *
+     * @param qnId 当前问卷编号
+     * @param qId  当前问题编号
+     * @return 问题信息
+     */
+    @Override
+    public QuestionEntity getPrependedQuestionByRearByQnIdAndQId(String qnId, String qId) {
+        return questionMapper.findPrependedQuestionByRearByQnIdAndQId(qnId, qId);
     }
 
     /**
@@ -139,5 +163,27 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public int addQuestions(QuestionEntity q) {
         return questionMapper.insertQuestions(q);
+    }
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    @Override
+    public int modifyQuestion(QuestionEntity q) {
+        return questionMapper.updateQuestion(q);
+    }
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    @Override
+    public int modifyQuestions(QuestionEntity q) {
+        return questionMapper.updateQuestions(q);
     }
 }

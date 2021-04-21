@@ -65,7 +65,7 @@ function GeneratePQP() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getNotFrontQuestionRowsByQnId',
+        url: CONTEXT_PATH + '/question/getNoPrependedQuestionRowsByQnId',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -117,7 +117,7 @@ function PQPGeneratePQ() {
         $.ajax({
             async: true, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/question/getNotFrontQuestionPageByQnId',
+            url: CONTEXT_PATH + '/question/getNoPrependedQuestionPageByQnId',
             data: {
                 'current': pQPVal,
             },
@@ -227,7 +227,7 @@ function GenerateQT() {
 }
 
 // 动态生成当前问卷的所有问题
-function GenerateQNAndQ(){
+function GenerateQNAndQ() {
     let html = "";
     for (let i = 0; i < 5; i++) {
         html +=

@@ -115,13 +115,13 @@ public class QuestionController {
     /**
      * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题的行数
      */
-    @GetMapping("/getNotFrontQuestionRowsByQnId")
+    @GetMapping("/getNoPrependedQuestionRowsByQnId")
     @ResponseBody
-    public JSONResult getNotFrontQuestionRowsByQnId() {
+    public JSONResult getNoPrependedQuestionRowsByQnId() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         PageUtil data = new PageUtil();
-        data.setRows(questionService.getNotFrontQuestionRowsByQnId(qnId));
+        data.setRows(questionService.getNoPrependedQuestionRowsByQnId(qnId));
 
         JSONResult jsonResult;
         if (data != null) {
@@ -135,36 +135,45 @@ public class QuestionController {
     /**
      * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
      */
-    @GetMapping("/getNotFrontQuestionPageByQnId")
+    @GetMapping("/getNoPrependedQuestionPageByQnId")
     @ResponseBody
-    public JSONResult getNotFrontQuestionPageByQnId(String current) {
+    public JSONResult getNoPrependedQuestionPageByQnId(String qId, String current) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        List<Map<String, Object>> data = new ArrayList<>();
 
         PageUtil pageUtil = new PageUtil();
         pageUtil.setCurrent(Integer.valueOf(current));
-        pageUtil.setRows(questionService.getNotFrontQuestionRowsByQnId(qnId));
+        pageUtil.setRows(questionService.getNoPrependedQuestionRowsByQnId(qnId));
 
-        List<QuestionEntity> data = questionService.getNotFrontQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+        List<QuestionEntity> questionList = questionService.getNoPrependedQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+        QuestionEntity rearQuestion = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
 
         JSONResult jsonResult;
-        if (data != null) {
-            jsonResult = JSONResult.build(data);
-        } else {
-            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        if (questionList != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("questionList", questionList);
+            data.add(map);
         }
+        if (rearQuestion != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("rearQuestion", rearQuestion);
+            data.add(map);
+        }
+        jsonResult = JSONResult.build(data);
         return jsonResult;
     }
 
     /**
      * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题的行数
      */
-    @GetMapping("/getFrontQuestionRowsByQnId")
+    @GetMapping("/getPrependedQuestionRowsByQnId")
     @ResponseBody
-    public JSONResult getFrontQuestionRowsByQnId() {
+    public JSONResult getPrependedQuestionRowsByQnId() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         PageUtil data = new PageUtil();
-        data.setRows(questionService.getFrontQuestionRowsByQnId(qnId));
+        data.setRows(questionService.getPrependedQuestionRowsByQnId(qnId));
 
         JSONResult jsonResult;
         if (data != null) {
@@ -178,16 +187,16 @@ public class QuestionController {
     /**
      * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题
      */
-    @GetMapping("/getFrontQuestionPageByQnId")
+    @GetMapping("/getPrependedQuestionPageByQnId")
     @ResponseBody
-    public JSONResult getFrontQuestionPageByQnId(String current) {
+    public JSONResult getPrependedQuestionPageByQnId(String current) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         PageUtil pageUtil = new PageUtil();
         pageUtil.setCurrent(Integer.valueOf(current));
-        pageUtil.setRows(questionService.getFrontQuestionRowsByQnId(qnId));
+        pageUtil.setRows(questionService.getPrependedQuestionRowsByQnId(qnId));
 
-        List<QuestionEntity> data = questionService.getFrontQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+        List<QuestionEntity> data = questionService.getPrependedQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
 
         JSONResult jsonResult;
         if (data != null) {
@@ -233,6 +242,49 @@ public class QuestionController {
         return jsonResult;
     }
 
+    /**
+     * 如果当前问题是前置问题，则找到当前问题的后置问题
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    @GetMapping("/getRearQuestionByPrependedByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getRearQuestionByPrependedByQnIdAndQId(String qId) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        QuestionEntity data = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 如果当前问题是后置问题，则找到当前问题的前置问题
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    @GetMapping("/getPrependedQuestionByRearByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getPrependedQuestionByRearByQnIdAndQId(String qId) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        QuestionEntity data = questionService.getPrependedQuestionByRearByQnIdAndQId(qnId, qId);
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
 
     /**
      * @return 无实际意义
@@ -281,6 +333,50 @@ public class QuestionController {
             redisTemplate.opsForValue().set(OnlineQID, qId);// 成功保存问题信息，将 qId 存进Redis
         } else {
             jsonResult = JSONResult.build("问题信息保存失败！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 更新问题信息
+     *
+     * @param qId          问题编号
+     * @param qTitle       问题标题
+     * @param qDescription 问题描述
+     * @param qStatus      问题状态：0-非必填; 1-必填;
+     * @param pQId         前置问题
+     * @param pOId         前置选项
+     * @param qtId         问题类型
+     * @param qCreateTime  问题创建时间
+     * @return 问题信息是否更新成功
+     */
+    @PostMapping(value = "/updateSubmit")
+    @ResponseBody
+    public JSONResult getUpdateSubmit(String qId, String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime) {
+
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+        QuestionEntity question;
+        int flag = 1;
+        if ("not".equals(pQId) || "not".equals(pOId)) {// 前置问题和前置选项不做操作
+            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), qnId, qtId, StringToDate(qCreateTime));
+            flag = questionService.modifyQuestion(question);
+            System.out.println("1: " + question);
+        } else if ("null".equals(pQId) || "null".equals(pOId)) {// 将前置问题和前置选项置为空
+            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), null, null, qnId, qtId, StringToDate(qCreateTime));
+            flag = questionService.modifyQuestions(question);
+            System.out.println("2: " + question);
+        } else {
+            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
+            flag = questionService.modifyQuestions(question);
+            System.out.println("3: " + question);
+        }
+//        System.out.println(question);
+
+        JSONResult jsonResult;
+        if (flag == 1) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("问题信息更新失败！！！");
         }
         return jsonResult;
     }
