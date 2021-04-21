@@ -47,7 +47,7 @@ public interface QuestionMapper {
      * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
-    int findQuestionRowsNotFrontByQnId(String qnId);
+    int findNotFrontQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题
@@ -57,15 +57,15 @@ public interface QuestionMapper {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> findQuestionPageNotFrontByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> findNotFrontQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
      *
-     * @param qnId   当前问卷编号
+     * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
-    int findQuestionRowsFrontByQnId(String qnId);
+    int findFrontQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
@@ -75,7 +75,7 @@ public interface QuestionMapper {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> findQuestionPageFrontByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> findFrontQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 和 qId 查询当前问卷指定的问题

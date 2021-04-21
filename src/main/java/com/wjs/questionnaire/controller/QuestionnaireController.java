@@ -44,7 +44,7 @@ public class QuestionnaireController {
      * @return 进入 调查问卷后台管理-我的问卷
      */
     @GetMapping(value = "/index-example")
-    public String getMyIndexPage() {
+    public String jumpMyIndexPage() {
         return "/site/indexExample";
     }
 
@@ -52,7 +52,7 @@ public class QuestionnaireController {
      * @return 进入 调查问卷后台管理-问卷
      */
     @GetMapping(value = "/index")
-    public String getIndexPage(Model model) {
+    public String jumpIndexPage(Model model) {
         List<Map<String, Object>> questionnaires = new ArrayList<>();
         List<QuestionnaireEntity> questionnaireList = questionnaireService.getAllQuestionnaireList();
         if (questionnaireList != null) {
@@ -72,7 +72,7 @@ public class QuestionnaireController {
      * @return 进入 调查问卷后台管理-新建问卷
      */
     @GetMapping(value = "/addQuestionnaire")
-    public String getAddQuestionnairePage(Model model) {
+    public String jumpAddQuestionnairePage(Model model) {
         model.addAttribute("map", GetOnlineUser());
         return "/site/addQuestionnaire";
     }
@@ -90,7 +90,7 @@ public class QuestionnaireController {
      */
     @PostMapping(value = "/questionnaireSubmit")
     @ResponseBody
-    public JSONResult questionnaireSubmit(String qnTitle, String qnFuTitle, String qnDescription, int qnStatus, String qnCreateTime, String userId) {
+    public JSONResult getQuestionnaireSubmit(String qnTitle, String qnFuTitle, String qnDescription, int qnStatus, String qnCreateTime, String userId) {
 
         String qnId = UUIDGenerator.get16UUID();
         QuestionnaireEntity questionnaire = new QuestionnaireEntity(qnId, qnTitle, qnFuTitle, qnDescription, qnStatus, StringToDate(qnCreateTime), userId);

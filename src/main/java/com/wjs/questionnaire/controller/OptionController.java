@@ -45,7 +45,7 @@ public class OptionController {
      * @return 进入 调查问卷后台管理-选项
      */
     @GetMapping(value = "/Option")
-    public String getMyOptionsPage(Model model) {
+    public String jumpOptionPage(Model model) {
         List<Map<String, Object>> options = new ArrayList<>();
         List<OptionEntity> optionList = optionService.getAllOptionList();
         if (optionList != null) {
@@ -67,9 +67,27 @@ public class OptionController {
      * @return 进入 调查问卷后台管理-新建选项
      */
     @GetMapping(value = "/addOption")
-    public String getAddOptionsPage(Model model) {
+    public String jumpAddOptionPage(Model model) {
         model.addAttribute("map", GetOnlineUser());
         return "/site/addOption";
+    }
+
+    /**
+     * @param pQId 前置问题
+     * @return JSON格式数据：根据前置问题得到的选项
+     */
+    @GetMapping("/getOptionByQId")
+    @ResponseBody
+    public JSONResult getOptionByQId(String pQId) {
+        List<OptionEntity> data = optionService.getOptionByQId(pQId);
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建选项！！！");
+        }
+        return jsonResult;
     }
 
     /**
@@ -81,7 +99,7 @@ public class OptionController {
      */
     @PostMapping(value = "/optionSubmit")
     @ResponseBody
-    public JSONResult optionSubmit(String oContent, String oCreateTime) {
+    public JSONResult oetOptionSubmit(String oContent, String oCreateTime) {
 
         String oId = UUIDGenerator.get16UUID();
         String qId = (String) redisTemplate.opsForValue().get(OnlineQID);

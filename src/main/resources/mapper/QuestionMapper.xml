@@ -62,8 +62,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷未被前置的问题的行数 -->
-    <!-- int findQuestionRowsNotFrontByQnId(String qnId); -->
-    <select id="findQuestionRowsNotFrontByQnId" resultType="int">
+    <!-- int findNotFrontQuestionRowsByQnId(String qnId); -->
+    <select id="findNotFrontQuestionRowsByQnId" resultType="int">
         <!-- 查询未被前置的问题的行数 法一 -->
         SELECT COUNT(question_id)
         FROM `question` q2
@@ -87,8 +87,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷未被前置的问题 -->
-    <!-- List<QuestionEntity> findQuestionPageNotFrontByQnId(String qnId, int offset, int limit); -->
-    <select id="findQuestionPageNotFrontByQnId" resultType="QuestionEntity">
+    <!-- List<QuestionEntity> findNotFrontQuestionPageByQnId(String qnId, int offset, int limit); -->
+    <select id="findNotFrontQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询未被前置的问题 法一 -->
         SELECT
         <include refid="selectQuestionFields"></include>
@@ -118,8 +118,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷被前置的问题的行数 -->
-    <!-- int findQuestionRowsFrontByQnId(String qnId); -->
-    <select id="findQuestionRowsFrontByQnId" resultType="int">
+    <!-- int findFrontQuestionRowsByQnId(String qnId); -->
+    <select id="findFrontQuestionRowsByQnId" resultType="int">
         <!-- 查询被前置的问题的行数 法一 -->
         SELECT COUNT(question_id)
         FROM `question` q2
@@ -143,8 +143,8 @@
     </select>
 
     <!-- 根据 qnId 查询当前问卷被前置的问题 -->
-    <!-- List<QuestionEntity> findQuestionPageFrontByQnId(String qnId, int offset, int limit); -->
-    <select id="findQuestionPageFrontByQnId" resultType="QuestionEntity">
+    <!-- List<QuestionEntity> findFrontQuestionPageByQnId(String qnId, int offset, int limit); -->
+    <select id="findFrontQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询被前置的问题 法一 -->
         SELECT
         <include refid="selectQuestionFields"></include>
@@ -176,7 +176,8 @@
     <!-- 根据 qnId 和 qId 查询当前问卷指定的问题 -->
     <!-- QuestionEntity findQuestionByQnIdAndQId(String qnId, String qId); -->
     <select id="findQuestionByQnIdAndQId" resultType="QuestionEntity">
-        SELECT *
+        SELECT
+        <include refid="selectQuestionFields"></include>
         FROM `question` q1
         WHERE q1.questionnaire_id = #{qnId}
         AND q1.question_id = #{qId};
@@ -186,14 +187,16 @@
     <!-- int insertQuestion(QuestionEntity qn); -->
     <insert id="insertQuestion" parameterType="QuestionEntity">
         INSERT INTO `question`(<include refid="insertQuestionFields"></include>)
-        VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
+        VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{questionnaireId}, #{questiontypeId},
+        #{questionCreateTime})
     </insert>
 
     <!-- 保存问题信息 -->
     <!-- int insertQuestion(QuestionEntity qn); -->
     <insert id="insertQuestions" parameterType="QuestionEntity">
         INSERT INTO `question`(<include refid="insertQuestionsFields"></include>)
-        VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{preQuestionId}, #{preOptionId}, #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
+        VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{preQuestionId}, #{preOptionId},
+        #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
     </insert>
 
 </mapper>

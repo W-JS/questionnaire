@@ -16,7 +16,6 @@ public interface IQuestionService {
      */
     List<QuestionEntity> getAllQuestionList();
 
-
     /**
      * 根据 qnId 查询当前问卷的所有问题
      *
@@ -49,7 +48,7 @@ public interface IQuestionService {
      * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
-    int getQuestionRowsNotFrontByQnId(String qnId);
+    int getNotFrontQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题
@@ -59,7 +58,7 @@ public interface IQuestionService {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> getQuestionPageNotFrontByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> getNotFrontQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
@@ -67,7 +66,7 @@ public interface IQuestionService {
      * @param qnId   当前问卷编号
      * @return 问题信息列表的行数
      */
-   int getQuestionRowsFrontByQnId(String qnId);
+   int getFrontQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
@@ -77,7 +76,7 @@ public interface IQuestionService {
      * @param limit  需要查询的记录条数
      * @return 问题信息列表
      */
-    List<QuestionEntity> getQuestionPageFrontByQnId(String qnId, int offset, int limit);
+    List<QuestionEntity> getFrontQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
      * 根据 qnId 和 qId 查询当前问卷指定的问题

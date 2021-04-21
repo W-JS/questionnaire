@@ -36,7 +36,7 @@ public class QuestionTypeController {
      */
     @GetMapping("getQuestionType")
     @ResponseBody
-    public JSONResult getOptionByQId() {
+    public JSONResult getQuestionType() {
         String qtId = (String) redisTemplate.opsForValue().get(OnlineQTID);
 
         List<Map<String, Object>> data = new ArrayList<>();

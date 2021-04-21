@@ -66,8 +66,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表的行数
      */
     @Override
-    public int getQuestionRowsNotFrontByQnId(String qnId) {
-        return questionMapper.findQuestionRowsNotFrontByQnId(qnId);
+    public int getNotFrontQuestionRowsByQnId(String qnId) {
+        return questionMapper.findNotFrontQuestionRowsByQnId(qnId);
     }
 
     /**
@@ -79,8 +79,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> getQuestionPageNotFrontByQnId(String qnId, int offset, int limit) {
-        return questionMapper.findQuestionPageNotFrontByQnId(qnId, offset, limit);
+    public List<QuestionEntity> getNotFrontQuestionPageByQnId(String qnId, int offset, int limit) {
+        return questionMapper.findNotFrontQuestionPageByQnId(qnId, offset, limit);
     }
 
     /**
@@ -90,8 +90,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表的行数
      */
     @Override
-    public int getQuestionRowsFrontByQnId(String qnId) {
-        return questionMapper.findQuestionRowsFrontByQnId(qnId);
+    public int getFrontQuestionRowsByQnId(String qnId) {
+        return questionMapper.findFrontQuestionRowsByQnId(qnId);
     }
 
     /**
@@ -103,8 +103,8 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> getQuestionPageFrontByQnId(String qnId, int offset, int limit) {
-        return questionMapper.findQuestionPageFrontByQnId(qnId, offset, limit);
+    public List<QuestionEntity> getFrontQuestionPageByQnId(String qnId, int offset, int limit) {
+        return questionMapper.findFrontQuestionPageByQnId(qnId, offset, limit);
     }
 
     /**

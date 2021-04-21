@@ -15,6 +15,9 @@
     <body>
         <input type="hidden" id="qId" name="qId" value="">
         <input type="hidden" id="udQId" name="udQId" value="">
+        <input type="hidden" id="pQId" name="pQId" value="">
+        <input type="hidden" id="pQTitle" name="pQTitle" value="">
+        <input type="hidden" id="pOId" name="pOId" value="">
 
         <!-- 头部 -->
         <header th:replace="/site/index::header"></header>
@@ -44,6 +47,64 @@
                                 <div class="left am-text-my">问题标题：</div>
                                 <div class="right">
                                     <input id="qTitle" type="text" class="am-input-my" placeholder="请输入问题标题" value="">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">问题描述：</div>
+                                <div class="right">
+                                    <textarea id="qDescription" class="am-input-my txFixedSize" rows="2" placeholder="请输入问题描述" value=""></textarea>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">是否必填：</div>
+                                <div class="right" style="margin-top: 5px;">
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="1"> 是
+                                    </label>
+                                    <label class="am-checkbox-inline am-text-my">
+                                        <input type="radio" name="qStatus" value="0" checked> 否
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">前置问题分页：</div>
+                                <div class="right center">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9999;">
+                                        <select id="pQP" data-am-selected="{btnWidth: 170, btnSize: 'sm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">前置问题：</div>
+                                <div class="right">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9998;">
+                                        <select id="pQ" data-am-selected="{btnWidth: 170, btnSize: 'sm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">前置选项：</div>
+                                <div class="right">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9997;">
+                                        <select id="pO" data-am-selected="{btnWidth: 170, btnSize: 'sm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">问题类型：</div>
+                                <!-- <div id="qt" class="right" style="margin-top: 5px;"></div>单选按钮 -->
+                                <div class="right">
+                                    <div class="am-btn-group am-btn-group-xs am-text-my" style="position: absolute; z-index: 9996;">
+                                        <select id="qt" data-am-selected="{btnWidth: 170, btnSize: 'sm', btnStyle: 'default'}">
+                                            <option value="null" selected>&nbsp;</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -131,11 +192,13 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                        data-am-modal="{target: '#updateQuestion'}" name="updateQuestion" onclick="UpdateQuestion()" title="修改问题">
+                                                        data-am-modal="{target: '#updateQuestion'}" name="updateQuestion" onclick="UpdateQuestion()"
+                                                        title="修改问题">
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
                                                 <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#deleteQuestion'}" name="deleteQuestion" onclick="DeleteQuestion()" title="删除问题">
+                                                        data-am-modal="{target: '#deleteQuestion'}" name="deleteQuestion" onclick="DeleteQuestion()"
+                                                        title="删除问题">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>
                                             </div>

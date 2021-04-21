@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.controller;
 
-import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import com.wjs.questionnaire.entity.UserEntity;
@@ -54,7 +53,7 @@ public class QuestionController {
      * @return 进入 调查问卷后台管理-问题
      */
     @GetMapping(value = "/Question")
-    public String getMyOptionsPage(Model model, PageUtil pageUtil) {
+    public String jumpQuestionPage(Model model, PageUtil pageUtil) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         QuestionnaireEntity questionnaire = questionnaireService.getQuestionnaireByQnId(qnId);
@@ -85,7 +84,7 @@ public class QuestionController {
      * @return 进入 调查问卷后台管理-新建问题
      */
     @GetMapping(value = "/addQuestion")
-    public String getAddOptionsPage(Model model) {
+    public String jumpAddOptionsPage(Model model) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         QuestionnaireEntity questionnaire = questionnaireService.getQuestionnaireByQnId(qnId);
@@ -96,57 +95,11 @@ public class QuestionController {
     }
 
     /**
-     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题的行数
-     */
-    @GetMapping("/getQuestionRowsNotFrontByQnId")
-    @ResponseBody
-    public JSONResult getQuestionRowsNotFrontByQnId() {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-
-        PageUtil data = new PageUtil();
-        data.setRows(questionService.getQuestionRowsNotFrontByQnId(qnId));
-//        data.setRows(questionService.getQuestionRowsFrontByQnId(qnId));
-
-        JSONResult jsonResult;
-        if (data != null) {
-            jsonResult = JSONResult.build(data);
-        } else {
-            jsonResult = JSONResult.build("暂时还未创建问题！！！");
-        }
-        return jsonResult;
-    }
-
-    /**
-     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
-     */
-    @GetMapping("/getQuestionPageNotFrontByQnId")
-    @ResponseBody
-    public JSONResult getQuestionPageNotFrontByQnId(String current) {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-
-        PageUtil pageUtil = new PageUtil();
-        pageUtil.setCurrent(Integer.valueOf(current));
-        pageUtil.setRows(questionService.getQuestionRowsNotFrontByQnId(qnId));
-//        pageUtil.setRows(questionService.getQuestionRowsFrontByQnId(qnId));
-
-        List<QuestionEntity> data = questionService.getQuestionPageNotFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
-//        List<QuestionEntity> data = questionService.getQuestionPageFrontByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
-
-        JSONResult jsonResult;
-        if (data != null) {
-            jsonResult = JSONResult.build(data);
-        } else {
-            jsonResult = JSONResult.build("暂时还未创建问题！！！");
-        }
-        return jsonResult;
-    }
-
-    /**
      * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题
      */
-    @GetMapping("/getQuestionByQnId")
+    @GetMapping("/getAllQuestionByQnId")
     @ResponseBody
-    public JSONResult getQuestionByQnId() {
+    public JSONResult getAllQuestionByQnId() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
         List<QuestionEntity> data = questionService.getAllQuestionByQnId(qnId);
 
@@ -160,20 +113,135 @@ public class QuestionController {
     }
 
     /**
-     * @param pQId 前置问题
-     * @return JSON格式数据：根据前置问题得到的选项
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题的行数
      */
-    @GetMapping("/getOptionByQId")
+    @GetMapping("/getNotFrontQuestionRowsByQnId")
     @ResponseBody
-    public JSONResult getOptionByQId(String pQId) {
-        List<OptionEntity> data = optionService.getOptionByQId(pQId);
+    public JSONResult getNotFrontQuestionRowsByQnId() {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        PageUtil data = new PageUtil();
+        data.setRows(questionService.getNotFrontQuestionRowsByQnId(qnId));
 
         JSONResult jsonResult;
         if (data != null) {
             jsonResult = JSONResult.build(data);
         } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
+     */
+    @GetMapping("/getNotFrontQuestionPageByQnId")
+    @ResponseBody
+    public JSONResult getNotFrontQuestionPageByQnId(String current) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        PageUtil pageUtil = new PageUtil();
+        pageUtil.setCurrent(Integer.valueOf(current));
+        pageUtil.setRows(questionService.getNotFrontQuestionRowsByQnId(qnId));
+
+        List<QuestionEntity> data = questionService.getNotFrontQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题的行数
+     */
+    @GetMapping("/getFrontQuestionRowsByQnId")
+    @ResponseBody
+    public JSONResult getFrontQuestionRowsByQnId() {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        PageUtil data = new PageUtil();
+        data.setRows(questionService.getFrontQuestionRowsByQnId(qnId));
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题
+     */
+    @GetMapping("/getFrontQuestionPageByQnId")
+    @ResponseBody
+    public JSONResult getFrontQuestionPageByQnId(String current) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        PageUtil pageUtil = new PageUtil();
+        pageUtil.setCurrent(Integer.valueOf(current));
+        pageUtil.setRows(questionService.getFrontQuestionRowsByQnId(qnId));
+
+        List<QuestionEntity> data = questionService.getFrontQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * @param qId 问题编号
+     * @return 一个指定的问题信息
+     */
+    @GetMapping("/getQuestionByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getQuestionByQnIdAndQId(String qId) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        List<Map<String, Object>> data = new ArrayList<>();
+        QuestionEntity question = questionService.getQuestionByQnIdAndQId(qnId, qId);
+
+        JSONResult jsonResult;
+        if (question != null) {
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("question", question);
+            data.add(map1);
+
+            if (question.getPreQuestionId() != null && !"".equals(question.getPreQuestionId())) {
+                QuestionEntity preQuestion = questionService.getQuestionByQnIdAndQId(qnId, question.getPreQuestionId());
+                if (preQuestion != null) {
+                    Map<String, Object> map2 = new HashMap<>();
+                    map2.put("preQuestion", preQuestion);
+                    data.add(map2);
+                }
+                jsonResult = JSONResult.build(data);
+            } else {
+                jsonResult = JSONResult.build(data);
+            }
+        } else {
             jsonResult = JSONResult.build("暂时还未创建选项！！！");
         }
+        return jsonResult;
+    }
+
+
+    /**
+     * @return 无实际意义
+     */
+    @GetMapping("/getAsyncNull")
+    @ResponseBody
+    public JSONResult getAsyncNull() {
+        JSONResult jsonResult;
+        jsonResult = JSONResult.build();
         return jsonResult;
     }
 
@@ -191,7 +259,7 @@ public class QuestionController {
      */
     @PostMapping(value = "/questionSubmit")
     @ResponseBody
-    public JSONResult questionSubmit(String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime) {
+    public JSONResult getQuestionSubmit(String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime) {
 
         String qId = UUIDGenerator.get16UUID();
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);

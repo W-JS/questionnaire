@@ -65,7 +65,7 @@ function GeneratePQP() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionRowsNotFrontByQnId',
+        url: CONTEXT_PATH + '/question/getNotFrontQuestionRowsByQnId',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -90,7 +90,7 @@ function PQ() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionByQnId',
+        url: CONTEXT_PATH + '/question/getAllQuestionByQnId',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -117,7 +117,7 @@ function PQPGeneratePQ() {
         $.ajax({
             async: true, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/question/getQuestionPageNotFrontByQnId',
+            url: CONTEXT_PATH + '/question/getNotFrontQuestionPageByQnId',
             data: {
                 'current': pQPVal,
             },
@@ -155,7 +155,7 @@ function PQGeneratePO() {
         $.ajax({
             async: true, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/question/getOptionByQId',
+            url: CONTEXT_PATH + '/option/getOptionByQId',
             data: {
                 'pQId': pQVal,
             },
@@ -319,7 +319,6 @@ function saveSubmit() {
     let pOVal = $.trim($('#pO option:selected').val());
     // let qt = $.trim($("input[name='qt']:checked").val());
     let qt = $.trim($('#qt option:selected').val());
-    console.log(qt)
 
     $.ajax({
         async: true, // 异步请求

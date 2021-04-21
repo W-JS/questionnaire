@@ -47,7 +47,7 @@ public class UserController {
      * @return 进入登录页面
      */
     @GetMapping(value = "/login")
-    public String getLoginPage() {
+    public String jumpLoginPage() {
         return "/site/login";
     }
 
@@ -57,7 +57,7 @@ public class UserController {
      * @return 进入显示所有用户信息页面
      */
     @RequestMapping(value = "/showUser")
-    public String getShowUserPage() {
+    public String jumpShowUserPage() {
         return "/prompt/showUser";
     }
 
@@ -70,7 +70,13 @@ public class UserController {
     @ResponseBody
     public JSONResult getAllUserList() {
         List<UserEntity> data = userService.getAllUserList();
-        return JSONResult.build(data);
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建用户！！！");
+        }
+        return jsonResult;
     }
 
     /**
@@ -82,7 +88,7 @@ public class UserController {
      */
     @GetMapping(value = "/userLogExists")
     @ResponseBody
-    public JSONResult userLogExists(String loginMethod, String userLog) {
+    public JSONResult getUserLogExists(String loginMethod, String userLog) {
         UserEntity user;
         if ("username".equals(loginMethod)) {
             user = userService.getUserByUserName(userLog);
@@ -113,7 +119,7 @@ public class UserController {
      */
     @GetMapping(value = "/passwordLogExists")
     @ResponseBody
-    public JSONResult passwordLogExists(String userId, String passwordLog) {
+    public JSONResult getPasswordLogExists(String userId, String passwordLog) {
         UserEntity user = userService.getUserByUserId(userId);
         boolean flag = isNotEmpty(user);
         JSONResult jsonResult;
@@ -138,7 +144,7 @@ public class UserController {
      */
     @PostMapping(value = "/loginSubmit")
     @ResponseBody
-    public JSONResult loginSubmit(String userLastLoginTimeLog, String userId) {
+    public JSONResult getLoginSubmit(String userLastLoginTimeLog, String userId) {
         Date userLastLoginTime = StringToDate(userLastLoginTimeLog);
 
         UserEntity user = userService.getUserByUserId(userId);
@@ -179,7 +185,7 @@ public class UserController {
      */
     @GetMapping(value = "/usernameRegExists")
     @ResponseBody
-    public JSONResult usernameRegExists(String usernameReg) {
+    public JSONResult getUsernameRegExists(String usernameReg) {
         UserEntity user = userService.getUserByUserName(usernameReg);
         boolean flag = isNotEmpty(user);
         JSONResult jsonResult;
@@ -199,7 +205,7 @@ public class UserController {
      */
     @GetMapping(value = "/phoneRegExists")
     @ResponseBody
-    public JSONResult phoneRegExists(String phoneReg) {
+    public JSONResult getPhoneRegExists(String phoneReg) {
         UserEntity user = userService.getUserByUserPhone(phoneReg);
         boolean flag = isNotEmpty(user);
         JSONResult jsonResult;
@@ -219,7 +225,7 @@ public class UserController {
      */
     @GetMapping(value = "/emailRegExists")
     @ResponseBody
-    public JSONResult emailRegExists(String emailReg) {
+    public JSONResult getEmailRegExists(String emailReg) {
         UserEntity user = userService.getUserByUserEmail(emailReg);
         boolean flag = isNotEmpty(user);
         JSONResult jsonResult;
@@ -248,7 +254,7 @@ public class UserController {
      */
     @PostMapping(value = "/registerSubmit")
     @ResponseBody
-    public JSONResult registerSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg,
+    public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg,
                                      String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
         Date userBirthday = StringToDate(birthdayReg);
         Date userCreateTime = StringToDate(createTimeReg);
@@ -322,7 +328,7 @@ public class UserController {
      */
     @PostMapping(value = "/generateAuthCode")
     @ResponseBody
-    public String codeReg(String userId, int codeLength) {
+    public String getCodeReg(String userId, int codeLength) {
         String redisKey = userId;
         String code = StringUtil.getRandomString(codeLength);
         redisTemplate.opsForValue().set(redisKey, code, 2, TimeUnit.MINUTES);
@@ -337,7 +343,7 @@ public class UserController {
      */
     @GetMapping(value = "/codeExists")
     @ResponseBody
-    public JSONResult codeExists(String userId, String code) {
+    public JSONResult getCodeExists(String userId, String code) {
         String getCode = (String) redisTemplate.opsForValue().get(userId);
         boolean flag = code.equals(getCode);
         JSONResult jsonResult;
