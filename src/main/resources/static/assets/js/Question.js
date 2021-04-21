@@ -1,5 +1,4 @@
-let pQId = "";// 动态改变前置问题Id
-let pQTitle = "";// 动态改变前置问题Title
+let pOId = "null";// 前置选项Id
 
 // 当文档结构完全加载完毕再去执行函数中的代码
 $(function () {
@@ -82,8 +81,7 @@ function PQPGeneratePQ() {
     let pQPText = $.trim($('#pQP option:selected').text());// 前置问题分页文本
 
     if (pQPVal != "null") {// 选中前置问题分页具体项
-        pQId = "";// 动态改变前置问题Id
-        pQTitle = "";// 动态改变前置问题Title
+        pOId = "null";// 选中前置问题分页具体项
         $.ajax({
             async: true, // 异步请求
             type: "get",
@@ -107,8 +105,9 @@ function PQPGeneratePQ() {
             }
         });
     } else {// 选中前置问题分页第一项
-        pQId = $("#pQId").val();// 动态改变前置问题Id
-        pQTitle = $("#pQTitle").val();// 动态改变前置问题Title
+        pOId = $("#pOId").val();// 选中前置问题分页第一项
+        let pQId = $("#pQId").val();// 前置问题Id
+        let pQTitle = $("#pQTitle").val();// 前置问题Title
         if (pQId != "" && pQTitle != "") {// 有前置问题
             SetPQ(pQId, pQTitle);// 设置前置问题
         } else {// 无前置问题
@@ -172,7 +171,6 @@ function SetPQ(qId, qTitle) {
 function PQGeneratePO() {
     let pQVal = $.trim($('#pQ option:selected').val());// 前置问题值
     let pQText = $.trim($('#pQ option:selected').text());// 前置问题文本
-    let pOId = $("#pOId").val();// 前置选项Id
 
     if (pQVal != "null") {
         $.ajax({
@@ -192,7 +190,7 @@ function PQGeneratePO() {
                     }
                     $(html).appendTo($('#pO'));
 
-                    if (pQId != "" && pQTitle != "") {// 有前置问题
+                    if (pOId != "null") {// 选中前置问题分页第一项
                         console.log("PQGeneratePO: 遍历选项");
                         // 遍历select的option，然后设置一项为选中
                         $('#pO option').each(function () {
@@ -201,7 +199,7 @@ function PQGeneratePO() {
                                 console.log("PQGeneratePO: 选中默认选项");
                             }
                         });
-                    } else {// 无前置问题
+                    } else {// 选中前置问题分页具体项
                         console.log("PQGeneratePO: 不遍历选项");
                         $("#pO option:first").prop("selected", 'selected');
                     }
@@ -341,12 +339,11 @@ function SetUpdateQuestion() {
                     // 2、当前问题有前置问题（默认选择存在的前置问题）
                     if (i == 1) {
                         if (result.data[0].question.preQuestionId == result.data[i].preQuestion.questionId) {
-                            pQId = result.data[i].preQuestion.questionId;// 动态改变前置问题Id
-                            pQTitle = result.data[i].preQuestion.questionTitle;// 动态改变前置问题Title
-                            $("#pQId").val(pQId);// 前置问题Id
-                            $("#pQTitle").val(pQTitle);// 前置问题Title
-                            $("#pOId").val(result.data[0].question.preOptionId);// 设置前置选项，只在当前行有效
-                            SetPQ(pQId, pQTitle);// 设置前置问题
+                            pOId = result.data[0].question.preOptionId;// 动态改变前置选项，主要用于判断是否需要遍历选项选中正确选项
+                            $("#pQId").val(result.data[i].preQuestion.questionId);// 前置问题Id
+                            $("#pQTitle").val(result.data[i].preQuestion.questionTitle);// 前置问题Title
+                            $("#pOId").val(pOId);// 设置前置选项，只在当前行有效
+                            SetPQ(result.data[i].preQuestion.questionId, result.data[i].preQuestion.questionTitle);// 设置前置问题
                         }
                     }
                 }
@@ -392,8 +389,6 @@ function UpdateQuestion() {
 
     $("#pQId").val("");// 前置问题Id
     $("#pQTitle").val("");// 前置问题Title
-
-    $("#pOId").val("");// 前置选项Id
 }
 
 // 点击删除问题按钮
