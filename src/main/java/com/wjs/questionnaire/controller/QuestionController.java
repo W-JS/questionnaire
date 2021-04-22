@@ -135,9 +135,9 @@ public class QuestionController {
     /**
      * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
      */
-    @GetMapping("/getNoPrependedQuestionPageByQnId")
+    @GetMapping("/getNoPrependedQuestionPage1ByQnId")
     @ResponseBody
-    public JSONResult getNoPrependedQuestionPageByQnId(String qId, String current) {
+    public JSONResult getNoPrependedQuestionPage1ByQnId(String current) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         List<Map<String, Object>> data = new ArrayList<>();
@@ -146,8 +146,8 @@ public class QuestionController {
         pageUtil.setCurrent(Integer.valueOf(current));
         pageUtil.setRows(questionService.getNoPrependedQuestionRowsByQnId(qnId));
 
+        // 未被前置的问题
         List<QuestionEntity> questionList = questionService.getNoPrependedQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
-        QuestionEntity rearQuestion = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
 
         JSONResult jsonResult;
         if (questionList != null) {
@@ -155,9 +155,61 @@ public class QuestionController {
             map.put("questionList", questionList);
             data.add(map);
         }
-        if (rearQuestion != null) {
+        jsonResult = JSONResult.build(data);
+        return jsonResult;
+    }
+
+    /**
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
+     */
+    @GetMapping("/getNoPrependedQuestionPage2ByQnId")
+    @ResponseBody
+    public JSONResult getNoPrependedQuestionPage2ByQnId(String qId, String current) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        List<Map<String, Object>> data = new ArrayList<>();
+
+        PageUtil pageUtil = new PageUtil();
+        pageUtil.setCurrent(Integer.valueOf(current));
+        pageUtil.setRows(questionService.getNoPrependedQuestionRowsByQnId(qnId));
+
+        // 未被前置的问题
+        List<QuestionEntity> questionList = questionService.getNoPrependedQuestionPageByQnId(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+
+        // 当前问题的传递后置问题
+        List<QuestionEntity> rearQuestionList = new ArrayList<>();
+        // 如果当前问题是被前置问题，则找到当前问题的后置问题
+        QuestionEntity data1 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+        if (data1 != null) {
+            rearQuestionList.add(data1);
+        }
+        // 如果当前问题的后置问题也是被前置问题，则找到当前问题的后置问题的后置问题（循环），最终找到的后置问题是未被前置的问题
+        QuestionEntity data2;
+
+        boolean flag = false;
+        do {
+            if (data1 != null) {// 当前问题有后置问题
+                data2 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, data1.getQuestionId());
+                if (data2 != null) {
+                    data1 = data2;
+                    flag = true;
+                    // 需要所有的后置问题
+                    rearQuestionList.add(data1);
+                } else {
+                    flag = false;
+                }
+            }
+        } while (flag);// 当前问题无后置问题
+
+        JSONResult jsonResult;
+        if (questionList != null) {
             Map<String, Object> map = new HashMap<>();
-            map.put("rearQuestion", rearQuestion);
+            map.put("questionList", questionList);
+            data.add(map);
+        }
+        if (data1 != null && rearQuestionList != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("rearQuestionList", rearQuestionList);
             data.add(map);
         }
         jsonResult = JSONResult.build(data);
@@ -243,7 +295,7 @@ public class QuestionController {
     }
 
     /**
-     * 如果当前问题是前置问题，则找到当前问题的后置问题
+     * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
      * @param qId 当前问题编号
      * @return 问题信息
@@ -253,6 +305,7 @@ public class QuestionController {
     public JSONResult getRearQuestionByPrependedByQnIdAndQId(String qId) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
+        // 如果当前问题是被前置问题，则找到当前问题的后置问题
         QuestionEntity data = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
 
         JSONResult jsonResult;
@@ -265,7 +318,65 @@ public class QuestionController {
     }
 
     /**
-     * 如果当前问题是后置问题，则找到当前问题的前置问题
+     * 如果当前问题是被前置问题，则找到当前问题的后置问题
+     * 如果当前问题的后置问题也是被前置问题，则找到当前问题的后置问题的后置问题（循环），最终找到的后置问题是未被前置的问题
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    @GetMapping("/getFinallyRearQuestionByPrependedByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getFinallyRearQuestionByPrependedByQnIdAndQId(String qId, int status) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+
+        List<Map<String, Object>> data = new ArrayList<>();
+
+        // 如果当前问题是被前置问题，则找到当前问题的后置问题
+        QuestionEntity data1 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+        Map<String, Object> map = new HashMap<>();
+        if (status == 1) {
+            map.put("question", data1);
+            data.add(map);
+        }
+        // 如果当前问题的后置问题也是被前置问题，则找到当前问题的后置问题的后置问题（循环），最终找到的后置问题是未被前置的问题
+        QuestionEntity data2;
+
+        boolean flag = false;
+        do {
+            if (data1 != null) {// 当前问题有后置问题
+                data2 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, data1.getQuestionId());
+                if (data2 != null) {
+                    data1 = data2;
+                    flag = true;
+                    if (status == 1) {
+                        // 需要所有的后置问题
+                        map = new HashMap<>();
+                        map.put("question", data1);
+                        data.add(map);
+                    }
+                } else {
+                    flag = false;
+                    if (status == 0) {
+                        // 只需要最后一个的后置问题
+                        map = new HashMap<>();
+                        map.put("question", data1);
+                        data.add(map);
+                    }
+                }
+            }
+        } while (flag);// 当前问题无后置问题
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建问题！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
      * @param qId 当前问题编号
      * @return 问题信息
@@ -275,6 +386,7 @@ public class QuestionController {
     public JSONResult getPrependedQuestionByRearByQnIdAndQId(String qId) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
+        // 如果当前问题有前置问题，则找到当前问题的前置问题
         QuestionEntity data = questionService.getPrependedQuestionByRearByQnIdAndQId(qnId, qId);
 
         JSONResult jsonResult;

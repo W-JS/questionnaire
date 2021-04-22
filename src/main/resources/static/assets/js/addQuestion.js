@@ -117,7 +117,7 @@ function PQPGeneratePQ() {
         $.ajax({
             async: true, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/question/getNoPrependedQuestionPageByQnId',
+            url: CONTEXT_PATH + '/question/getNoPrependedQuestionPage1ByQnId',
             data: {
                 'current': pQPVal,
             },
@@ -126,8 +126,8 @@ function PQPGeneratePQ() {
                 if (result.state == 1) {
                     $('#pQ option').remove();
                     let html = "";
-                    for (let i = 0; i < result.data.length; i++) {
-                        html += "<option value=\"" + result.data[i].questionId + "\">" + result.data[i].questionTitle + "</option>";
+                    for (let i = 0; i < result.data[0].questionList.length; i++) {
+                        html += "<option value=\"" + result.data[0].questionList[i].questionId + "\">" + result.data[0].questionList[i].questionTitle + "</option>";
                     }
                     $(html).appendTo($('#pQ'));
                     $("#pQ option:first").prop("selected", 'selected');

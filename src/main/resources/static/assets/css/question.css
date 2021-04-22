@@ -90,7 +90,8 @@ tbody .operating {
 
 .updateQuestion .center .am-btn-group .am-selected .am-selected-content ul li span{
     /*text-align: center;*/
-    margin-left: 53px;
+    /*margin-left: 53px;*/
+    margin-left: 363px;
 }
 
 .updateQuestion .right .am-input-sm {

@@ -88,7 +88,7 @@ public interface IQuestionService {
     QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId);
 
     /**
-     * 如果当前问题是前置问题，则找到当前问题的后置问题
+     * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
      * @param qnId 当前问卷编号
      * @param qId  当前问题编号
@@ -97,7 +97,7 @@ public interface IQuestionService {
     QuestionEntity getRearQuestionByPrependedByQnIdAndQId(String qnId, String qId);
 
     /**
-     * 如果当前问题是后置问题，则找到当前问题的前置问题
+     * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
      * @param qnId 当前问卷编号
      * @param qId  当前问题编号

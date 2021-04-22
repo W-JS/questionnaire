@@ -183,7 +183,7 @@
         AND q1.question_id = #{qId}
     </select>
 
-    <!-- 如果当前问题是前置问题，则找到当前问题的后置问题 -->
+    <!-- 如果当前问题是被前置问题，则找到当前问题的后置问题 -->
     <!-- QuestionEntity findRearQuestionByPrependedByQnIdAndQId(String qnId, String qId); -->
     <select id="findRearQuestionByPrependedByQnIdAndQId" resultType="QuestionEntity">
         SELECT *
@@ -196,7 +196,7 @@
         AND q2.questionnaire_id = #{qnId}
     </select>
 
-    <!-- 如果当前问题是后置问题，则找到当前问题的前置问题 -->
+    <!-- 如果当前问题有前置问题，则找到当前问题的前置问题 -->
     <!-- QuestionEntity findPrependedQuestionByRearByQnIdAndQId(String qnId, String qId); -->
     <select id="findPrependedQuestionByRearByQnIdAndQId" resultType="QuestionEntity">
         SELECT *
