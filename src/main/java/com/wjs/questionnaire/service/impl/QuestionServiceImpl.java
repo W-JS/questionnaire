@@ -119,17 +119,6 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
-     * 如果当前问题是被前置问题，则找到当前问题的后置问题
-     *
-     * @param qId 当前问题编号
-     * @return 问题信息
-     */
-    @Override
-    public QuestionEntity getRearQuestionByQId(String qId) {
-        return questionMapper.findRearQuestionByQId(qId);
-    }
-
-    /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
      * @param qId 当前问题编号
@@ -138,6 +127,17 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public QuestionEntity getPrependedQuestionByQId(String qId) {
         return questionMapper.findPrependedQuestionByQId(qId);
+    }
+
+    /**
+     * 如果当前问题是被前置问题，则找到当前问题的后置问题
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    @Override
+    public QuestionEntity getRearQuestionByQId(String qId) {
+        return questionMapper.findRearQuestionByQId(qId);
     }
 
     /**

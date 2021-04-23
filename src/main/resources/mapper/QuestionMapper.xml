@@ -182,17 +182,6 @@
         WHERE q1.question_id = #{qId}
     </select>
 
-    <!-- 如果当前问题是被前置问题，则找到当前问题的后置问题 -->
-    <!-- QuestionEntity findRearQuestionByQId(String qId); -->
-    <select id="findRearQuestionByQId" resultType="QuestionEntity">
-        SELECT *
-        FROM `question` q2
-        WHERE q2.pre_question_id IN
-        (SELECT q1.question_id
-        FROM `question` q1
-        WHERE q1.question_id = #{qId})
-    </select>
-
     <!-- 如果当前问题有前置问题，则找到当前问题的前置问题 -->
     <!-- QuestionEntity findPrependedQuestionByQId(String qId); -->
     <select id="findPrependedQuestionByQId" resultType="QuestionEntity">
@@ -200,6 +189,17 @@
         FROM `question` q2
         WHERE q2.question_id IN
         (SELECT q1.pre_question_id
+        FROM `question` q1
+        WHERE q1.question_id = #{qId})
+    </select>
+
+    <!-- 如果当前问题是被前置问题，则找到当前问题的后置问题 -->
+    <!-- QuestionEntity findRearQuestionByQId(String qId); -->
+    <select id="findRearQuestionByQId" resultType="QuestionEntity">
+        SELECT *
+        FROM `question` q2
+        WHERE q2.pre_question_id IN
+        (SELECT q1.question_id
         FROM `question` q1
         WHERE q1.question_id = #{qId})
     </select>

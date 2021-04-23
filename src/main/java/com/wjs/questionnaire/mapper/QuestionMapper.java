@@ -86,20 +86,20 @@ public interface QuestionMapper {
     QuestionEntity findQuestionByQId(String qId);
 
     /**
-     * 如果当前问题是被前置问题，则找到当前问题的后置问题
-     *
-     * @param qId 当前问题编号
-     * @return 问题信息
-     */
-    QuestionEntity findRearQuestionByQId(String qId);
-
-    /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
      * @param qId 当前问题编号
      * @return 问题信息
      */
     QuestionEntity findPrependedQuestionByQId(String qId);
+
+    /**
+     * 如果当前问题是被前置问题，则找到当前问题的后置问题
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    QuestionEntity findRearQuestionByQId(String qId);
 
     /**
      * 保存问题信息

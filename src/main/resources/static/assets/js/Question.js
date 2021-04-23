@@ -603,7 +603,7 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                $("#updateCancel").click();
+                window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
             } else {
                 ShowFailure(result.message);
             }
@@ -613,14 +613,12 @@ function UpdateSubmit() {
 
 // 提交问题信息
 function DeleteSubmit() {
-    // 1、删当前问题，当前问题有前置问题，
-    // 2、删当前问题，当前问题有后置问题
     let qId = question[1];// 问题编号
-
     $.ajax({
         async: true, // 异步请求
         type: "post",
-        url: CONTEXT_PATH + '/question/deleteSubmit',
+        // url: CONTEXT_PATH + '/question/deleteSubmit1',
+        url: CONTEXT_PATH + '/question/deleteSubmit2',
         data: {
             'qId': qId
         },
