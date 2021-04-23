@@ -1,12 +1,7 @@
 package com.wjs.questionnaire.controller;
 
-import com.wjs.questionnaire.entity.QuestionEntity;
-import com.wjs.questionnaire.entity.QuestionnaireEntity;
-import com.wjs.questionnaire.entity.UserEntity;
-import com.wjs.questionnaire.service.IOptionService;
-import com.wjs.questionnaire.service.IQuestionService;
-import com.wjs.questionnaire.service.IQuestionnaireService;
-import com.wjs.questionnaire.service.IUserService;
+import com.wjs.questionnaire.entity.*;
+import com.wjs.questionnaire.service.*;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
 import com.wjs.questionnaire.util.UUIDGenerator;
@@ -45,6 +40,9 @@ public class QuestionController {
 
     @Autowired
     private IOptionService optionService;
+
+    @Autowired
+    private IQuestionTypeService questionTypeService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -179,7 +177,7 @@ public class QuestionController {
         // 当前问题的传递后置问题
         List<QuestionEntity> rearQuestionList = new ArrayList<>();
         // 如果当前问题是被前置问题，则找到当前问题的后置问题
-        QuestionEntity data1 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+        QuestionEntity data1 = questionService.getRearQuestionByQId(qId);
         if (data1 != null) {
             rearQuestionList.add(data1);
         }
@@ -189,7 +187,7 @@ public class QuestionController {
         boolean flag = false;
         do {
             if (data1 != null) {// 当前问题有后置问题
-                data2 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, data1.getQuestionId());
+                data2 = questionService.getRearQuestionByQId(data1.getQuestionId());
                 if (data2 != null) {
                     data1 = data2;
                     flag = true;
@@ -263,13 +261,34 @@ public class QuestionController {
      * @param qId 问题编号
      * @return 一个指定的问题信息
      */
-    @GetMapping("/getQuestionByQnIdAndQId")
+    @GetMapping("/getQuestionByQId")
     @ResponseBody
     public JSONResult getQuestionByQnIdAndQId(String qId) {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+        List<Map<String, Object>> data = new ArrayList<>();
+        QuestionEntity question = questionService.getQuestionByQId(qId);
+
+        JSONResult jsonResult;
+        if (question != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("question", question);
+            data.add(map);
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建选项！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * @param qId 问题编号
+     * @return 一个指定的问题和前置问题信息
+     */
+    @GetMapping("/getQuestionAndPreQuestionByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getQuestionAndPreQuestionByQnIdAndQId(String qId) {
 
         List<Map<String, Object>> data = new ArrayList<>();
-        QuestionEntity question = questionService.getQuestionByQnIdAndQId(qnId, qId);
+        QuestionEntity question = questionService.getQuestionByQId(qId);
 
         JSONResult jsonResult;
         if (question != null) {
@@ -278,7 +297,7 @@ public class QuestionController {
             data.add(map1);
 
             if (question.getPreQuestionId() != null && !"".equals(question.getPreQuestionId())) {
-                QuestionEntity preQuestion = questionService.getQuestionByQnIdAndQId(qnId, question.getPreQuestionId());
+                QuestionEntity preQuestion = questionService.getQuestionByQId(question.getPreQuestionId());
                 if (preQuestion != null) {
                     Map<String, Object> map2 = new HashMap<>();
                     map2.put("preQuestion", preQuestion);
@@ -295,18 +314,66 @@ public class QuestionController {
     }
 
     /**
+     * @param qId 问题编号
+     * @return 一个指定的问题、问题类型、前置问题和前置选项信息
+     */
+    @GetMapping("/getQuestionAndPreQuestionAndPreOptionByQnIdAndQId")
+    @ResponseBody
+    public JSONResult getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(String qId) {
+        List<Map<String, Object>> data = new ArrayList<>();
+        QuestionEntity question = questionService.getQuestionByQId(qId);
+
+        JSONResult jsonResult;
+        if (question != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("question", question);
+            data.add(map);
+
+            if (question.getQuestiontypeId() != null && !"".equals(question.getQuestiontypeId())) {
+                List<QuestionTypeEntity> list = questionTypeService.getAllQuestionTypeList();
+                for (QuestionTypeEntity questionType : list) {
+                    if (questionType.getQuestiontypeId().equals(question.getQuestiontypeId())) {
+                        map = new HashMap<>();
+                        map.put("questionType", questionType);
+                        data.add(map);
+                        break;
+                    }
+                }
+            }
+            if (question.getPreQuestionId() != null && !"".equals(question.getPreQuestionId())) {
+                QuestionEntity preQuestion = questionService.getQuestionByQId(question.getPreQuestionId());
+                if (preQuestion != null) {
+                    map = new HashMap<>();
+                    map.put("preQuestion", preQuestion);
+                    data.add(map);
+                }
+            }
+            if (question.getPreOptionId() != null && !"".equals(question.getPreOptionId())) {
+                OptionEntity preOption = optionService.getOptionByOId(question.getPreOptionId());
+                if (preOption != null) {
+                    map = new HashMap<>();
+                    map.put("preOption", preOption);
+                    data.add(map);
+                }
+            }
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建选项！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
      * @param qId 当前问题编号
      * @return 问题信息
      */
-    @GetMapping("/getRearQuestionByPrependedByQnIdAndQId")
+    @GetMapping("/getRearQuestionByQId")
     @ResponseBody
-    public JSONResult getRearQuestionByPrependedByQnIdAndQId(String qId) {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-
+    public JSONResult getRearQuestionByQId(String qId) {
         // 如果当前问题是被前置问题，则找到当前问题的后置问题
-        QuestionEntity data = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+        QuestionEntity data = questionService.getRearQuestionByQId(qId);
 
         JSONResult jsonResult;
         if (data != null) {
@@ -327,12 +394,10 @@ public class QuestionController {
     @GetMapping("/getFinallyRearQuestionByPrependedByQnIdAndQId")
     @ResponseBody
     public JSONResult getFinallyRearQuestionByPrependedByQnIdAndQId(String qId, int status) {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-
         List<Map<String, Object>> data = new ArrayList<>();
 
         // 如果当前问题是被前置问题，则找到当前问题的后置问题
-        QuestionEntity data1 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+        QuestionEntity data1 = questionService.getRearQuestionByQId(qId);
         Map<String, Object> map = new HashMap<>();
         if (status == 1) {
             map.put("question", data1);
@@ -344,7 +409,7 @@ public class QuestionController {
         boolean flag = false;
         do {
             if (data1 != null) {// 当前问题有后置问题
-                data2 = questionService.getRearQuestionByPrependedByQnIdAndQId(qnId, data1.getQuestionId());
+                data2 = questionService.getRearQuestionByQId(data1.getQuestionId());
                 if (data2 != null) {
                     data1 = data2;
                     flag = true;
@@ -381,13 +446,13 @@ public class QuestionController {
      * @param qId 当前问题编号
      * @return 问题信息
      */
-    @GetMapping("/getPrependedQuestionByRearByQnIdAndQId")
+    @GetMapping("/getPrependedQuestionByQId")
     @ResponseBody
-    public JSONResult getPrependedQuestionByRearByQnIdAndQId(String qId) {
+    public JSONResult getPrependedQuestionByQId(String qId) {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
 
         // 如果当前问题有前置问题，则找到当前问题的前置问题
-        QuestionEntity data = questionService.getPrependedQuestionByRearByQnIdAndQId(qnId, qId);
+        QuestionEntity data = questionService.getPrependedQuestionByQId(qId);
 
         JSONResult jsonResult;
         if (data != null) {
@@ -431,12 +496,15 @@ public class QuestionController {
         int flag;
         if ("null".equals(pQId) || "null".equals(pOId)) {
             question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), qnId, qtId, StringToDate(qCreateTime));
-            flag = questionService.addQuestion(question);
+            flag = questionService.addQuestionS(question);
+//            flag = questionService.addQuestion(question);
+            System.out.println("No: pQId, pOId  " + question);
         } else {
             question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
-            flag = questionService.addQuestions(question);
+            flag = questionService.addQuestionS(question);
+//            flag = questionService.addQuestions(question);
+            System.out.println("Have: pQId, pOId  " + question);
         }
-        System.out.println(question);
 
         JSONResult jsonResult;
         if (flag == 1) {
@@ -471,24 +539,66 @@ public class QuestionController {
         int flag = 1;
         if ("not".equals(pQId) || "not".equals(pOId)) {// 前置问题和前置选项不做操作
             question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), qnId, qtId, StringToDate(qCreateTime));
-            flag = questionService.modifyQuestion(question);
-            System.out.println("1: " + question);
+            flag = questionService.modifyQuestionByQId(question);
+//            flag = questionService.modifyQuestion(question);
+            System.out.println("NoSet: pQId, pOId  " + question);
         } else if ("null".equals(pQId) || "null".equals(pOId)) {// 将前置问题和前置选项置为空
             question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), null, null, qnId, qtId, StringToDate(qCreateTime));
+//            flag = questionService.modifyQuestionByQId(question);
             flag = questionService.modifyQuestions(question);
-            System.out.println("2: " + question);
+            System.out.println("SetNULL: pQId, pOId  " + question);
         } else {
             question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
-            flag = questionService.modifyQuestions(question);
-            System.out.println("3: " + question);
+            flag = questionService.modifyQuestionByQId(question);
+//            flag = questionService.modifyQuestions(question);
+            System.out.println("Set: pQId, pOId  " + question);
         }
-//        System.out.println(question);
 
         JSONResult jsonResult;
         if (flag == 1) {
             jsonResult = JSONResult.build();
         } else {
             jsonResult = JSONResult.build("问题信息更新失败！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 删除问题信息
+     *
+     * @param qId 问题编号
+     * @return 问题信息是否删除成功
+     */
+    @PostMapping(value = "/deleteSubmit")
+    @ResponseBody
+    public JSONResult getDeleteSubmit(String qId) {
+
+        JSONResult jsonResult;
+        // 1、根据 qId 得到当前问题的选项列表
+        List<OptionEntity> optionList = optionService.getOptionByQId(qId);
+
+        if (optionList != null) {
+            // 2、循环删除选项
+            boolean flag = true;
+            for (OptionEntity option : optionList) {
+                if (optionService.deleteOptionByOId(option.getOptionId()) == 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                //3、删除问题
+                if (questionService.deleteQuestionByQId(qId) != 0) {
+                    jsonResult = JSONResult.build();
+                } else {
+                    jsonResult = JSONResult.build("问题信息删除失败！！！");
+                }
+            } else {
+                jsonResult = JSONResult.build("当前问题的选项信息删除失败！！！");
+            }
+
+        } else {
+            jsonResult = JSONResult.build("当前问题的选项信息不存在！！！");
         }
         return jsonResult;
     }

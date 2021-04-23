@@ -78,31 +78,28 @@ public interface QuestionMapper {
     List<QuestionEntity> findPrependedQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
-     * 根据 qnId 和 qId 查询当前问卷指定的问题
+     * 根据 qId 查询指定的问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity findQuestionByQnIdAndQId(String qnId, String qId);
+    QuestionEntity findQuestionByQId(String qId);
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity findRearQuestionByPrependedByQnIdAndQId(String qnId, String qId);
+    QuestionEntity findRearQuestionByQId(String qId);
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity findPrependedQuestionByRearByQnIdAndQId(String qnId, String qId);
+    QuestionEntity findPrependedQuestionByQId(String qId);
 
     /**
      * 保存问题信息
@@ -121,6 +118,14 @@ public interface QuestionMapper {
     int insertQuestions(QuestionEntity q);
 
     /**
+     * 保存问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否保存成功
+     */
+    int insertQuestionS(QuestionEntity q);
+
+    /**
      * 更新问题信息
      *
      * @param q 问题信息
@@ -135,4 +140,20 @@ public interface QuestionMapper {
      * @return 问题是否更新成功
      */
     int updateQuestions(QuestionEntity q);
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    int updateQuestionByQId(QuestionEntity q);
+
+    /**
+     * 删除问题信息
+     *
+     * @param qId 当前问题编号
+     * @return 问题是否删除成功
+     */
+    int deleteQuestionByQId(String qId);
 }

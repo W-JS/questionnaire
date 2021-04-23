@@ -63,10 +63,10 @@ public interface IQuestionService {
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
      *
-     * @param qnId   当前问卷编号
+     * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
-   int getPrependedQuestionRowsByQnId(String qnId);
+    int getPrependedQuestionRowsByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
@@ -79,31 +79,28 @@ public interface IQuestionService {
     List<QuestionEntity> getPrependedQuestionPageByQnId(String qnId, int offset, int limit);
 
     /**
-     * 根据 qnId 和 qId 查询当前问卷指定的问题
+     * 根据 qId 查询指定的问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId);
+    QuestionEntity getQuestionByQId(String qId);
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity getRearQuestionByPrependedByQnIdAndQId(String qnId, String qId);
+    QuestionEntity getRearQuestionByQId(String qId);
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity getPrependedQuestionByRearByQnIdAndQId(String qnId, String qId);
+    QuestionEntity getPrependedQuestionByQId(String qId);
 
     /**
      * 保存问题信息
@@ -122,6 +119,14 @@ public interface IQuestionService {
     int addQuestions(QuestionEntity q);
 
     /**
+     * 保存问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否保存成功
+     */
+    int addQuestionS(QuestionEntity q);
+
+    /**
      * 更新问题信息
      *
      * @param q 问题信息
@@ -136,4 +141,20 @@ public interface IQuestionService {
      * @return 问题是否更新成功
      */
     int modifyQuestions(QuestionEntity q);
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    int modifyQuestionByQId(QuestionEntity q);
+
+    /**
+     * 删除问题信息
+     *
+     * @param qId 当前问题编号
+     * @return 问题是否删除成功
+     */
+    int deleteQuestionByQId(String qId);
 }

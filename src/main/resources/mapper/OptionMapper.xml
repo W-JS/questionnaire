@@ -31,11 +31,27 @@
         ORDER BY option_create_time ASC
     </select>
 
+    <!-- 根据 oId 查询选项信息 -->
+    <!-- OptionEntity findOptionByOId(String oId); -->
+    <select id="findOptionByOId" resultType="OptionEntity">
+        SELECT
+        <include refid="selectOptionFields"></include>
+        FROM `option`
+        WHERE option_id = #{oId}
+    </select>
+
     <!-- 保存选项信息 -->
     <!-- int insertOption(OptionEntity q); -->
     <insert id="insertOption" parameterType="OptionEntity">
         INSERT INTO `option`(<include refid="insertOptionFields"></include>)
         VALUES(#{optionId}, #{optionContent}, #{questionId}, #{optionCreateTime})
     </insert>
+
+    <!-- 删除选项信息 -->
+    <!-- int deleteOptionByOId(String oId); -->
+    <delete id="deleteOptionByOId" parameterType="OptionEntity">
+    DELETE FROM `option`
+    WHERE option_id = #{oId}
+    </delete>
 
 </mapper>

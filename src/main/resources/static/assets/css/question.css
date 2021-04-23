@@ -9,22 +9,27 @@ ul .qnTitle {
 }
 
 thead .qTitle {
-    width: 500px;
+    min-width: 470px;
+    max-width: 470px;
     text-align: center;
 }
 
 thead .qDescription {
-    width: auto;
+    min-width: 600px;
+    max-width: 600px;
     text-align: center;
 }
 
 thead .operating {
-    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
     text-align: center;
 }
 
 
 tbody .qTitle {
+    min-width: 470px;
+    max-width: 470px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -35,12 +40,16 @@ tbody .qTitle a {
 }
 
 tbody .qDescription {
+    min-width: 600px;
+    max-width: 600px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
 tbody .operating {
+    min-width: 150px;
+    max-width: 150px;
     display: flex;
     justify-content: center;
 }
@@ -53,9 +62,17 @@ tbody .operating {
     font-size: 20px;
 }
 
-.txFixedSize {
+.txFixedSize1 {
     min-height: 50px;
     max-height: 80px;
+    min-width: 820px;
+    max-width: 830px;
+}
+
+.txFixedSize2 {
+    height: auto;
+    min-height: 50px;
+    max-height: 240px;
     min-width: 820px;
     max-width: 830px;
 }
@@ -88,7 +105,7 @@ tbody .operating {
     margin-bottom: 10px
 }
 
-.updateQuestion .center .am-btn-group .am-selected .am-selected-content ul li span{
+.updateQuestion .center .am-btn-group .am-selected .am-selected-content ul li span {
     /*text-align: center;*/
     /*margin-left: 53px;*/
     margin-left: 363px;

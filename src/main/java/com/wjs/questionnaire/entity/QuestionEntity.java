@@ -21,6 +21,7 @@ public class QuestionEntity implements Serializable {
     public QuestionEntity() {
     }
 
+    // 无前置问题和前置选项
     public QuestionEntity(String questionId, String questionTitle, String questionDescription, Integer questionStatus, String questionnaireId, String questiontypeId, Date questionCreateTime) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
@@ -31,6 +32,7 @@ public class QuestionEntity implements Serializable {
         this.questionCreateTime = questionCreateTime;
     }
 
+    // 完整
     public QuestionEntity(String questionId, String questionTitle, String questionDescription, Integer questionStatus, String preQuestionId, String preOptionId, String questionnaireId, String questiontypeId, Date questionCreateTime) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;

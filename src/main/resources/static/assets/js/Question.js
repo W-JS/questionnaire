@@ -16,11 +16,17 @@ $(function () {
     $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
 
     $("#update").click(Update);// 从修改问题弹出层中获取修改后最新的问题数据信息
-
+    $("#delete").click(DeleteSubmit);// 从修改问题弹出层中获取修改后最新的问题数据信息
 });
 
 // 判断url是否正确
 function isURL() {
+    // http://localhost:8080/questionnaire/question/Question?current=7
+    // console.log(window.location.protocol);// http:
+    // console.log(window.location.host);// localhost:8080
+    // console.log(window.location.port);// 8080
+    // console.log(window.location.pathname);// /questionnaire/question/Question
+    // console.log(window.location.search);// ?current=7
     let url = window.location.pathname;
     let index = url.lastIndexOf("/")
     url = url.substring(index + 1, url.length);
@@ -345,7 +351,7 @@ function SetUpdateQuestion() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionByQnIdAndQId',
+        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionByQnIdAndQId',
         data: {
             'qId': qId
         },
@@ -398,7 +404,66 @@ function SetUpdateQuestion() {
 // 将当前问题信息填充到删除问题弹出层中
 function SetDeleteQuestion() {
     let qId = question[1];// 问题编号
-    console.log("删除问题: " + qId)
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionAndPreOptionByQnIdAndQId',
+        data: {
+            'qId': qId
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                let length = result.data.length;
+                for (let i = 0; i < length; i++) {
+                    // 1、当前问题
+                    if (i == 0) {
+                        let qTitle = result.data[i].question.questionTitle;
+                        let qDescription = result.data[i].question.questionDescription;
+                        let qStatus = result.data[i].question.questionStatus;
+
+                        $("#qTitleDelete").val(qTitle);// 填充问题标题
+                        $("#qDescriptionDelete").val(qDescription);// 填充问题描述
+
+                        if (qStatus != 0){
+                            $("#qStatusDelete").val("是");// 填充是否必填
+                        }else{
+                            $("#qStatusDelete").val("否");// 填充是否必填
+                        }
+                    }
+
+                    // 2、当前问题的问题类型
+                    if (i == 1) {
+                        let qtId = result.data[i].questionType.questiontypeId;
+                        if (result.data[0].question.questiontypeId == qtId) {
+                            let qtName = result.data[i].questionType.questiontypeName;
+                            $("#qtDelete").val(qtName);// 填充问题类型
+                        }
+                    }
+
+                    // 3、当前问题的前置问题
+                    if (i == 2) {
+                        let pQId = result.data[i].preQuestion.questionId;
+                        if (result.data[0].question.preQuestionId == pQId) {
+                            let pQTitle = result.data[i].preQuestion.questionTitle;
+                            $("#pQDelete").val(pQTitle);// 填充前置问题
+                        }
+                    }
+
+                    // 4、当前问题的前置选项
+                    if (i == 3) {
+                        let pOId = result.data[i].preOption.optionId;
+                        if (result.data[0].question.preOptionId == pOId) {
+                            let pOContent = result.data[i].preOption.optionContent;
+                            $("#pODelete").val(pOContent);// 填充前置选项
+                        }
+                    }
+                }
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
 }
 
 // 验证问题标题是否正确
@@ -546,6 +611,31 @@ function UpdateSubmit() {
     });
 }
 
+// 提交问题信息
+function DeleteSubmit() {
+    // 1、删当前问题，当前问题有前置问题，
+    // 2、删当前问题，当前问题有后置问题
+    let qId = question[1];// 问题编号
+
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/question/deleteSubmit',
+        data: {
+            'qId': qId
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                ShowSuccess("删除成功！！！");
+                window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
 // 点击修改问题按钮
 function UpdateQuestion() {
     question.length = 0;//将原始问题信息清空
@@ -556,4 +646,6 @@ function UpdateQuestion() {
 function DeleteQuestion() {
     question.length = 0;//将原始问题信息清空
     question.push("delete");// 0 向数组存问题操作
+    $("#pQDelete").val("");// 填充问题描述
+    $("#pODelete").val("");// 填充问题描述
 }

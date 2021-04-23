@@ -36,6 +36,17 @@ public class OptionServiceImpl implements IOptionService {
     }
 
     /**
+     * 根据 oId 查询选项信息
+     *
+     * @param oId 当前选项编号
+     * @return 指定的选项信息
+     */
+    @Override
+    public OptionEntity getOptionByOId(String oId) {
+        return optionMapper.findOptionByOId(oId);
+    }
+
+    /**
      * 保存选项信息
      *
      * @param q 选项信息
@@ -44,5 +55,16 @@ public class OptionServiceImpl implements IOptionService {
     @Override
     public int addOption(OptionEntity q) {
         return optionMapper.insertOption(q);
+    }
+
+    /**
+     * 删除选项信息
+     *
+     * @param oId 当前选项编号
+     * @return 选项是否删除成功
+     */
+    @Override
+    public int deleteOptionByOId(String oId) {
+        return optionMapper.deleteOptionByOId(oId);
     }
 }

@@ -86,7 +86,7 @@ public class QuestionServiceImpl implements IQuestionService {
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
      *
-     * @param qnId   当前问卷编号
+     * @param qnId 当前问卷编号
      * @return 问题信息列表的行数
      */
     @Override
@@ -108,39 +108,36 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
-     * 根据 qnId 和 qId 查询当前问卷指定的问题
+     * 根据 qId 查询指定的问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
     @Override
-    public QuestionEntity getQuestionByQnIdAndQId(String qnId, String qId) {
-        return questionMapper.findQuestionByQnIdAndQId(qnId, qId);
+    public QuestionEntity getQuestionByQId(String qId) {
+        return questionMapper.findQuestionByQId(qId);
     }
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
     @Override
-    public QuestionEntity getRearQuestionByPrependedByQnIdAndQId(String qnId, String qId) {
-        return questionMapper.findRearQuestionByPrependedByQnIdAndQId(qnId, qId);
+    public QuestionEntity getRearQuestionByQId(String qId) {
+        return questionMapper.findRearQuestionByQId(qId);
     }
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
      *
-     * @param qnId 当前问卷编号
-     * @param qId  当前问题编号
+     * @param qId 当前问题编号
      * @return 问题信息
      */
     @Override
-    public QuestionEntity getPrependedQuestionByRearByQnIdAndQId(String qnId, String qId) {
-        return questionMapper.findPrependedQuestionByRearByQnIdAndQId(qnId, qId);
+    public QuestionEntity getPrependedQuestionByQId(String qId) {
+        return questionMapper.findPrependedQuestionByQId(qId);
     }
 
     /**
@@ -166,6 +163,17 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     /**
+     * 保存问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否保存成功
+     */
+    @Override
+    public int addQuestionS(QuestionEntity q) {
+        return questionMapper.insertQuestionS(q);
+    }
+
+    /**
      * 更新问题信息
      *
      * @param q 问题信息
@@ -185,5 +193,27 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public int modifyQuestions(QuestionEntity q) {
         return questionMapper.updateQuestions(q);
+    }
+
+    /**
+     * 更新问题信息
+     *
+     * @param q 问题信息
+     * @return 问题是否更新成功
+     */
+    @Override
+    public int modifyQuestionByQId(QuestionEntity q) {
+        return questionMapper.updateQuestionByQId(q);
+    }
+
+    /**
+     * 删除问题信息
+     *
+     * @param qId 当前问题编号
+     * @return 问题是否删除成功
+     */
+    @Override
+    public int deleteQuestionByQId(String qId) {
+        return questionMapper.deleteQuestionByQId(qId);
     }
 }

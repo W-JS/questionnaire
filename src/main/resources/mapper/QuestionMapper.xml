@@ -173,40 +173,35 @@
         LIMIT #{offset}, #{limit}-->
     </select>
 
-    <!-- 根据 qnId 和 qId 查询当前问卷指定的问题 -->
-    <!-- QuestionEntity findQuestionByQnIdAndQId(String qnId, String qId); -->
-    <select id="findQuestionByQnIdAndQId" resultType="QuestionEntity">
+    <!-- 根据 qId 查询指定的问题 -->
+    <!-- QuestionEntity findQuestionByQId(String qId); -->
+    <select id="findQuestionByQId" resultType="QuestionEntity">
         SELECT
         <include refid="selectQuestionFields"></include>
         FROM `question` q1
-        WHERE q1.questionnaire_id = #{qnId}
-        AND q1.question_id = #{qId}
+        WHERE q1.question_id = #{qId}
     </select>
 
     <!-- 如果当前问题是被前置问题，则找到当前问题的后置问题 -->
-    <!-- QuestionEntity findRearQuestionByPrependedByQnIdAndQId(String qnId, String qId); -->
-    <select id="findRearQuestionByPrependedByQnIdAndQId" resultType="QuestionEntity">
+    <!-- QuestionEntity findRearQuestionByQId(String qId); -->
+    <select id="findRearQuestionByQId" resultType="QuestionEntity">
         SELECT *
         FROM `question` q2
         WHERE q2.pre_question_id IN
         (SELECT q1.question_id
         FROM `question` q1
-        WHERE q1.questionnaire_id = #{qnId}
-        AND q1.question_id = #{qId})
-        AND q2.questionnaire_id = #{qnId}
+        WHERE q1.question_id = #{qId})
     </select>
 
     <!-- 如果当前问题有前置问题，则找到当前问题的前置问题 -->
-    <!-- QuestionEntity findPrependedQuestionByRearByQnIdAndQId(String qnId, String qId); -->
-    <select id="findPrependedQuestionByRearByQnIdAndQId" resultType="QuestionEntity">
+    <!-- QuestionEntity findPrependedQuestionByQId(String qId); -->
+    <select id="findPrependedQuestionByQId" resultType="QuestionEntity">
         SELECT *
         FROM `question` q2
         WHERE q2.question_id IN
         (SELECT q1.pre_question_id
         FROM `question` q1
-        WHERE q1.questionnaire_id = #{qnId}
-        AND q1.question_id = #{qId})
-        AND q2.questionnaire_id = #{qnId}
+        WHERE q1.question_id = #{qId})
     </select>
 
     <!-- 保存问题信息 -->
@@ -218,11 +213,75 @@
     </insert>
 
     <!-- 保存问题信息 -->
-    <!-- int insertQuestion(QuestionEntity qn); -->
+    <!-- int insertQuestions(QuestionEntity qn); -->
     <insert id="insertQuestions" parameterType="QuestionEntity">
         INSERT INTO `question`(<include refid="insertQuestionsFields"></include>)
         VALUES(#{questionId}, #{questionTitle}, #{questionDescription}, #{questionStatus}, #{preQuestionId}, #{preOptionId},
         #{questionnaireId}, #{questiontypeId}, #{questionCreateTime})
+    </insert>
+
+    <!-- 保存问题信息 -->
+    <!-- int insertQuestionS(QuestionEntity q); -->
+    <insert id="insertQuestionS" parameterType="QuestionEntity">
+        INSERT INTO `question`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">
+                question_id,
+            </if>
+            <if test="questionTitle != null">
+                question_title,
+            </if>
+            <if test="questionDescription != null">
+                question_description,
+            </if>
+            <if test="questionStatus != null">
+                question_status,
+            </if>
+            <if test="preQuestionId != null">
+                pre_question_id,
+            </if>
+            <if test="preOptionId != null">
+                pre_option_id,
+            </if>
+            <if test="questionnaireId != null">
+                questionnaire_id,
+            </if>
+            <if test="questiontypeId != null">
+                questiontype_id,
+            </if>
+            <if test="questionCreateTime != null">
+                question_create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">
+                #{questionId},
+            </if>
+            <if test="questionTitle != null">
+                #{questionTitle},
+            </if>
+            <if test="questionDescription != null">
+                #{questionDescription},
+            </if>
+            <if test="questionStatus != null">
+                #{questionStatus},
+            </if>
+            <if test="preQuestionId != null">
+                #{preQuestionId},
+            </if>
+            <if test="preOptionId != null">
+                #{preOptionId},
+            </if>
+            <if test="questionnaireId != null">
+                #{questionnaireId},
+            </if>
+            <if test="questiontypeId != null">
+                #{questiontypeId},
+            </if>
+            <if test="questionCreateTime != null">
+                #{questionCreateTime},
+            </if>
+        </trim>
     </insert>
 
     <!-- 更新问题信息 -->
@@ -252,5 +311,45 @@
         WHERE questionnaire_id = #{questionnaireId}
         AND question_id = #{questionId}
     </update>
+
+    <!-- 更新问题信息 -->
+    <!-- int updateQuestionByQId(QuestionEntity q); -->
+    <update id="updateQuestionByQId" parameterType="QuestionEntity">
+        UPDATE `question`
+        <set>
+            <if test="questionTitle != null">
+                question_title = #{questionTitle},
+            </if>
+            <if test="questionDescription != null">
+                question_description = #{questionDescription},
+            </if>
+            <if test="questionStatus != null">
+                question_status = #{questionStatus},
+            </if>
+            <if test="preQuestionId != null">
+                pre_question_id = #{preQuestionId},
+            </if>
+            <if test="preOptionId != null">
+                pre_option_id = #{preOptionId},
+            </if>
+            <if test="questionnaireId != null">
+                questionnaire_id = #{questionnaireId},
+            </if>
+            <if test="questiontypeId != null">
+                questiontype_id = #{questiontypeId},
+            </if>
+            <if test="questionCreateTime != null">
+                question_create_time = #{questionCreateTime},
+            </if>
+        </set>
+        WHERE question_id = #{questionId}
+    </update>
+
+    <!-- 删除问题信息 -->
+    <!-- int deleteQuestionByQId(String qId); -->
+    <delete id="deleteQuestionByQId" parameterType="QuestionEntity">
+    DELETE FROM `question`
+    WHERE question_id = #{qId}
+    </delete>
 
 </mapper>
