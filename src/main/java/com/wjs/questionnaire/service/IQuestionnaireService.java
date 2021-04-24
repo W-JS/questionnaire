@@ -18,6 +18,22 @@ public interface IQuestionnaireService {
     List<Map<String, Object>> getAllQuestionnaireList();
 
     /**
+     * 获取所有问卷信息列表的行数
+     *
+     * @return 问卷信息列表的行数
+     */
+    int getQuestionnaireRows();
+
+    /**
+     * 获取所有问卷信息列表
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 问卷信息列表
+     */
+    List<Map<String, Object>> findQuestionnairePage(int offset, int limit);
+
+    /**
      * 保存问卷信息
      *
      * @param qnTitle       问卷标题

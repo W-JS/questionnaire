@@ -24,6 +24,23 @@
         ORDER BY questionnaire_create_time DESC
     </select>
 
+    <!-- 获取所有问卷信息列表的行数 -->
+    <!-- int findQuestionnaireRows(); -->
+    <select id="findQuestionnaireRows" resultType="int">
+        SELECT COUNT(questionnaire_id)
+        FROM `questionnaire`
+    </select>
+
+    <!-- 获取所有问卷信息列表 -->
+    <!-- List<QuestionnaireEntity> findQuestionnairePage(int offset, int limit); -->
+    <select id="findQuestionnairePage" resultType="QuestionnaireEntity">
+        SELECT
+        <include refid="selectQuestionnaireFields"></include>
+        FROM `questionnaire`
+        ORDER BY questionnaire_create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <!-- 根据 qnId 得到问卷信息 -->
     <!-- QuestionnaireEntity findQuestionnaireByQnId(String qnId); -->
     <select id="findQuestionnaireByQnId" resultType="QuestionnaireEntity">

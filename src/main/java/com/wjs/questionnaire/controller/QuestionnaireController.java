@@ -2,6 +2,7 @@ package com.wjs.questionnaire.controller;
 
 import com.wjs.questionnaire.service.IQuestionnaireService;
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +36,11 @@ public class QuestionnaireController {
      * @return 进入 调查问卷后台管理-问卷
      */
     @GetMapping(value = "/index")
-    public String jumpIndexPage(Model model) {
-        List<Map<String, Object>> questionnaires = questionnaireService.getAllQuestionnaireList();
+    public String jumpIndexPage(Model model, PageUtil pageUtil) {
+        pageUtil.setRows(questionnaireService.getQuestionnaireRows());
+        pageUtil.setPath("/questionnaire/index");
+//        List<Map<String, Object>> questionnaires = questionnaireService.getAllQuestionnaireList();
+        List<Map<String, Object>> questionnaires = questionnaireService.findQuestionnairePage(pageUtil.getOffset(), pageUtil.getLimit());
         Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
         model.addAttribute("questionnaires", questionnaires);
         model.addAttribute("map", onlineUser);

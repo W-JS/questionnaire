@@ -47,7 +47,7 @@
     <select id="findQuestionRowsByQnId" resultType="int">
         SELECT COUNT(question_id)
         FROM `question`
-        WHERE questionnaire_id = #{questionnaireId}
+        WHERE questionnaire_id = #{qnId}
     </select>
 
     <!-- 根据 qnId 查询当前问卷的所有问题 -->

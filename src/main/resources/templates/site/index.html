@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
         <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
         <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
         <link rel="stylesheet" th:href="@{/assets/css/questionnaire.css}">
@@ -32,7 +33,7 @@
 
                     <li class="topMenu">
                         <input type="hidden" id="userId" name="userId" th:value="${map.user.userId}">
-                        <a href="#" th:utext="${map.user.userName}" >在线用户</a>
+                        <a href="#" th:utext="${map.user.userName}">在线用户</a>
                         <a href="#">个人中心</a>
                         <a href="#">系统设置</a>
                     </li>
@@ -137,39 +138,141 @@
                     </ul>
                 </contentHeader>
 
-                <!-- 内容 -->
-                <div class="admin">
+                <!-- <div class="admin"> -->
+                <!-- 内容中部 -->
+                <div class="tableList">
 
-                    <div class="tableList">
-
-                        <div id="top" class="moduleTitle am-cf">
-                            <ul class="am-icon-book on"> 调查问卷管理</ul>
-                            <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
-                                <a th:href="@{/questionnaire/index}">问卷</a>
-                            </dl>
-                        </div>
-
-                        <div class="qns">
-                            <a class="qn" href="#" th:each="map:${questionnaires}">
-                                <p class="qntitle" th:text="${map.questionnaire.questionnaireTitle}">问卷标题</p>
-                                <p class="qnfutitle" th:text="${map.questionnaire.questionnaireFuTitle}">问卷副标题</p>
-                                <p class="qndes" th:text="${map.questionnaire.questionnaireDescription}">问卷描述</p>
-                            </a>
-                        </div>
-
-                        <!-- 尾部 -->
-                        <footer th:fragment="footer">
-                            <div class="foods">
-                                <ul>版权所有@2021</ul>
-                                <dl>
-                                    <a href="#top" title="返回头部" class="am-icon-btn am-icon-arrow-up"></a>
-                                </dl>
-                            </div>
-                        </footer>
+                    <!-- 内容顶部 -->
+                    <div id="top" class="moduleTitle am-cf">
+                        <ul class="am-icon-book on"> 调查问卷管理</ul>
+                        <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
+                            <a th:href="@{/questionnaire/index}">问卷</a>
+                        </dl>
                     </div>
 
+                    <!-- 内容正文 -->
+                    <!--<div class="qns">
+                        <a class="qn" href="#" th:each="map:${questionnaires}">
+                            <p class="qntitle" th:text="${map.questionnaire.questionnaireTitle}">问卷标题</p>
+                            <p class="qnfutitle" th:text="${map.questionnaire.questionnaireFuTitle}">问卷副标题</p>
+                            <p class="qndes" th:text="${map.questionnaire.questionnaireDescription}">问卷描述</p>
+                        </a>
+                    </div>-->
 
+                    <!-- 内容正文 -->
+                    <div class="am-form am-g">
+                        <!-- 表格 -->
+                        <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover"
+                               style="table-larightt: fixed;">
+                            <thead>
+                                <tr class="am-success">
+                                    <th class="table-check"><input type="checkbox" name="cb[]" id="all" value="all" onclick="setChecked(this)"/></th>
+                                    <th class="qnTitle">问卷标题</th>
+                                    <th class="qnFuTitle">问卷副标题</th>
+                                    <th class="qnDescription">问卷描述</th>
+
+                                    <th class="operating">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                                <tr th:each="map:${questionnaires}">
+                                    <td>
+                                        <input type="checkbox" name="cb[]" th:value="${map.questionnaire.questionnaireId}" onclick="setChecked(this)"/>
+                                    </td>
+                                    <td class="qnTitle">
+                                        <a th:text="${map.questionnaire.questionnaireTitle}" th:title="${map.questionnaire.questionnaireTitle}">问卷标题</a>
+                                    </td>
+                                    <td class="qnFuTitle">
+                                        <a th:text="${map.questionnaire.questionnaireFuTitle}" th:title="${map.questionnaire.questionnaireFuTitle}">问卷副标题</a>
+                                    </td>
+                                    <td class="qnDescription">
+                                        <a th:text="${map.questionnaire.questionnaireDescription}" th:title="${map.questionnaire.questionnaireDescription}">问卷描述</a>
+                                    </td>
+
+                                    <td class="operating">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#deleteQuestion'}" name="showQuestion" onclick="ShowQuestion()"
+                                                        title="查看问题">
+                                                    <span class="am-icon-eye"></span>
+                                                </button>
+                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#updateQuestion'}" name="updateQuestion" onclick="UpdateQuestion()"
+                                                        title="修改问题">
+                                                    <span class="am-icon-pencil-square-o"></span>
+                                                </button>
+                                                <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        data-am-modal="{target: '#deleteQuestion'}" name="deleteQuestion" onclick="DeleteQuestion()"
+                                                        title="删除问题">
+                                                    <span class="am-icon-trash-o"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 多个操作按钮 -->
+                        <!--<div class="am-btn-group am-btn-group-xs">
+                            <button type="button" class="am-btn am-btn-default">
+                                <span class="am-icon-plus"></span>
+                                <a style="text-decoration: none;color: #4e4e4e;" th:href="@{/question/addQuestion}"> 新建问题</a>
+                            </button>
+                            <button type="button" class="am-btn am-btn-default" id="deleteChoose">
+                                <span class="am-icon-trash-o"></span> 删除问题
+                            </button>
+                        </div>-->
+
+                        <!-- 分页 -->
+                        <nav class="mt-5" th:if="${pageUtil.rows>0}" th:fragment="pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=1)}">首页</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==1?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current-1})}">上一页</a>
+                                </li>
+                                <li th:class="|page-item page ${i==pageUtil.current?'active':''}|"
+                                    th:each="i:${#numbers.sequence(pageUtil.from,pageUtil.to)}">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=${i})}"
+                                       th:text="${i}">1</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==pageUtil.total?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current+1})}">下一页</a>
+                                </li>
+                                <li class="page-item page">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.getTotal()})}">末页</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <!-- 备注 -->
+                        <!--<p>
+                            备注：操作图标含义
+                            <a class="am-text-success am-icon-file" title="添加子栏目"> 添加子栏目</a>
+                            <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改栏目</a>
+                            <a class="am-icon-copy am-text-warning" title="复制"> 复制栏目</a>
+                            <a class="am-icon-trash-o am-text-danger" title="删除"> 删除栏目</a>
+
+                        </p>-->
+                    </div>
+
+                    <!-- 尾部 -->
+                    <footer th:fragment="footer">
+                        <div class="foods">
+                            <ul>版权所有@2021</ul>
+                            <dl>
+                                <a href="#top" title="返回头部" class="am-icon-btn am-icon-arrow-up"></a>
+                            </dl>
+                        </div>
+                    </footer>
                 </div>
+                <!-- </div> -->
             </div>
 
         </div>

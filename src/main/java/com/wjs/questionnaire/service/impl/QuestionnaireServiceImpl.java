@@ -52,6 +52,39 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
     }
 
     /**
+     * 获取所有问卷信息列表的行数
+     *
+     * @return 问卷信息列表的行数
+     */
+    @Override
+    public int getQuestionnaireRows() {
+        return questionnaireMapper.findQuestionnaireRows();
+    }
+
+    /**
+     * 获取所有问卷信息列表
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 问卷信息列表
+     */
+    @Override
+    public List<Map<String, Object>> findQuestionnairePage(int offset, int limit) {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findQuestionnairePage(offset, limit);
+
+        if (questionnaireList != null) {
+            for (QuestionnaireEntity questionnaire : questionnaireList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("questionnaire", questionnaire);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
      * 保存问卷信息
      *
      * @param qnTitle       问卷标题

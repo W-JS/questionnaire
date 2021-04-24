@@ -108,6 +108,71 @@
     margin: 0px 5px;
 }
 
+
+thead .qnTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-align: center;
+}
+
+thead .qnFuTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-align: center;
+}
+
+thead .qnDescription {
+    min-width: 600px;
+    max-width: 600px;
+    text-align: center;
+}
+
+thead .operating {
+    min-width: 150px;
+    max-width: 150px;
+    text-align: center;
+}
+
+
+tbody .qnTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .qnFuTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .qnTitle a {
+    text-decoration: none;
+}
+
+tbody .qnDescription {
+    min-width: 600px;
+    max-width: 600px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .operating {
+    min-width: 150px;
+    max-width: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.mt-5 .page {
+    margin-left: 5px;
+}
+
 .foods {
     width: 100%;
     background-color: #5b6e84;
