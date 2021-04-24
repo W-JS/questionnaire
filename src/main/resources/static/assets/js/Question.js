@@ -1,6 +1,7 @@
 let pOId = "null";// 前置选项Id
 let question = new Array();// 保存原始问题信息
 let flag = false; // 默认不改变前置问题和前置选项
+let deleteQuestion = new Array(); // 保存删除勾选的问题
 
 // 当文档结构完全加载完毕再去执行函数中的代码
 $(function () {
@@ -16,7 +17,7 @@ $(function () {
     $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
 
     $("#update").click(Update);// 从修改问题弹出层中获取修改后最新的问题数据信息
-    $("#delete").click(DeleteSubmit);// 从修改问题弹出层中获取修改后最新的问题数据信息
+    $("#deleteChoose").click(DeleteChoose);// 删除选择的问题
 });
 
 // 判断url是否正确
@@ -308,10 +309,29 @@ function Checkbox() {
         cbs[row + 1].checked = true;
 
         let udQId = question[0];
+        if (udQId == "show") {
+            $('#deleteQuestion .am-popup-hd h4').remove();
+            let html = "<h4 class=\"am-popup-title\">查看问题</h4>";
+            $(html).appendTo($('#deleteQuestion .am-popup-hd'));
+
+            $('#deleteQuestion .am-popup-bd .updateQuestion p #delete').remove();
+            html = "<input style=\"margin-right: 100px;\" type=\"hidden\" id=\"delete\"/>";
+            $(html).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
+
+            SetDeleteQuestion();
+        }
         if (udQId == "update") {
             SetUpdateQuestion();
         }
         if (udQId == "delete") {
+            $('#deleteQuestion .am-popup-hd h4').remove();
+            let html = "<h4 class=\"am-popup-title\">删除问题</h4>";
+            $(html).appendTo($('#deleteQuestion .am-popup-hd'));
+
+            $('#deleteQuestion .am-popup-bd .updateQuestion p #delete').remove();
+            html = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius\" id=\"delete\" onclick=\"DeleteSubmit()\">删除</button>";
+            $(html).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
+
             SetDeleteQuestion();
         }
     }
@@ -425,9 +445,9 @@ function SetDeleteQuestion() {
                         $("#qTitleDelete").val(qTitle);// 填充问题标题
                         $("#qDescriptionDelete").val(qDescription);// 填充问题描述
 
-                        if (qStatus != 0){
+                        if (qStatus != 0) {
                             $("#qStatusDelete").val("是");// 填充是否必填
-                        }else{
+                        } else {
                             $("#qStatusDelete").val("否");// 填充是否必填
                         }
                     }
@@ -614,24 +634,84 @@ function UpdateSubmit() {
 // 提交问题信息
 function DeleteSubmit() {
     let qId = question[1];// 问题编号
-    $.ajax({
-        async: true, // 异步请求
-        type: "post",
-        // url: CONTEXT_PATH + '/question/deleteSubmit1',
-        url: CONTEXT_PATH + '/question/deleteSubmit2',
-        data: {
-            'qId': qId
+    console.log("问题编号: " + qId);
+
+    $('#my-confirm').modal({
+        relatedTarget: this,
+        onConfirm: function (options) {
+            $.ajax({
+                async: true, // 异步请求
+                type: "post",
+                // url: CONTEXT_PATH + '/question/deleteSubmit1',
+                url: CONTEXT_PATH + '/question/deleteSubmit2',
+                data: {
+                    'qId': qId
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.state == 1) {
+                        ShowSuccess("删除成功！！！");
+                        window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                    } else {
+                        ShowFailure(result.message);
+                    }
+                }
+            });
         },
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                ShowSuccess("删除成功！！！");
-                window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
-            } else {
-                ShowFailure(result.message);
-            }
-        }
+        onCancel: function () {
+            $("#deleteCancel").click();
+        },
     });
+}
+
+// 删除选择的问题
+function DeleteChoose() {
+    let cbs = $("input[name='cb[]']");//获取所有复选框对象
+    for (let i = 1; i < cbs.length; i++) {
+        if (cbs[i].checked) {
+            deleteQuestion.push($(cbs[i]).val());
+        }
+    }
+    if (deleteQuestion.length > 0) {
+        $('#my-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function (options) {
+                $.ajax({
+                    async: true, // 异步请求
+                    type: "post",
+                    url: CONTEXT_PATH + '/question/deleteSubmit3',
+                    data: {
+                        'question': JSON.stringify(deleteQuestion),
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.state == 1) {
+                            ShowSuccess("删除成功！！！");
+                            window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                        } else {
+                            ShowFailure(result.message);
+                        }
+                    }
+                });
+            },
+            onCancel: function () {
+                for (let i = 1; i < cbs.length; i++) {
+                    if (cbs[i].checked) {
+                        cbs[i].checked = false;//不选
+                    }
+                }
+                deleteQuestion.length = 0;
+            },
+        });
+    } else {
+        ShowFailure("请选择需要删除的问题！！！");
+    }
+}
+
+// 点击显示问题按钮
+function ShowQuestion() {
+    question.length = 0;//将原始问题信息清空
+    question.push("show");// 0 向数组存问题操作
 }
 
 // 点击修改问题按钮

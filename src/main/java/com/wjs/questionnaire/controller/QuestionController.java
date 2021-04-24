@@ -5,6 +5,7 @@ import com.wjs.questionnaire.service.*;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
 import com.wjs.questionnaire.util.UUIDGenerator;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -695,8 +696,8 @@ public class QuestionController {
         jsonResult = getFinallyPrependedQuestionByQId(qId, 1);
         if (jsonResult.getState() == 1) {
             List<Map<String, Object>> data = (List<Map<String, Object>>) jsonResult.getData();
-            Collections.reverse(data);// List数据反转
             if (data != null) {
+                Collections.reverse(data);// List数据反转
                 for (Map<String, Object> map : data) {
                     QuestionEntity question = (QuestionEntity) map.get("question");
                     if (question != null) {
@@ -738,8 +739,8 @@ public class QuestionController {
             }
         }
         if (flag1 && flag2) {
-            // 根据 qId 删除问题信息及关联的选项信息
             String qTitle = questionService.getQuestionByQId(qId).getQuestionTitle();
+            // 根据 qId 删除问题信息及关联的选项信息
             jsonResult = getDeleteSubmit1(qId);
             if (jsonResult.getState() == 1) {
                 System.out.println("删除问题 成功：" + qTitle);
@@ -753,6 +754,42 @@ public class QuestionController {
         } else if (!flag2) {
             jsonResult = JSONResult.build("连续后置问题信息删除失败！！！");
         }
+        return jsonResult;
+    }
+
+    /**
+     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+     * * @return 问题信息是否删除成功
+     */
+    @PostMapping(value = "/deleteSubmit3")
+    @ResponseBody
+    public JSONResult getDeleteSubmit3(String question) {
+
+        JSONArray json = JSONArray.fromObject(question);
+        JSONResult jsonResult;
+        boolean flag = true;
+        if (json.size() > 0) {
+            for (int i = 0; i < json.size(); i++) {
+                String qId = (String) json.get(i);
+                String qTitle = questionService.getQuestionByQId(qId).getQuestionTitle();
+                // 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+                jsonResult = getDeleteSubmit2(qId);
+                if (jsonResult.getState() != 1) {
+                    flag = false;
+                    System.out.println("删除问题 失败：" + qTitle);
+                    break;
+                } else {
+                    System.out.println("删除问题 成功：" + qTitle);
+                }
+
+            }
+        }
+        if (flag) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("问题信息删除失败！！！");
+        }
+
         return jsonResult;
     }
 
