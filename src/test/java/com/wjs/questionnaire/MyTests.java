@@ -22,19 +22,6 @@ public class MyTests {
 
     @Test
     public void test01(){
-        UserEntity userA = userService.getUserByUserId("852189a7ef48c31e");//存在
-        boolean isEmptyFlagA = EmptyUtil.isEmpty(userA);
-        boolean isNotEmptyFlagA = EmptyUtil.isNotEmpty(userA);
-        System.out.println("isEmptyFlagA: " + isEmptyFlagA + "\nisNotEmptyFlagA: " + isNotEmptyFlagA);
-
-        UserEntity userB = userService.getUserByUserId("852189a7ef48c31a");//不存在
-        boolean isEmptyFlagB = EmptyUtil.isEmpty(userB);
-        boolean isNotEmptyFlagB = EmptyUtil.isNotEmpty(userB);
-        System.out.println("isEmptyFlagB: " + isEmptyFlagB + "\nisNotEmptyFlagB: " + isNotEmptyFlagB);
-    }
-
-    @Test
-    public void test02(){
         String s11 = "wjs123";
         String s111 = "wjs123";
         String s12 = "Wjs123";

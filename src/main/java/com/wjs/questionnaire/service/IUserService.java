@@ -1,9 +1,8 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.entity.UserEntity;
-
-import java.util.Date;
-import java.util.List;
+import com.wjs.questionnaire.util.JSONResult;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 处理用户信息数据的业务层接口
@@ -11,69 +10,108 @@ import java.util.List;
 public interface IUserService {
 
     /**
-     * 获取所有用户信息列表
-     *
-     * @return 用户信息列表
+     * @return JSON格式数据：所有用户信息
      */
-    List<UserEntity> getAllUserList();
+    JSONResult getAllUserList();
 
     /**
-     * 根据 userId 查找 User
+     * 判断用户名/手机号码/电子邮箱是否存在
      *
-     * @param userId 用户ID
-     * @return User
+     * @param loginMethod user_name/user_phone/user_email
+     * @param userLog     用户名/手机号码/电子邮箱
+     * @return 是否存在用户名/手机号码/电子邮箱
      */
-    UserEntity getUserByUserId(String userId);
+    JSONResult getUserLogExists(String loginMethod, String userLog);
 
     /**
-     * 根据 userName 查找 User
+     * 判断登录密码是否正确
      *
-     * @param userName 用户名
-     * @return User
+     * @param userId      用户ID
+     * @param passwordLog 登录密码
+     * @return 登录密码是否正确
      */
-    UserEntity getUserByUserName(String userName);
+    JSONResult getPasswordLogExists(String userId, String passwordLog);
 
     /**
-     * 根据 userPhone 查找 User
+     * 用户登录
      *
-     * @param userPhone 手机号
-     * @return User
+     * @param userLastLoginTimeLog 用户最后一次登录时间
+     * @param userId               用户ID
+     * @return 用户是否登录成功
      */
-    UserEntity getUserByUserPhone(String userPhone);
+    JSONResult getLoginSubmit(String userLastLoginTimeLog, String userId);
 
     /**
-     * 根据 userEmail 查找 User
+     * 生成通用唯一标识符
      *
-     * @param userEmail 电子邮箱
-     * @return User
+     * @return 用户ID（userId）
      */
-    UserEntity getUserByUserEmail(String userEmail);
+    String GeneratorUserID();
+
+    /**
+     * 判断用户名是否存在
+     *
+     * @param usernameReg 用户名
+     * @return 是否存在用户名
+     */
+    JSONResult getUsernameRegExists(String usernameReg);
+
+    /**
+     * 判断手机号是否存在
+     *
+     * @param phoneReg 手机号
+     * @return 是否存在手机号
+     */
+    JSONResult getPhoneRegExists(String phoneReg);
+
+    /**
+     * 判断电子邮件是否存在
+     *
+     * @param emailReg 电子邮件
+     * @return 是否存在电子邮件
+     */
+    JSONResult getEmailRegExists(String emailReg);
 
     /**
      * 用户注册
      *
-     * @param user 用户信息
-     * @return 是否注册成功
+     * @param userId        用户编号
+     * @param usernameReg   用户名
+     * @param phoneReg      手机号
+     * @param emailReg      电子邮箱
+     * @param passwordReg   密码
+     * @param sexReg        性别
+     * @param birthdayReg   生日
+     * @param statusReg     状态
+     * @param typeReg       类型
+     * @param createTimeReg 用户注册时间
+     * @return 用户是否注册成功
      */
-    int addUser(UserEntity user);
+    JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg);
 
     /**
-     * 激活用户，修改用户状态为 1
+     * 激活账号
      *
-     * @param userStatus 用户状态
-     * @param userId     用户ID
-     * @return 用户状态是否修改成功
+     * @param userId 用户ID
+     * @return 激活结果信息
      */
-    int activateUser(Integer userStatus, String userId);
+    String activate(String userId);
+
 
     /**
-     * 修改用户最后一次登录时间
+     * 生成验证码，存入Redis
      *
-     * @param userLastLoginTime 用户最后一次登录时间
-     * @param userId            用户ID
-     * @return 用户最后一次登录时间是否修改成功
+     * @param codeLength 验证码长度
+     * @return 验证码
      */
-    int modifyLastLoginTime(Date userLastLoginTime, String userId);
+    String getCodeReg(String userId, int codeLength);
 
+    /**
+     * 从Redis获取验证码，判断验证码是否正确
+     *
+     * @param code 验证码
+     * @return 验证码是否正确
+     */
+    JSONResult getCodeExists(String userId, String code);
 
 }

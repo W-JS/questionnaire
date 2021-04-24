@@ -8,6 +8,8 @@ $(function () {
     isURL();
     HideQuestion();// 隐藏问题
 
+    GenerateQNTitle();// 生成问卷标题
+
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
 
     $("#pQP").change(PQPGeneratePQ);// 根据前置问题的页数动态生成前置问题
@@ -60,6 +62,25 @@ function HideQuestion() {
             $("#hideQuestion-li").hide();
             window.location.href = CONTEXT_PATH + "/questionnaire/addQuestionnaire";
         })
+    });
+}
+
+// 生成问卷标题
+function GenerateQNTitle() {
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/questionnaire/getQuestionnaireByQnId',
+        data: {},
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                let html = "<a href=\"#\" style=\"text-decoration: none;\">" + result.data.questionnaireTitle + "</a>";
+                $(html).appendTo($('#top ul .qnTitle'));
+            } else {
+                ShowFailure(result.message);
+            }
+        }
     });
 }
 

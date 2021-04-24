@@ -2,6 +2,8 @@ $(function () {
     isURL();
     HideAddQuestion();// 隐藏新建问题
 
+    GenerateQNTitle();// 生成问卷标题
+
     GeneratePQP();// 动态生成前置问题的页数
 
     $("#pQP").change(PQPGeneratePQ);// 根据前置问题的页数动态生成前置问题
@@ -57,6 +59,25 @@ function HideAddQuestion() {
             $("#hideAddQuestion-li").hide();
             window.location.href = CONTEXT_PATH + "/question/Question";
         })
+    });
+}
+
+// 生成问卷标题
+function GenerateQNTitle() {
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/questionnaire/getQuestionnaireByQnId',
+        data: {},
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                let html = "<a href=\"#\" style=\"text-decoration: none;\">" + result.data.questionnaireTitle + "</a>";
+                $(html).appendTo($('#top ul .qnTitle'));
+            } else {
+                ShowFailure(result.message);
+            }
+        }
     });
 }
 

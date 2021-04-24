@@ -1,8 +1,10 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.entity.OptionEntity;
+import com.wjs.questionnaire.util.JSONResult;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 处理选项信息数据的业务层接口
@@ -14,37 +16,25 @@ public interface IOptionService {
      *
      * @return 选项信息列表
      */
-    List<OptionEntity> getAllOptionList();
+    List<Map<String, Object>> getAllOptionList();
 
     /**
-     * 根据 qId 查询当前问题的所有选项
-     *
-     * @param qId 当前问题编号
-     * @return 选项信息列表
+     * @param pQId 前置问题
+     * @return JSON格式数据：根据前置问题得到的选项
      */
-    List<OptionEntity> getOptionByQId(String qId);
-
-    /**
-     * 根据 oId 查询选项信息
-     *
-     * @param oId 当前选项编号
-     * @return 指定的选项信息
-     */
-    OptionEntity getOptionByOId(String oId);
+    JSONResult getOptionByQId(String pQId);
 
     /**
      * 保存选项信息
      *
-     * @param q 选项信息
-     * @return 选项是否保存成功
+     * @param oContent    选项内容
+     * @param oCreateTime 选项创建时间
+     * @return 选项信息是否保存成功
      */
-    int addOption(OptionEntity q);
+    JSONResult oetOptionSubmit(String oContent, String oCreateTime);
 
     /**
-     * 删除选项信息
-     *
-     * @param oId 当前选项编号
-     * @return 选项是否删除成功
+     * @return 存了 user 信息的 map
      */
-    int deleteOptionByOId(String oId);
+    Map<String, Object> GetOnlineUser();
 }

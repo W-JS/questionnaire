@@ -1,28 +1,25 @@
 package com.wjs.questionnaire.service;
 
+import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.entity.QuestionEntity;
+import com.wjs.questionnaire.entity.UserEntity;
+import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.UUIDGenerator;
+import net.sf.json.JSONArray;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.*;
+
+import static com.wjs.questionnaire.util.DateUtil.StringToDate;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.*;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
 
 /**
  * 处理问题信息数据的业务层接口
  */
 public interface IQuestionService {
-
-    /**
-     * 获取所有问题信息列表
-     *
-     * @return 问题信息列表
-     */
-    List<QuestionEntity> getAllQuestionList();
-
-    /**
-     * 根据 qnId 查询当前问卷的所有问题
-     *
-     * @param qnId 当前问卷编号
-     * @return 问题信息列表
-     */
-    List<QuestionEntity> getAllQuestionByQnId(String qnId);
 
     /**
      * 根据 qnId 查询当前问卷的所有问题的行数
@@ -32,59 +29,84 @@ public interface IQuestionService {
      */
     int getQuestionRowsByQnId(String qnId);
 
+    /**********************************************************************************************************************/
+
+    /**
+     * 获取所有问题信息列表
+     *
+     * @return 问题信息列表
+     */
+    List<Map<String, Object>> getAllQuestionList(String qnId, int offset, int limit);
+
     /**
      * 根据 qnId 查询当前问卷的所有问题
      *
-     * @param qnId   当前问卷编号
-     * @param offset 从第几条数据查询
-     * @param limit  需要查询的记录条数
-     * @return 问题信息列表
+     * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题
      */
-    List<QuestionEntity> getQuestionPageByQnId(String qnId, int offset, int limit);
+    JSONResult getAllQuestionByQnId();
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题的行数
      *
-     * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题的行数
      */
-    int getNoPrependedQuestionRowsByQnId(String qnId);
+    JSONResult getNoPrependedQuestionRowsByQnId();
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题
      *
-     * @param qnId   当前问卷编号
-     * @param offset 从第几条数据查询
-     * @param limit  需要查询的记录条数
-     * @return 问题信息列表
+     * @param current 当前页码
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题
      */
-    List<QuestionEntity> getNoPrependedQuestionPageByQnId(String qnId, int offset, int limit);
+    JSONResult getNoPrependedQuestionPage1ByQnId(String current);
+
+    /**
+     * 根据 qnId 查询当前问卷未被前置的问题和连续后置问题
+     *
+     * @param qId     问题编号
+     * @param current 当前页码
+     * @return JSON格式数据：根据 qnId 查询当前问卷未被前置的问题和连续后置问题
+     */
+    JSONResult getNoPrependedQuestionPage2ByQnId(String qId, String current);
+
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
      *
-     * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题的行数
      */
-    int getPrependedQuestionRowsByQnId(String qnId);
+    JSONResult getPrependedQuestionRowsByQnId();
 
     /**
      * 根据 qnId 查询当前问卷被前置的问题
      *
-     * @param qnId   当前问卷编号
-     * @param offset 从第几条数据查询
-     * @param limit  需要查询的记录条数
-     * @return 问题信息列表
+     * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题
      */
-    List<QuestionEntity> getPrependedQuestionPageByQnId(String qnId, int offset, int limit);
+    JSONResult getPrependedQuestionPageByQnId(String current);
 
     /**
-     * 根据 qId 查询指定的问题
+     * 一个指定的问题信息
      *
-     * @param qId 当前问题编号
-     * @return 问题信息
+     * @param qId 问题编号
+     * @return 一个指定的问题信息
      */
-    QuestionEntity getQuestionByQId(String qId);
+    JSONResult getQuestionByQnIdAndQId(String qId);
+
+    /**
+     * 一个指定的问题和前置问题信息
+     *
+     * @param qId 问题编号
+     * @return 一个指定的问题和前置问题信息
+     */
+    JSONResult getQuestionAndPreQuestionByQnIdAndQId(String qId);
+
+    /**
+     * 一个指定的问题、问题类型、前置问题和前置选项信息
+     *
+     * @param qId 问题编号
+     * @return 一个指定的问题、问题类型、前置问题和前置选项信息
+     */
+    JSONResult getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(String qId);
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
@@ -92,7 +114,17 @@ public interface IQuestionService {
      * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity getPrependedQuestionByQId(String qId);
+     JSONResult getPrependedQuestionByQId(String qId);
+
+    /**
+     * 如果当前问题有前置问题，则找到当前问题的连续前置问题
+     * 如果当前问题的前置问题也有前置问题，则找到当前问题的前置问题的前置问题（循环），最终找到的前置问题是没有前置问题的问题
+     *
+     * @param qId    当前问题编号
+     * @param status 1: 连续后置问题 0: 最后一个后置问题
+     * @return 问题信息
+     */
+     JSONResult getFinallyPrependedQuestionByQId(String qId, int status);
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
@@ -100,61 +132,71 @@ public interface IQuestionService {
      * @param qId 当前问题编号
      * @return 问题信息
      */
-    QuestionEntity getRearQuestionByQId(String qId);
+     JSONResult getRearQuestionByQId(String qId);
+
+    /**
+     * 如果当前问题是被前置问题，则找到当前问题的连续后置问题
+     * 如果当前问题的后置问题也是被前置问题，则找到当前问题的后置问题的后置问题（循环），最终找到的后置问题是未被前置的问题
+     *
+     * @param qId    当前问题编号
+     * @param status 1: 连续后置问题 0: 最后一个后置问题
+     * @return 问题信息
+     */
+     JSONResult getFinallyRearQuestionByQId(String qId, int status);
 
     /**
      * 保存问题信息
      *
-     * @param q 问题信息
-     * @return 问题是否保存成功
+     * @param qTitle       问题标题
+     * @param qDescription 问题描述
+     * @param qStatus      问题状态：0-非必填; 1-必填;
+     * @param pQId         前置问题
+     * @param pOId         前置选项
+     * @param qtId         问题类型
+     * @param qCreateTime  问题创建时间
+     * @return 问题信息是否保存成功
      */
-    int addQuestion(QuestionEntity q);
-
-    /**
-     * 保存问题信息
-     *
-     * @param q 问题信息
-     * @return 问题是否保存成功
-     */
-    int addQuestions(QuestionEntity q);
-
-    /**
-     * 保存问题信息
-     *
-     * @param q 问题信息
-     * @return 问题是否保存成功
-     */
-    int addQuestionS(QuestionEntity q);
+     JSONResult getQuestionSubmit(String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
 
     /**
      * 更新问题信息
      *
-     * @param q 问题信息
-     * @return 问题是否更新成功
+     * @param qId          问题编号
+     * @param qTitle       问题标题
+     * @param qDescription 问题描述
+     * @param qStatus      问题状态：0-非必填; 1-必填;
+     * @param pQId         前置问题
+     * @param pOId         前置选项
+     * @param qtId         问题类型
+     * @param qCreateTime  问题创建时间
+     * @return 问题信息是否更新成功
      */
-    int modifyQuestion(QuestionEntity q);
+     JSONResult getUpdateSubmit(String qId, String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
 
     /**
-     * 更新问题信息
+     * 根据 qId 删除问题信息及关联的选项信息
      *
-     * @param q 问题信息
-     * @return 问题是否更新成功
+     * @param qId 问题编号
+     * @return 问题信息是否删除成功
      */
-    int modifyQuestions(QuestionEntity q);
+     JSONResult getDeleteSubmit1(String qId);
 
     /**
-     * 更新问题信息
+     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
      *
-     * @param q 问题信息
-     * @return 问题是否更新成功
+     * @param qId 问题编号
+     * @return 问题信息是否删除成功
      */
-    int modifyQuestionByQId(QuestionEntity q);
+     JSONResult getDeleteSubmit2(String qId);
 
     /**
-     * 删除问题信息
-     *
-     * @param qId 当前问题编号
-     * @return 问题是否删除成功
+     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+     * * @return 问题信息是否删除成功
      */
-    int deleteQuestionByQId(String qId);
+     JSONResult getDeleteSubmit3(String question);
+
+    /**
+     * @return 存了 user 信息的 map
+     */
+     Map<String, Object> GetOnlineUser();
 }

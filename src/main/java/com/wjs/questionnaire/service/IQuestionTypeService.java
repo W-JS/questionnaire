@@ -1,6 +1,7 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.entity.QuestionTypeEntity;
+import com.wjs.questionnaire.util.JSONResult;
 
 import java.util.List;
 
@@ -10,17 +11,7 @@ import java.util.List;
 public interface IQuestionTypeService {
 
     /**
-     * 获取所有题型信息列表
-     *
-     * @return 题型信息列表
+     * @return JSON格式数据：所有问题类型
      */
-    List<QuestionTypeEntity> getAllQuestionTypeList();
-
-    /**
-     * 保存题型信息
-     *
-     * @param qt 题型信息
-     * @return 题型是否保存成功
-     */
-    int addQuestionType(QuestionTypeEntity qt);
+    JSONResult getQuestionType();
 }

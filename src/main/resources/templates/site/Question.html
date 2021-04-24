@@ -102,8 +102,10 @@
                             <div class="am-form-group am-cf">
                                 <div class="popup-right">
                                     <p>
-                                        <button style="margin-right: 100px;" type="button" class="am-btn am-btn-success am-radius" id="update">修改</button>
-                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius" id="updateCancel">取消</button>
+                                        <button style="margin-right: 100px;" type="button" class="am-btn am-btn-success am-radius" id="update">修改
+                                        </button>
+                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius" id="updateCancel">取消
+                                        </button>
                                     </p>
                                 </div>
                             </div>
@@ -159,8 +161,10 @@
                             <div class="am-form-group am-cf">
                                 <div class="popup-right">
                                     <p>
-                                        <button type="button" class="am-btn am-btn-success am-radius delete" id="delete" onclick="DeleteSubmit()">删除</button>
-                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius" id="deleteCancel">取消</button>
+                                        <button type="button" class="am-btn am-btn-success am-radius delete" id="delete" onclick="DeleteSubmit()">删除
+                                        </button>
+                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius" id="deleteCancel">取消
+                                        </button>
                                     </p>
                                 </div>
                             </div>
@@ -192,9 +196,7 @@
                             <p class="currentQN">当前问卷：</p>
                         </ul>
                         <ul>
-                            <p class="qnTitle">
-                                <a href="#" style="text-decoration: none;" th:text="${questionnaire.questionnaireTitle}">问卷标题</a>
-                            </p>
+                            <p class="qnTitle"></p>
                         </ul>
                         <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                             <a th:href="@{/question/Question}">问题</a>

@@ -3,10 +3,17 @@ package com.wjs.questionnaire.service.impl;
 import com.wjs.questionnaire.entity.QuestionTypeEntity;
 import com.wjs.questionnaire.mapper.QuestionTypeMapper;
 import com.wjs.questionnaire.service.IQuestionTypeService;
+import com.wjs.questionnaire.util.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQTID;
 
 @Service
 public class QuestionTypeServiceImpl implements IQuestionTypeService {
@@ -14,24 +21,37 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
     @Autowired
     private QuestionTypeMapper questiontypeMapper;
 
-    /**
-     * 获取所有题型信息列表
-     *
-     * @return 题型信息列表
-     */
-    @Override
-    public List<QuestionTypeEntity> getAllQuestionTypeList() {
-        return questiontypeMapper.findAllQuestionTypeList();
-    }
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
-     * 保存题型信息
-     *
-     * @param qt 题型信息
-     * @return 题型是否保存成功
+     * @return JSON格式数据：所有问题类型
      */
     @Override
-    public int addQuestionType(QuestionTypeEntity qt) {
-        return questiontypeMapper.insertQuestionType(qt);
+    public JSONResult getQuestionType() {
+        String qtId = (String) redisTemplate.opsForValue().get(OnlineQTID);
+
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<QuestionTypeEntity> list = questiontypeMapper.findAllQuestionTypeList();
+
+        if (list != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("list", list);
+            data.add(map);
+        }
+
+        if (qtId != null && !"".equals(qtId)) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("qtId", qtId);
+            data.add(map);
+        }
+
+        JSONResult jsonResult;
+        if (data != null) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建数据类型！！！");
+        }
+        return jsonResult;
     }
 }
