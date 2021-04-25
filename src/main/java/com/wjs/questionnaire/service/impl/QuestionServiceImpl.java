@@ -4,7 +4,10 @@ import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionTypeEntity;
 import com.wjs.questionnaire.entity.UserEntity;
-import com.wjs.questionnaire.mapper.*;
+import com.wjs.questionnaire.mapper.OptionMapper;
+import com.wjs.questionnaire.mapper.QuestionMapper;
+import com.wjs.questionnaire.mapper.QuestionTypeMapper;
+import com.wjs.questionnaire.mapper.UserMapper;
 import com.wjs.questionnaire.service.IQuestionService;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
@@ -26,9 +29,6 @@ public class QuestionServiceImpl implements IQuestionService {
     private UserMapper userMapper;
 
     @Autowired
-    private QuestionnaireMapper questionnaireMapper;
-
-    @Autowired
     private QuestionMapper questionMapper;
 
     @Autowired
@@ -41,20 +41,66 @@ public class QuestionServiceImpl implements IQuestionService {
     private RedisTemplate redisTemplate;
 
     /**
-     * 根据 qnId 查询当前问卷的所有问题的行数
+     * 设置所有问卷的所有问题信息列表分页参数
      *
-     * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @param page 分页对象参数
+     * @return 分页结果
      */
     @Override
-    public int getQuestionRowsByQnId(String qnId) {
-        return questionMapper.findQuestionRowsByQnId(qnId);
+    public PageUtil setQuestionListPage(PageUtil page) {
+        page.setRows(questionMapper.findQuestionRows());
+        page.setPath("/question/AllQuestion");
+        return page;
     }
 
-    /**********************************************************************************************************************/
-
+    /**
+     * 获取所有问卷的所有问题信息列表
+     *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
+     * @return 问题信息列表
+     */
     @Override
-    public List<Map<String, Object>> getAllQuestionList(String qnId, int offset, int limit) {
+    public List<Map<String, Object>> getQuestionList(int offset, int limit) {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        // 根据 qnId 查询当前问卷的所有问题
+        List<QuestionEntity> questionList = questionMapper.findAllQuestionPage( offset, limit);
+
+        if (questionList != null) {
+            for (QuestionEntity question : questionList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("question", question);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 设置当前问卷所有问题信息列表分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    @Override
+    public PageUtil setQuestionListPageByQNId(PageUtil page) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+        page.setRows(questionMapper.findQuestionRowsByQnId(qnId));
+        page.setPath("/question/Question");
+        return page;
+    }
+
+    /**
+     * 获取当前问卷所有问题信息列表
+     *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
+     * @return 问题信息列表
+     */
+    @Override
+    public List<Map<String, Object>> getQuestionListByQNId(int offset, int limit) {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
         List<Map<String, Object>> list = new ArrayList<>();
 
         // 根据 qnId 查询当前问卷的所有问题
@@ -273,7 +319,7 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 一个指定的问题和前置问题信息
      */
     @Override
-    public JSONResult getQuestionAndPreQuestionByQnIdAndQId(String qId) {
+    public JSONResult getQuestionAndPreQuestionByQId(String qId) {
         List<Map<String, Object>> data = new ArrayList<>();
         QuestionEntity question = questionMapper.findQuestionByQId(qId);
 
@@ -307,7 +353,7 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 一个指定的问题、问题类型、前置问题和前置选项信息
      */
     @Override
-    public JSONResult getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(String qId) {
+    public JSONResult getQuestionAndPreQuestionAndPreOptionByQId(String qId) {
         List<Map<String, Object>> data = new ArrayList<>();
         QuestionEntity question = questionMapper.findQuestionByQId(qId);
 
@@ -603,8 +649,11 @@ public class QuestionServiceImpl implements IQuestionService {
             boolean flag = true;
             for (OptionEntity option : optionList) {
                 if (optionMapper.deleteOptionByOId(option.getOptionId()) == 0) {
+                    System.out.println("删除选项 失败：" + option.getOptionContent());
                     flag = false;
                     break;
+                } else {
+                    System.out.println("删除选项 成功：" + option.getOptionContent());
                 }
             }
             if (flag) {
@@ -621,7 +670,6 @@ public class QuestionServiceImpl implements IQuestionService {
         } else {
             jsonResult = JSONResult.build("当前问题的选项信息不存在！！！");
         }
-        jsonResult = JSONResult.build();
         return jsonResult;
     }
 
@@ -633,20 +681,21 @@ public class QuestionServiceImpl implements IQuestionService {
      */
     @Override
     public JSONResult getDeleteSubmit2(String qId) {
-        JSONResult jsonResult;
+        JSONResult jsonResult1;
         boolean flag1 = true;
         // 1、如果当前问题有前置问题，则找到当前问题的连续前置问题
-        jsonResult = getFinallyPrependedQuestionByQId(qId, 1);
-        if (jsonResult.getState() == 1) {
-            List<Map<String, Object>> data = (List<Map<String, Object>>) jsonResult.getData();
+        jsonResult1 = getFinallyPrependedQuestionByQId(qId, 1);
+        if (jsonResult1.getState() == 1) {
+            List<Map<String, Object>> data = (List<Map<String, Object>>) jsonResult1.getData();
             if (data != null) {
                 Collections.reverse(data);// List数据反转
+                JSONResult jsonResult11;
                 for (Map<String, Object> map : data) {
                     QuestionEntity question = (QuestionEntity) map.get("question");
                     if (question != null) {
                         // 根据 qId 删除问题信息及关联的选项信息
-                        jsonResult = getDeleteSubmit1(question.getQuestionId());
-                        if (jsonResult.getState() != 1) {
+                        jsonResult11 = getDeleteSubmit1(question.getQuestionId());
+                        if (jsonResult11.getState() != 1) {
                             flag1 = false;
                             System.out.println("删除前置问题 失败：" + question.getQuestionTitle());
                             break;
@@ -660,17 +709,19 @@ public class QuestionServiceImpl implements IQuestionService {
         }
 
         boolean flag2 = true;
+        JSONResult jsonResult2;
         // 2、如果当前问题是被前置问题，则找到当前问题的连续后置问题
-        jsonResult = getFinallyRearQuestionByQId(qId, 1);
-        if (jsonResult.getState() == 1) {
-            List<Map<String, Object>> data = (List<Map<String, Object>>) jsonResult.getData();
+        jsonResult2 = getFinallyRearQuestionByQId(qId, 1);
+        if (jsonResult2.getState() == 1) {
+            List<Map<String, Object>> data = (List<Map<String, Object>>) jsonResult2.getData();
             if (data != null) {
+                JSONResult jsonResult21;
                 for (Map<String, Object> map : data) {
                     QuestionEntity question = (QuestionEntity) map.get("question");
                     if (question != null) {
                         // 根据 qId 删除问题信息及关联的选项信息
-                        jsonResult = getDeleteSubmit1(question.getQuestionId());
-                        if (jsonResult.getState() != 1) {
+                        jsonResult21 = getDeleteSubmit1(question.getQuestionId());
+                        if (jsonResult21.getState() != 1) {
                             flag2 = false;
                             System.out.println("删除后置问题 失败：" + question.getQuestionTitle());
                             break;
@@ -681,41 +732,46 @@ public class QuestionServiceImpl implements IQuestionService {
                 }
             }
         }
+        JSONResult jsonResult3;
         if (flag1 && flag2) {
             String qTitle = questionMapper.findQuestionByQId(qId).getQuestionTitle();
             // 根据 qId 删除问题信息及关联的选项信息
-            jsonResult = getDeleteSubmit1(qId);
-            if (jsonResult.getState() == 1) {
+            jsonResult3 = getDeleteSubmit1(qId);
+            if (jsonResult3.getState() == 1) {
                 System.out.println("删除问题 成功：" + qTitle);
-                jsonResult = JSONResult.build();
+                jsonResult3 = JSONResult.build();
             } else {
                 System.out.println("删除问题 失败：" + qTitle);
-                jsonResult = JSONResult.build("问题信息删除失败！！！");
+                jsonResult3 = JSONResult.build("问题信息删除失败！！！");
             }
         } else if (!flag1) {
-            jsonResult = JSONResult.build("连续前置问题信息删除失败！！！");
+            jsonResult3 = JSONResult.build("连续前置问题信息删除失败！！！");
         } else if (!flag2) {
-            jsonResult = JSONResult.build("连续后置问题信息删除失败！！！");
+            jsonResult3 = JSONResult.build("连续后置问题信息删除失败！！！");
+        } else {
+            jsonResult3 = JSONResult.build("删除失败！！！");
         }
-        return jsonResult;
+        return jsonResult3;
     }
 
     /**
-     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
-     * * @return 问题信息是否删除成功
+     * 根据 qId 删除多个问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+     *
+     * @param question JSON格式的字符串，包含多个问题编号
+     * @return 问题信息是否删除成功
      */
     @Override
     public JSONResult getDeleteSubmit3(String question) {
         JSONArray json = JSONArray.fromObject(question);
-        JSONResult jsonResult;
+        JSONResult jsonResult1;
         boolean flag = true;
         if (json.size() > 0) {
             for (int i = 0; i < json.size(); i++) {
                 String qId = (String) json.get(i);
                 String qTitle = questionMapper.findQuestionByQId(qId).getQuestionTitle();
                 // 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
-                jsonResult = getDeleteSubmit2(qId);
-                if (jsonResult.getState() != 1) {
+                jsonResult1 = getDeleteSubmit2(qId);
+                if (jsonResult1.getState() != 1) {
                     flag = false;
                     System.out.println("删除问题 失败：" + qTitle);
                     break;
@@ -725,12 +781,13 @@ public class QuestionServiceImpl implements IQuestionService {
 
             }
         }
+        JSONResult jsonResult2;
         if (flag) {
-            jsonResult = JSONResult.build();
+            jsonResult2 = JSONResult.build();
         } else {
-            jsonResult = JSONResult.build("问题信息删除失败！！！");
+            jsonResult2 = JSONResult.build("问题信息删除失败！！！");
         }
-        return jsonResult;
+        return jsonResult2;
     }
 
     /**

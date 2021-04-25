@@ -1,20 +1,10 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.OptionEntity;
-import com.wjs.questionnaire.entity.QuestionEntity;
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.util.JSONResult;
-import com.wjs.questionnaire.util.UUIDGenerator;
-import net.sf.json.JSONArray;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.wjs.questionnaire.util.PageUtil;
 
-import java.util.*;
-
-import static com.wjs.questionnaire.util.DateUtil.StringToDate;
-import static com.wjs.questionnaire.util.QuestionnaireConstant.*;
-import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理问题信息数据的业务层接口
@@ -22,21 +12,38 @@ import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
 public interface IQuestionService {
 
     /**
-     * 根据 qnId 查询当前问卷的所有问题的行数
+     * 设置所有问卷的所有问题信息列表分页参数
      *
-     * @param qnId 当前问卷编号
-     * @return 问题信息列表的行数
+     * @param page 分页对象参数
+     * @return 分页结果
      */
-    int getQuestionRowsByQnId(String qnId);
-
-    /**********************************************************************************************************************/
+    PageUtil setQuestionListPage(PageUtil page);
 
     /**
-     * 获取所有问题信息列表
+     * 获取所有问卷的所有问题信息列表
      *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
      * @return 问题信息列表
      */
-    List<Map<String, Object>> getAllQuestionList(String qnId, int offset, int limit);
+    List<Map<String, Object>> getQuestionList(int offset, int limit);
+
+    /**
+     * 设置当前问卷所有问题信息列表分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    PageUtil setQuestionListPageByQNId(PageUtil page);
+
+    /**
+     * 获取当前问卷所有问题信息列表
+     *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
+     * @return 问题信息列表
+     */
+    List<Map<String, Object>> getQuestionListByQNId(int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷的所有问题
@@ -98,7 +105,7 @@ public interface IQuestionService {
      * @param qId 问题编号
      * @return 一个指定的问题和前置问题信息
      */
-    JSONResult getQuestionAndPreQuestionByQnIdAndQId(String qId);
+    JSONResult getQuestionAndPreQuestionByQId(String qId);
 
     /**
      * 一个指定的问题、问题类型、前置问题和前置选项信息
@@ -106,7 +113,7 @@ public interface IQuestionService {
      * @param qId 问题编号
      * @return 一个指定的问题、问题类型、前置问题和前置选项信息
      */
-    JSONResult getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(String qId);
+    JSONResult getQuestionAndPreQuestionAndPreOptionByQId(String qId);
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的前置问题
@@ -114,7 +121,7 @@ public interface IQuestionService {
      * @param qId 当前问题编号
      * @return 问题信息
      */
-     JSONResult getPrependedQuestionByQId(String qId);
+    JSONResult getPrependedQuestionByQId(String qId);
 
     /**
      * 如果当前问题有前置问题，则找到当前问题的连续前置问题
@@ -124,7 +131,7 @@ public interface IQuestionService {
      * @param status 1: 连续后置问题 0: 最后一个后置问题
      * @return 问题信息
      */
-     JSONResult getFinallyPrependedQuestionByQId(String qId, int status);
+    JSONResult getFinallyPrependedQuestionByQId(String qId, int status);
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的后置问题
@@ -132,7 +139,7 @@ public interface IQuestionService {
      * @param qId 当前问题编号
      * @return 问题信息
      */
-     JSONResult getRearQuestionByQId(String qId);
+    JSONResult getRearQuestionByQId(String qId);
 
     /**
      * 如果当前问题是被前置问题，则找到当前问题的连续后置问题
@@ -142,7 +149,7 @@ public interface IQuestionService {
      * @param status 1: 连续后置问题 0: 最后一个后置问题
      * @return 问题信息
      */
-     JSONResult getFinallyRearQuestionByQId(String qId, int status);
+    JSONResult getFinallyRearQuestionByQId(String qId, int status);
 
     /**
      * 保存问题信息
@@ -156,7 +163,7 @@ public interface IQuestionService {
      * @param qCreateTime  问题创建时间
      * @return 问题信息是否保存成功
      */
-     JSONResult getQuestionSubmit(String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
+    JSONResult getQuestionSubmit(String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
 
     /**
      * 更新问题信息
@@ -171,7 +178,7 @@ public interface IQuestionService {
      * @param qCreateTime  问题创建时间
      * @return 问题信息是否更新成功
      */
-     JSONResult getUpdateSubmit(String qId, String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
+    JSONResult getUpdateSubmit(String qId, String qTitle, String qDescription, String qStatus, String pQId, String pOId, String qtId, String qCreateTime);
 
     /**
      * 根据 qId 删除问题信息及关联的选项信息
@@ -179,7 +186,7 @@ public interface IQuestionService {
      * @param qId 问题编号
      * @return 问题信息是否删除成功
      */
-     JSONResult getDeleteSubmit1(String qId);
+    JSONResult getDeleteSubmit1(String qId);
 
     /**
      * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
@@ -187,16 +194,16 @@ public interface IQuestionService {
      * @param qId 问题编号
      * @return 问题信息是否删除成功
      */
-     JSONResult getDeleteSubmit2(String qId);
+    JSONResult getDeleteSubmit2(String qId);
 
     /**
-     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+     * 根据 qId 删除多个问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
      * * @return 问题信息是否删除成功
      */
-     JSONResult getDeleteSubmit3(String question);
+    JSONResult getDeleteSubmit3(String question);
 
     /**
      * @return 存了 user 信息的 map
      */
-     Map<String, Object> GetOnlineUser();
+    Map<String, Object> GetOnlineUser();
 }

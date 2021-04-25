@@ -1,3 +1,4 @@
+let url = window.location.pathname;
 let pOId = "null";// 前置选项Id
 let question = new Array();// 保存原始问题信息
 let flag = false; // 默认不改变前置问题和前置选项
@@ -30,11 +31,10 @@ function isURL() {
     // console.log(window.location.port);// 8080
     // console.log(window.location.pathname);// /questionnaire/question/Question
     // console.log(window.location.search);// ?current=7
-    let url = window.location.pathname;
-    let index = url.lastIndexOf("/")
+    let index = url.lastIndexOf("/");
     url = url.substring(index + 1, url.length);
 
-    if (url == "Question") {
+    if (url == "Question" || url == "QuestionByQNId" || url == "AllQuestion") {
         Question();
     }
 }
@@ -70,7 +70,7 @@ function GenerateQNTitle() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/questionnaire/getQuestionnaireByQnId',
+        url: CONTEXT_PATH + '/questionnaire/getQuestionnaire',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -330,31 +330,28 @@ function Checkbox() {
         cbs[row + 1].checked = true;
 
         let udQId = question[0];
+
+        $('#deleteQuestion .am-popup-hd h4').remove();
+        let html1 = "";
+        $('#deleteQuestion .am-popup-bd .updateQuestion p .Btn').remove();
+        let html2 = "";
+
         if (udQId == "show") {
-            $('#deleteQuestion .am-popup-hd h4').remove();
-            let html = "<h4 class=\"am-popup-title\">查看问题</h4>";
-            $(html).appendTo($('#deleteQuestion .am-popup-hd'));
-
-            $('#deleteQuestion .am-popup-bd .updateQuestion p #delete').remove();
-            html = "<input style=\"margin-right: 100px;\" type=\"hidden\" id=\"delete\"/>";
-            $(html).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
-
+            html1 = "<h4 class=\"am-popup-title\">查看问题</h4>";
+            html2 = "<input style=\"margin-right: 100px;\" class=\"Btn\" type=\"hidden\"/>";
             SetDeleteQuestion();
         }
         if (udQId == "update") {
             SetUpdateQuestion();
         }
         if (udQId == "delete") {
-            $('#deleteQuestion .am-popup-hd h4').remove();
-            let html = "<h4 class=\"am-popup-title\">删除问题</h4>";
-            $(html).appendTo($('#deleteQuestion .am-popup-hd'));
-
-            $('#deleteQuestion .am-popup-bd .updateQuestion p #delete').remove();
-            html = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius\" id=\"delete\" onclick=\"DeleteSubmit()\">删除</button>";
-            $(html).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
-
+            html1 = "<h4 class=\"am-popup-title\">删除问题</h4>";
+            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"DeleteSubmit()\">删除</button>";
             SetDeleteQuestion();
         }
+
+        $(html1).appendTo($('#deleteQuestion .am-popup-hd'));
+        $(html2).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
     }
     setChecked(this);
 }
@@ -392,7 +389,7 @@ function SetUpdateQuestion() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionByQnIdAndQId',
+        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionByQId',
         data: {
             'qId': qId
         },
@@ -448,7 +445,7 @@ function SetDeleteQuestion() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionAndPreOptionByQnIdAndQId',
+        url: CONTEXT_PATH + '/question/getQuestionAndPreQuestionAndPreOptionByQId',
         data: {
             'qId': qId
         },
@@ -644,7 +641,11 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                if (url == "AllQuestion") {
+                    window.location.href = CONTEXT_PATH + "/question/AllQuestion" + window.location.search;
+                } else {
+                    window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                }
             } else {
                 ShowFailure(result.message);
             }
@@ -652,10 +653,9 @@ function UpdateSubmit() {
     });
 }
 
-// 提交问题信息
+// 删除问题信息
 function DeleteSubmit() {
     let qId = question[1];// 问题编号
-    console.log("问题编号: " + qId);
 
     $('#my-confirm').modal({
         relatedTarget: this,

@@ -1,3 +1,7 @@
+a {
+    text-decoration: none !important;
+}
+
 ul .currentQN {
     color: green;
     font-family: 等线;
@@ -44,6 +48,21 @@ ul .qnTitle {
     margin-bottom: 10px
 }
 
+.addQuestion .popup-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.addQuestion .center .am-btn-group .am-selected .am-selected-content ul li span {
+    /*text-align: center;*/
+    /*margin-left: 53px;*/
+    margin-left: 455px;
+}
+
+.addQuestion .popup-right p {
+    text-align: center;
+}
+
 .addQuestion .right .am-input-my {
     font-size: 1.5rem !important
 }
@@ -55,6 +74,11 @@ ul .qnTitle {
 .addQuestion .right .am-btn-success, .addQuestion .right .am-btn-default {
     font-size: 1.4rem !important;
     padding: .65rem 1rem;
+}
+
+.addQuestion .popup-right .am-btn-success, .addQuestion .popup-right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: 1rem 1.8rem;
 }
 
 /*fbneirong*/
@@ -100,4 +124,12 @@ ul .qnTitle {
 .showQNAndQ .right .am-btn-success, .showQNAndQ .right .am-btn-default {
     font-size: 1.4rem !important;
     padding: .65rem 1rem;
+}
+
+.am-form .am-input-my{
+    width: 1080px !important;
+}
+
+.am-form textarea{
+    width: 1080px;
 }

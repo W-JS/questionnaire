@@ -1,9 +1,6 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.QuestionTypeEntity;
 import com.wjs.questionnaire.util.JSONResult;
-
-import java.util.List;
 
 /**
  * 处理题型信息数据的业务层接口

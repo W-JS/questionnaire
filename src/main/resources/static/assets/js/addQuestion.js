@@ -67,7 +67,7 @@ function GenerateQNTitle() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/questionnaire/getQuestionnaireByQnId',
+        url: CONTEXT_PATH + '/questionnaire/getQuestionnaire',
         data: {},
         dataType: 'json',
         success: function (result) {
@@ -94,7 +94,7 @@ function GeneratePQP() {
                 // $('#pQP option').remove();
                 let html = "";
                 for (let i = 1; i <= result.data.total; i++) {
-                    html += "<option value=\"" + i + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第&nbsp;" + i + "&nbsp;页</option>";
+                    html += "<option value=\"" + i + "\">第&nbsp;" + i + "&nbsp;页</option>";
                 }
                 $(html).appendTo($('#pQP'));
 

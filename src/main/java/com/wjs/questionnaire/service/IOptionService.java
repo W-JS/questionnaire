@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.util.JSONResult;
 
 import java.util.List;

@@ -1,3 +1,7 @@
+a {
+    text-decoration: none !important;
+}
+
 .sideMenu {
     padding: 0px;
     margin: 0px
@@ -35,7 +39,7 @@
 }
 
 .sideMenu h3 a {
-    color: #aeb2b7
+    color: #aeb2b7;
 }
 
 .sideMenu ul {
@@ -60,7 +64,7 @@
 }
 
 .sideMenu li a {
-    color: #aeb2b7
+    color: #aeb2b7;
 }
 
 .sideMenu li a:hover {
@@ -171,6 +175,147 @@ tbody .operating {
 
 .mt-5 .page {
     margin-left: 5px;
+}
+
+.am-text-my {
+    font-size: 20px;
+}
+
+.txFixedSize1 {
+    min-height: 50px;
+    max-height: 80px;
+    min-width: 820px;
+    max-width: 830px;
+}
+
+.txFixedSize2 {
+    height: auto;
+    min-height: 50px;
+    max-height: 240px;
+    min-width: 820px;
+    max-width: 830px;
+}
+
+.table-check {
+    width: 30px
+}
+
+.updateQuestionnaire {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.updateQuestionnaire .left {
+    width: 15%;
+    text-align: left;
+    margin-right: 1%;
+    float: left;
+    line-height: 33px;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .right {
+    width: 84%;
+    float: right;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .popup-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .popup-right p {
+    text-align: center;
+}
+
+.updateQuestionnaire .center .am-btn-group .am-selected .am-selected-content ul li span {
+    /*text-align: center;*/
+    /*margin-left: 53px;*/
+    margin-left: 363px;
+}
+
+.updateQuestionnaire .right .am-input-sm {
+    font-size: 1.2rem !important
+}
+
+.updateQuestionnaire .am-form-group {
+    margin: 2px auto
+}
+
+@media all and (min-width: 630px) and (min-height: 630px) {
+    .am-popup {
+        width: 1030px;
+        height: 630px;
+        /*background: #f8f8f8;*/
+        left: 50%;
+        top: 50%;
+        margin-left: -520px;
+        margin-top: -350px;
+        -webkit-transform: translateY(1024px);
+        -ms-transform: translateY(1024px);
+        transform: translateY(1024px)
+    }
+}
+
+.admin-content .am-popup {
+    max-height: 690px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.am-popup-inner {
+    padding-top: 30px;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch
+}
+
+.am-popup-hd {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 43px;
+    border-bottom: 1px solid #dedede;
+    background-color: #fff
+}
+
+.am-popup-hd .am-popup-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 43px;
+    text-align: center;
+    margin: 0 30px;
+    color: #333;
+    display: block;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden
+}
+
+.am-popup-hd .am-close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    cursor: pointer;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    color: #999
+}
+
+.am-popup-hd .am-close:hover {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+    color: #555
+}
+
+.am-popup-bd {
+    padding: 25px;
+    background: #f8f8f8;
+    color: #555
 }
 
 .foods {

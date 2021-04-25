@@ -1,8 +1,6 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.util.JSONResult;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 处理用户信息数据的业务层接口

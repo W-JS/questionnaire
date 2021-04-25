@@ -57,4 +57,50 @@
         VALUES(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus}, #{questionnaireCreateTime}, #{userId})
     </insert>
 
+    <!-- 更新问卷信息 -->
+    <!-- int updateQuestionnaireByQNId(QuestionnaireEntity qn); -->
+    <update id="updateQuestionnaireByQNId" parameterType="QuestionnaireEntity">
+        UPDATE `questionnaire`
+        <set>
+            <if test="questionnaireTitle != null">
+                questionnaire_title = #{questionnaireTitle},
+            </if>
+            <if test="questionnaireFuTitle != null">
+                questionnaire_fu_title = #{questionnaireFuTitle},
+            </if>
+            <if test="questionnaireDescription != null">
+                questionnaire_description = #{questionnaireDescription},
+            </if>
+            <if test="questionnaireFullCount != null">
+                questionnaire_full_count = #{questionnaireFullCount},
+            </if>
+            <if test="questionnaireStatus != null">
+                questionnaire_status = #{questionnaireStatus},
+            </if>
+            <if test="questionnaireCreateTime != null">
+                questionnaire_create_time = #{questionnaireCreateTime},
+            </if>
+            <if test="questionnaireStartTime != null">
+                questionnaire_start_time = #{questionnaireStartTime},
+            </if>
+            <if test="questionnaireEndTime != null">
+                questionnaire_end_time = #{questionnaireEndTime},
+            </if>
+            <if test="questionnaireDeleteTime != null">
+                questionnaire_delete_time = #{questionnaireDeleteTime},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+        </set>
+        WHERE questionnaire_id = #{questionnaireId}
+    </update>
+
+    <!-- 删除问卷信息 -->
+    <!-- int deleteQuestionnaireByQNId(String qnId); -->
+    <delete id="deleteQuestionnaireByQNId" parameterType="QuestionnaireEntity">
+    DELETE FROM `questionnaire`
+    WHERE questionnaire_id = #{qnId}
+    </delete>
+
 </mapper>

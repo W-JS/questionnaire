@@ -23,6 +23,14 @@ public class QuestionnaireEntity implements Serializable {
     public QuestionnaireEntity() {
     }
 
+    public QuestionnaireEntity(String questionnaireId, String questionnaireTitle, String questionnaireFuTitle, String questionnaireDescription, Date questionnaireCreateTime) {
+        this.questionnaireId = questionnaireId;
+        this.questionnaireTitle = questionnaireTitle;
+        this.questionnaireFuTitle = questionnaireFuTitle;
+        this.questionnaireDescription = questionnaireDescription;
+        this.questionnaireCreateTime = questionnaireCreateTime;
+    }
+
     public QuestionnaireEntity(String questionnaireId, String questionnaireTitle, String questionnaireFuTitle, String questionnaireDescription, Integer questionnaireStatus, Date questionnaireCreateTime, String userId) {
         this.questionnaireId = questionnaireId;
         this.questionnaireTitle = questionnaireTitle;

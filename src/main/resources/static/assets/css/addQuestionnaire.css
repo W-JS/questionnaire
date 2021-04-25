@@ -1,3 +1,7 @@
+a {
+    text-decoration: none !important;
+}
+
 .am-text-my {
     font-size: 20px;
 }
@@ -35,6 +39,15 @@
     margin-bottom: 10px
 }
 
+.addQuestionnaire .popup-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.addQuestionnaire .popup-right p {
+    text-align: center;
+}
+
 .addQuestionnaire .right .am-input-my {
     font-size: 1.5rem !important
 }
@@ -43,8 +56,15 @@
     font-size: 1.2rem !important
 }
 
-
-.addQuestionnaire .right .am-btn-success, .addQuestionnaire .right .am-btn-default {
+.addQuestionnaire .popup-right .am-btn-success, .addQuestionnaire .popup-right .am-btn-default {
     font-size: 1.4rem !important;
-    padding: .65rem 1rem;
+    padding: 1rem 1.8rem;
+}
+
+.am-form input{
+    width: 1100px !important;
+}
+
+.am-form textarea{
+    width: 1100px;
 }

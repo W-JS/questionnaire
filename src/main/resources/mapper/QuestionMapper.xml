@@ -23,7 +23,7 @@
         questionnaire_id, questiontype_id, question_create_time
     </sql>
 
-    <!-- 获取所有问题信息列表 -->
+    <!-- 获取所有问卷的所有问题信息列表（不分页） -->
     <!-- List<QuestionEntity> findAllQuestionList(); -->
     <select id="findAllQuestionList" resultType="QuestionEntity">
         SELECT
@@ -32,7 +32,24 @@
         ORDER BY question_create_time DESC
     </select>
 
-    <!-- 根据 qnId 查询当前问卷的所有问题 -->
+    <!-- 获取所有问卷的所有问题信息列表的行数 -->
+    <!-- int findQuestionRows(); -->
+    <select id="findQuestionRows" resultType="int">
+        SELECT COUNT(question_id)
+        FROM `question`
+    </select>
+
+    <!-- 获取所有问卷的所有问题信息列表（分页） -->
+    <!-- List<QuestionEntity> findAllQuestionPage(int offset, int limit); -->
+    <select id="findAllQuestionPage" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question`
+        ORDER BY question_create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 根据 qnId 查询当前问卷的所有问题（不分页） -->
     <!-- List<QuestionEntity> findAllQuestionByQnId(String qnId); -->
     <select id="findAllQuestionByQnId" resultType="QuestionEntity">
         SELECT
@@ -50,7 +67,7 @@
         WHERE questionnaire_id = #{qnId}
     </select>
 
-    <!-- 根据 qnId 查询当前问卷的所有问题 -->
+    <!-- 根据 qnId 查询当前问卷的所有问题（分页） -->
     <!-- List<QuestionEntity> findQuestionPageByQnId(String qnId, int offset, int limit); -->
     <select id="findQuestionPageByQnId" resultType="QuestionEntity">
         SELECT
@@ -86,7 +103,7 @@
         AND q2.questionnaire_id = #{qnId}-->
     </select>
 
-    <!-- 根据 qnId 查询当前问卷未被前置的问题 -->
+    <!-- 根据 qnId 查询当前问卷未被前置的问题（分页） -->
     <!-- List<QuestionEntity> findNoPrependedQuestionPageByQnId(String qnId, int offset, int limit); -->
     <select id="findNoPrependedQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询未被前置的问题 法一 -->
@@ -142,7 +159,7 @@
         AND q2.questionnaire_id = #{qnId}-->
     </select>
 
-    <!-- 根据 qnId 查询当前问卷被前置的问题 -->
+    <!-- 根据 qnId 查询当前问卷被前置的问题（分页） -->
     <!-- List<QuestionEntity> findPrependedQuestionPageByQnId(String qnId, int offset, int limit); -->
     <select id="findPrependedQuestionPageByQnId" resultType="QuestionEntity">
         <!-- 查询被前置的问题 法一 -->

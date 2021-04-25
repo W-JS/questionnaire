@@ -1,17 +1,13 @@
 package com.wjs.questionnaire.controller;
 
 import com.wjs.questionnaire.service.IQuestionService;
-import com.wjs.questionnaire.service.IQuestionnaireService;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -26,23 +22,54 @@ import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQNID;
 public class QuestionController {
 
     @Autowired
-    private IQuestionnaireService questionnaireService;
-
-    @Autowired
     private IQuestionService questionService;
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     /**
+     * 点击问卷表格的问卷，显示问卷的问题
+     *
+     * @param qnId 需要查看当前问卷所有问题信息的问卷编号
+     * @return 进入 调查问卷后台管理-问题
+     */
+    @GetMapping(value = "/QuestionByQNId")
+    public String jumpQuestionPage1(@RequestParam("qnId") String qnId, Model model, PageUtil pageUtil) {
+        redisTemplate.opsForValue().set(OnlineQNID, qnId);// 显示当前问卷的所有问题，将 qnId 存进Redis
+        PageUtil page = questionService.setQuestionListPageByQNId(pageUtil);
+        List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
+        Map<String, Object> onlineUser = questionService.GetOnlineUser();
+
+        model.addAttribute("questions", questions);
+        model.addAttribute("map", onlineUser);
+        return "/site/Question";
+    }
+
+    /**
+     * 点击问题表格的分页按钮，显示问卷的问题
+     *
      * @return 进入 调查问卷后台管理-问题
      */
     @GetMapping(value = "/Question")
-    public String jumpQuestionPage(Model model, PageUtil pageUtil) {
-        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
-        pageUtil.setRows(questionService.getQuestionRowsByQnId(qnId));
-        pageUtil.setPath("/question/Question");
-        List<Map<String, Object>> questions = questionService.getAllQuestionList(qnId, pageUtil.getOffset(), pageUtil.getLimit());
+    public String jumpQuestionPage2(Model model, PageUtil pageUtil) {
+        PageUtil page = questionService.setQuestionListPageByQNId(pageUtil);
+        List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
+        Map<String, Object> onlineUser = questionService.GetOnlineUser();
+
+        model.addAttribute("questions", questions);
+        model.addAttribute("map", onlineUser);
+        return "/site/Question";
+    }
+
+    /**
+     * 点击问题表格的分页按钮，显示问卷的问题
+     *
+     * @return 进入 调查问卷后台管理-问题
+     */
+    @GetMapping(value = "/AllQuestion")
+    public String jumpQuestionPage3(Model model, PageUtil pageUtil) {
+        PageUtil page = questionService.setQuestionListPage(pageUtil);
+        List<Map<String, Object>> questions = questionService.getQuestionList(page.getOffset(), page.getLimit());
         Map<String, Object> onlineUser = questionService.GetOnlineUser();
 
         model.addAttribute("questions", questions);
@@ -148,10 +175,10 @@ public class QuestionController {
      * @param qId 问题编号
      * @return 一个指定的问题和前置问题信息
      */
-    @GetMapping("/getQuestionAndPreQuestionByQnIdAndQId")
+    @GetMapping("/getQuestionAndPreQuestionByQId")
     @ResponseBody
-    public JSONResult getQuestionAndPreQuestionByQnIdAndQId(String qId) {
-        return questionService.getQuestionAndPreQuestionByQnIdAndQId(qId);
+    public JSONResult getQuestionAndPreQuestionByQId(String qId) {
+        return questionService.getQuestionAndPreQuestionByQId(qId);
     }
 
     /**
@@ -160,10 +187,10 @@ public class QuestionController {
      * @param qId 问题编号
      * @return 一个指定的问题、问题类型、前置问题和前置选项信息
      */
-    @GetMapping("/getQuestionAndPreQuestionAndPreOptionByQnIdAndQId")
+    @GetMapping("/getQuestionAndPreQuestionAndPreOptionByQId")
     @ResponseBody
-    public JSONResult getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(String qId) {
-        return questionService.getQuestionAndPreQuestionAndPreOptionByQnIdAndQId(qId);
+    public JSONResult getQuestionAndPreQuestionAndPreOptionByQId(String qId) {
+        return questionService.getQuestionAndPreQuestionAndPreOptionByQId(qId);
     }
 
     /**
@@ -289,8 +316,10 @@ public class QuestionController {
     }
 
     /**
-     * 根据 qId 删除问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
-     * * @return 问题信息是否删除成功
+     * 根据 qId 删除多个问题信息及关联的选项信息和关联的前置问题信息及关联的选项信息和后置问题信息及关联的选项信息
+     *
+     * @param question JSON格式的字符串，包含多个问题编号
+     * @return 问题信息是否删除成功
      */
     @PostMapping(value = "/deleteSubmit3")
     @ResponseBody

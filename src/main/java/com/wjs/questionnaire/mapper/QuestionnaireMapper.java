@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.mapper;
 
-import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,6 +33,7 @@ public interface QuestionnaireMapper {
 
     /**
      * 根据 qnId 得到问卷信息
+     *
      * @param qnId 问卷编号
      * @return 问卷信息
      */
@@ -46,4 +46,20 @@ public interface QuestionnaireMapper {
      * @return 问卷是否保存成功
      */
     int insertQuestionnaire(QuestionnaireEntity qn);
+
+    /**
+     * 更新问卷信息
+     *
+     * @param qn 问卷信息
+     * @return 问卷是否更新成功
+     */
+    int updateQuestionnaireByQNId(QuestionnaireEntity qn);
+
+    /**
+     * 删除问卷信息
+     *
+     * @param qnId 当前问卷编号
+     * @return 问卷是否删除成功
+     */
+    int deleteQuestionnaireByQNId(String qnId);
 }

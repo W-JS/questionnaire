@@ -1,7 +1,11 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.PageUtil;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +22,12 @@ public interface IQuestionnaireService {
     List<Map<String, Object>> getAllQuestionnaireList();
 
     /**
-     * 获取所有问卷信息列表的行数
+     * 设置分页参数
      *
-     * @return 问卷信息列表的行数
+     * @param page 分页对象参数
+     * @return 分页结果
      */
-    int getQuestionnaireRows();
+    PageUtil setPage(PageUtil page);
 
     /**
      * 获取所有问卷信息列表
@@ -32,6 +37,14 @@ public interface IQuestionnaireService {
      * @return 问卷信息列表
      */
     List<Map<String, Object>> findQuestionnairePage(int offset, int limit);
+
+    /**
+     * 根据 qnId 得到问卷信息
+     *
+     * @param qnId 问卷编号
+     * @return 问卷信息
+     */
+    JSONResult getQuestionnaireByQnId(String qnId);
 
     /**
      * 保存问卷信息
@@ -46,13 +59,38 @@ public interface IQuestionnaireService {
      */
     JSONResult getQuestionnaireSubmit(String qnTitle, String qnFuTitle, String qnDescription, int qnStatus, String qnCreateTime, String userId);
 
+    /**
+     * 更新问卷信息
+     *
+     * @param qnId          问卷编号
+     * @param qnTitle       问卷标题
+     * @param qnFuTitle     问卷标题
+     * @param qnDescription 问卷描述
+     * @param qnCreateTime  问卷创建时间
+     * @return 问卷信息是否更新成功
+     */
+    JSONResult getUpdateSubmit(String qnId, String qnTitle, String qnFuTitle, String qnDescription, String qnCreateTime);
 
     /**
-     * 根据 qnId 得到问卷信息
+     * 根据 qnId 删除问卷信息、问题信息及关联的选项信息
      *
-     * @return 问卷信息
+     * @param qnId 问卷编号
+     * @return 问卷信息是否删除成功
      */
-    JSONResult getQuestionnaireByQnId();
+    JSONResult getDeleteSubmit1(String qnId);
+
+    /**
+     * 根据 qnId 删除多个问卷信息、问题信息及关联的选项信息
+     *
+     * @param questionnaire JSON格式的字符串，包含多个问卷编号
+     * @return 问卷信息是否删除成功
+     */
+    JSONResult getDeleteSubmit2(String questionnaire);
+
+    /**
+     * 生成测试问卷信息
+     */
+    JSONResult GenerateQuestionnaire() throws Exception;
 
     /**
      * @return 存了 user 信息的 map
