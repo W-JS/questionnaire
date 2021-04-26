@@ -106,7 +106,7 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
      * 根据 qnId 得到问卷信息
      *
      * @param qnId 问卷编号
-     * @return 问卷信息
+     * @return JSON格式数据：问卷信息
      */
     @Override
     public JSONResult getQuestionnaireByQnId(String qnId) {
@@ -116,6 +116,43 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
             jsonResult = JSONResult.build(questionnaire);
         } else {
             jsonResult = JSONResult.build("当前问卷信息不存在！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 根据 qnId 和 qId 得到 在线问卷信息 和 在线问题信息
+     *
+     * @param qnId 在线问卷编号
+     * @param qId  在线问题编号
+     * @return 问卷信息和问题信息
+     */
+    @Override
+    public JSONResult getQuestionnaireAndQuestionByQnIdAndQId(String qnId, String qId) {
+        List<Map<String, Object>> data = new ArrayList<>();
+        QuestionnaireEntity questionnaire = questionnaireMapper.findQuestionnaireByQnId(qnId);
+        QuestionEntity question = questionMapper.findQuestionByQId(qId);
+
+        JSONResult jsonResult;
+        boolean flag = true;
+        if (questionnaire != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("questionnaire", questionnaire);
+            data.add(map);
+        } else {
+            flag = false;
+        }
+        if (question != null && flag) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("question", question);
+            data.add(map);
+        } else {
+            flag = false;
+        }
+        if (flag) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("暂时还未创建选项！！！");
         }
         return jsonResult;
     }

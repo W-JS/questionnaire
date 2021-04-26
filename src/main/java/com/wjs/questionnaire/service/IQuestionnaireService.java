@@ -2,10 +2,7 @@ package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +39,19 @@ public interface IQuestionnaireService {
      * 根据 qnId 得到问卷信息
      *
      * @param qnId 问卷编号
-     * @return 问卷信息
+     * @return JSON格式数据：问卷信息
      */
     JSONResult getQuestionnaireByQnId(String qnId);
+
+
+    /**
+     * 根据 qnId 和 qId 得到 在线问卷信息 和 在线问题信息
+     *
+     * @param qnId 在线问卷编号
+     * @param qId  在线问题编号
+     * @return 问卷信息和问题信息
+     */
+    JSONResult getQuestionnaireAndQuestionByQnIdAndQId(String qnId, String qId);
 
     /**
      * 保存问卷信息

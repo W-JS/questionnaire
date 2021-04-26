@@ -23,32 +23,6 @@
         questionnaire_id, questiontype_id, question_create_time
     </sql>
 
-    <!-- 获取所有问卷的所有问题信息列表（不分页） -->
-    <!-- List<QuestionEntity> findAllQuestionList(); -->
-    <select id="findAllQuestionList" resultType="QuestionEntity">
-        SELECT
-        <include refid="selectQuestionFields"></include>
-        FROM `question`
-        ORDER BY question_create_time DESC
-    </select>
-
-    <!-- 获取所有问卷的所有问题信息列表的行数 -->
-    <!-- int findQuestionRows(); -->
-    <select id="findQuestionRows" resultType="int">
-        SELECT COUNT(question_id)
-        FROM `question`
-    </select>
-
-    <!-- 获取所有问卷的所有问题信息列表（分页） -->
-    <!-- List<QuestionEntity> findAllQuestionPage(int offset, int limit); -->
-    <select id="findAllQuestionPage" resultType="QuestionEntity">
-        SELECT
-        <include refid="selectQuestionFields"></include>
-        FROM `question`
-        ORDER BY question_create_time DESC
-        LIMIT #{offset}, #{limit}
-    </select>
-
     <!-- 根据 qnId 查询当前问卷的所有问题（不分页） -->
     <!-- List<QuestionEntity> findAllQuestionByQnId(String qnId); -->
     <select id="findAllQuestionByQnId" resultType="QuestionEntity">
@@ -75,6 +49,32 @@
         FROM `question` q
         WHERE q.questionnaire_id = #{qnId}
         ORDER BY q.question_create_time ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取所有问卷的所有问题信息列表（不分页） -->
+    <!-- List<QuestionEntity> findAllQuestionList(); -->
+    <select id="findAllQuestionList" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question`
+        ORDER BY question_create_time DESC
+    </select>
+
+    <!-- 获取所有问卷的所有问题信息列表的行数 -->
+    <!-- int findAllQuestionRows(); -->
+    <select id="findAllQuestionRows" resultType="int">
+        SELECT COUNT(question_id)
+        FROM `question`
+    </select>
+
+    <!-- 获取所有问卷的所有问题信息列表（分页） -->
+    <!-- List<QuestionEntity> findAllQuestionPage(int offset, int limit); -->
+    <select id="findAllQuestionPage" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question`
+        ORDER BY question_create_time DESC
         LIMIT #{offset}, #{limit}
     </select>
 

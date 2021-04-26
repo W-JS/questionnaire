@@ -191,10 +191,10 @@
                     <div id="top" class="moduleTitle am-cf">
                         <ul class="am-icon-book"> 调查问卷管理</ul>
                         <ul>
-                            <p class="currentQN">当前问卷：</p>
+                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问卷:</p>
                         </ul>
                         <ul>
-                            <p class="qnTitle"></p>
+                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qnTitle" ></p>
                         </ul>
                         <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                             <a th:href="@{/question/Question}">问题</a>
@@ -221,7 +221,9 @@
                                         <input type="checkbox" name="cb[]" th:value="${map.question.questionId}" onclick="setChecked(this)"/>
                                     </td>
                                     <td class="qTitle">
-                                        <a th:text="${map.question.questionTitle}" th:title="${map.question.questionTitle}">问题标题</a>
+                                        <a th:href="@{/option/OptionByQId(qId=${map.question.questionId})}"
+                                           th:text="${map.question.questionTitle}"
+                                           th:title="${map.question.questionTitle}">问题标题</a>
                                     </td>
                                     <td class="qDescription">
                                         <a th:text="${map.question.questionDescription}" th:title="${map.question.questionDescription}">问题描述</a>
@@ -296,6 +298,7 @@
         <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/GenerateQNTitleORQTitle.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Question.js}"></script>
     </body>
 </html>

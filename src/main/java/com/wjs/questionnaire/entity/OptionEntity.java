@@ -16,6 +16,12 @@ public class OptionEntity implements Serializable {
     public OptionEntity() {
     }
 
+    public OptionEntity(String optionId, String optionContent, Date optionCreateTime) {
+        this.optionId = optionId;
+        this.optionContent = optionContent;
+        this.optionCreateTime = optionCreateTime;
+    }
+
     public OptionEntity(String optionId, String optionContent, String questionId, Date optionCreateTime) {
         this.optionId = optionId;
         this.optionContent = optionContent;

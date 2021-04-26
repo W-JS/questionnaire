@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
 import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQNID;
 
 /**
@@ -62,14 +63,14 @@ public class QuestionController {
     }
 
     /**
-     * 点击问题表格的分页按钮，显示问卷的问题
+     * 点击侧边栏的所有问题按钮，显示所有问卷的所有问题
      *
      * @return 进入 调查问卷后台管理-问题
      */
     @GetMapping(value = "/AllQuestion")
     public String jumpQuestionPage3(Model model, PageUtil pageUtil) {
-        PageUtil page = questionService.setQuestionListPage(pageUtil);
-        List<Map<String, Object>> questions = questionService.getQuestionList(page.getOffset(), page.getLimit());
+        PageUtil page = questionService.setAllQuestionListPage(pageUtil);
+        List<Map<String, Object>> questions = questionService.getAllQuestionList(page.getOffset(), page.getLimit());
         Map<String, Object> onlineUser = questionService.GetOnlineUser();
 
         model.addAttribute("questions", questions);
@@ -121,7 +122,6 @@ public class QuestionController {
         return questionService.getNoPrependedQuestionPage1ByQnId(current);
     }
 
-
     /**
      * 根据 qnId 查询当前问卷未被前置的问题和连续后置问题
      *
@@ -158,6 +158,18 @@ public class QuestionController {
     }
 
     /**
+     * 根据 qId 得到在线问题信息
+     *
+     * @return 问题信息
+     */
+    @GetMapping(value = "/getQuestion")
+    @ResponseBody
+    public JSONResult getQuestion() {
+        String qId = (String) redisTemplate.opsForValue().get(OnlineQID);
+        return questionService.getQuestionByQId(qId);
+    }
+
+    /**
      * 一个指定的问题信息
      *
      * @param qId 问题编号
@@ -166,7 +178,7 @@ public class QuestionController {
     @GetMapping("/getQuestionByQId")
     @ResponseBody
     public JSONResult getQuestionByQnIdAndQId(String qId) {
-        return questionService.getQuestionByQnIdAndQId(qId);
+        return questionService.getQuestionByQId(qId);
     }
 
     /**

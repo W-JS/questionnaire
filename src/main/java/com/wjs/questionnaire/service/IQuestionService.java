@@ -12,23 +12,6 @@ import java.util.Map;
 public interface IQuestionService {
 
     /**
-     * 设置所有问卷的所有问题信息列表分页参数
-     *
-     * @param page 分页对象参数
-     * @return 分页结果
-     */
-    PageUtil setQuestionListPage(PageUtil page);
-
-    /**
-     * 获取所有问卷的所有问题信息列表
-     *
-     * @param offset 获取当前页的起始行
-     * @param limit  显示记录条数
-     * @return 问题信息列表
-     */
-    List<Map<String, Object>> getQuestionList(int offset, int limit);
-
-    /**
      * 设置当前问卷所有问题信息列表分页参数
      *
      * @param page 分页对象参数
@@ -44,6 +27,23 @@ public interface IQuestionService {
      * @return 问题信息列表
      */
     List<Map<String, Object>> getQuestionListByQNId(int offset, int limit);
+
+    /**
+     * 设置所有问卷的所有问题信息列表分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    PageUtil setAllQuestionListPage(PageUtil page);
+
+    /**
+     * 获取所有问卷的所有问题信息列表
+     *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
+     * @return 问题信息列表
+     */
+    List<Map<String, Object>> getAllQuestionList(int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷的所有问题
@@ -76,7 +76,6 @@ public interface IQuestionService {
      */
     JSONResult getNoPrependedQuestionPage2ByQnId(String qId, String current);
 
-
     /**
      * 根据 qnId 查询当前问卷被前置的问题的行数
      *
@@ -97,7 +96,7 @@ public interface IQuestionService {
      * @param qId 问题编号
      * @return 一个指定的问题信息
      */
-    JSONResult getQuestionByQnIdAndQId(String qId);
+    JSONResult getQuestionByQId(String qId);
 
     /**
      * 一个指定的问题和前置问题信息

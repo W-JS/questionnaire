@@ -26,33 +26,154 @@
                 <!-- 内容头部 -->
                 <contentHeader th:replace="/site/index::contentHeader"></contentHeader>
 
-                <!-- 内容 -->
-                <div class="admin">
-                    <div class="tableList">
+                <!-- 修改选项弹出层 -->
+                <div class="am-popup am-popup-inner" id="updateOption">
+                    <div class="am-popup-hd">
+                        <h4 class="am-popup-title">修改选项</h4>
+                        <span data-am-modal-close class="am-close">&times;</span>
+                    </div>
+                    <div class="am-popup-bd">
+                        <div class="am-form updateOption">
+                            <div class="am-form-group am-cf">
+                                <div class="left am-text-my">选项内容：</div>
+                                <div class="right">
+                                    <input id="oContent" type="text" class="am-input-my" placeholder="请输入选项内容" value="">
+                                </div>
+                            </div>
 
-                        <!-- 内容顶部 -->
-                        <div id="top" class="moduleTitle am-cf">
-                            <ul class="am-icon-book on"> 调查问卷管理</ul>
-                            <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
-                                <a th:href="@{/option/Option}">选项</a>
-                            </dl>
+                            <div class="am-form-group am-cf">
+                                <div class="popup-right">
+                                    <p>
+                                        <button class="Btn">修改</button>
+                                        <button type="button" data-am-modal-close class="am-btn am-btn-default am-radius" id="updateCancel">取消</button>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- 内容正文-方块显示 -->
-                        <div class="qns">
-                            <a class="qn" href="#" th:each="map:${options}">
-                                <p class="qntitle" th:text="${map.option.optionContent}">选项内容</p>
-                            </a>
+                <!-- 确认删除选项模态窗口 -->
+                <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                    <div class="am-modal-dialog" style="background-color: #a8a8a8;">
+                        <div class="am-modal-hd" style="color: red;">删除提示</div>
+                        <div class="am-modal-bd">
+                            您确定要删除选项记录吗？
                         </div>
+                        <div class="am-modal-footer">
+                            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- 内容正文-表格显示 -->
+                <!-- 内容中部 -->
+                <div class="tableList">
 
-                        <!-- 尾部 -->
-                        <footer th:replace="/site/index::footer"></footer>
-
+                    <!-- 内容顶部 -->
+                    <div id="top" class="moduleTitle am-cf">
+                        <ul class="am-icon-book on"> 调查问卷管理</ul>
+                        <ul>
+                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问卷:</p>
+                        </ul>
+                        <ul>
+                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qnTitle" ></p>
+                        </ul>
+                        <ul>
+                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问题:</p>
+                        </ul>
+                        <ul>
+                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qTitle" ></p>
+                        </ul>
+                        <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
+                            <a th:href="@{/option/Option}">选项</a>
+                        </dl>
                     </div>
 
+                    <!-- 内容正文-方块显示 -->
+                    <!--<div class="qns">
+                        <a class="qn" href="#" th:each="map:${options}">
+                            <p class="qntitle" th:text="${map.option.optionContent}">选项内容</p>
+                        </a>
+                    </div>-->
+
+                    <!-- 内容正文-表格显示 -->
+                    <div class="am-form am-g">
+                        <!-- 表格 -->
+                        <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover"
+                               style="table-larightt: fixed;">
+                            <thead>
+                                <tr class="am-success">
+                                    <th class="table-check"><input type="checkbox" name="cb[]" id="all" value="all" onclick="setChecked(this)"/></th>
+                                    <th class="oContent">选项内容</th>
+
+                                    <th class="operating">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                                <tr th:each="map:${options}">
+                                    <td>
+                                        <input type="checkbox" name="cb[]" th:value="${map.option.optionId}" onclick="setChecked(this)"/>
+                                    </td>
+                                    <td class="oContent">
+                                        <a th:text="${map.option.optionContent}" th:title="${map.option.optionContent}">选项内容</a>
+                                    </td>
+
+                                    <td class="operating">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#updateOption'}" name="showOption" onclick="ShowOption()"
+                                                        title="查看选项">
+                                                    <span class="am-icon-eye"></span>
+                                                </button>
+                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#updateOption'}" name="updateOption" onclick="UpdateOption()"
+                                                        title="修改选项">
+                                                    <span class="am-icon-pencil-square-o"></span>
+                                                </button>
+                                                <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        data-am-modal="{target: '#updateOption'}" name="deleteOption" onclick="DeleteOption()"
+                                                        title="删除选项">
+                                                    <span class="am-icon-trash-o"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 多个操作按钮 -->
+                        <div class="am-btn-group am-btn-group-xs">
+                            <button type="button" class="am-btn am-btn-default">
+                                <span class="am-icon-plus"></span>
+                                <a style="text-decoration: none;color: #4e4e4e;" th:href="@{/option/addOption}"> 新建选项</a>
+                            </button>
+                            <button type="button" class="am-btn am-btn-default" id="deleteChoose">
+                                <span class="am-icon-trash-o"></span> 删除选项
+                            </button>
+                        </div>
+
+                        <!-- 分页 -->
+                        <sidebar th:replace="/site/index::pagination"></sidebar>
+
+                        <!-- 备注 -->
+                        <!--<p>
+                            备注：操作图标含义
+                            <a class="am-text-success am-icon-file" title="添加子栏目"> 添加子栏目</a>
+                            <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改栏目</a>
+                            <a class="am-icon-copy am-text-warning" title="复制"> 复制栏目</a>
+                            <a class="am-icon-trash-o am-text-danger" title="删除"> 删除栏目</a>
+
+                        </p>-->
+                    </div>
+
+                    <!-- 尾部 -->
+                    <footer th:replace="/site/index::footer"></footer>
+
                 </div>
+
             </div>
 
         </div>
@@ -68,6 +189,7 @@
         <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/GenerateQNTitleORQTitle.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Option.js}"></script>
     </body>
 </html>

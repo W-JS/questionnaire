@@ -24,8 +24,8 @@ a {
 }
 
 .addOption .left {
-    width: 12%;
-    text-align: left;
+    width: 10%;
+    text-align: right;
     margin-right: 1%;
     float: left;
     line-height: 33px;
@@ -38,6 +38,15 @@ a {
     margin-bottom: 10px
 }
 
+.addOption .popup-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.addOption .popup-right p {
+    text-align: center;
+}
+
 .addOption .right .am-input-my {
     font-size: 1.5rem !important
 }
@@ -46,9 +55,9 @@ a {
     font-size: 1.2rem !important
 }
 
-.addOption .right .am-btn-success, .addOption .right .am-btn-default {
+.addOption .popup-right .am-btn-success, .addOption .popup-right .am-btn-default {
     font-size: 1.4rem !important;
-    padding: .65rem 1rem;
+    padding: 1rem 1.8rem;
 }
 
 /*fbneirong*/
@@ -91,7 +100,6 @@ a {
     font-size: 1.2rem !important
 }
 
-.showQAndO .right .am-btn-success, .showQAndO .right .am-btn-default {
-    font-size: 1.4rem !important;
-    padding: .65rem 1rem;
+.am-form .am-input-my{
+    width: 1080px !important;
 }

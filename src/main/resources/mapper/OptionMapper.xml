@@ -12,7 +12,36 @@
         option_id, option_content, question_id, option_create_time
     </sql>
 
-    <!-- 获取所有选项信息列表 -->
+    <!-- 根据 qId 查询当前问题的所有选项（不分页） -->
+    <!-- List<OptionEntity> findOptionByQId(String qId); -->
+    <select id="findOptionByQId" resultType="OptionEntity">
+        SELECT
+        <include refid="selectOptionFields"></include>
+        FROM `option`
+        WHERE question_id = #{questionId}
+        ORDER BY option_create_time ASC
+    </select>
+
+    <!-- 根据 qId 查询当前问题的所有选项的行数 -->
+    <!-- int findOptionRowsByQId(String qId); -->
+    <select id="findOptionRowsByQId" resultType="int">
+        SELECT COUNT(option_id)
+        FROM `option`
+        WHERE question_id = #{qId}
+    </select>
+
+    <!-- 根据 qId 查询当前问题的所有选项（分页） -->
+    <!-- List<OptionEntity> findOptionPageByQId(String qId, int offset, int limit); -->
+    <select id="findOptionPageByQId" resultType="OptionEntity">
+        SELECT
+        <include refid="selectOptionFields"></include>
+        FROM `option` o
+        WHERE o.question_id = #{qId}
+        ORDER BY o.option_create_time ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取所有问卷的所有问题的所有选项信息列表（不分页） -->
     <!-- List<OptionEntity> findAllOptionList(); -->
     <select id="findAllOptionList" resultType="OptionEntity">
         SELECT
@@ -21,14 +50,21 @@
         ORDER BY option_create_time DESC
     </select>
 
-    <!-- 根据 qId 查询当前问题的所有选项 -->
-    <!-- List<OptionEntity> findOptionByQId(String qId); -->
-    <select id="findOptionByQId" resultType="OptionEntity">
+    <!-- 获取所有问卷的所有问题的所有选项信息列表的行数 -->
+    <!-- int findAllOptionRows(); -->
+    <select id="findAllOptionRows" resultType="int">
+        SELECT COUNT(option_id)
+        FROM `option`
+    </select>
+
+    <!-- 获取所有问卷的所有问题的所有选项信息列表（分页） -->
+    <!-- List<OptionEntity> findAllOptionPage(int offset, int limit); -->
+    <select id="findAllOptionPage" resultType="OptionEntity">
         SELECT
         <include refid="selectOptionFields"></include>
         FROM `option`
-        WHERE question_id = #{questionId}
-        ORDER BY option_create_time ASC
+        ORDER BY option_create_time DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 根据 oId 查询选项信息 -->
@@ -46,6 +82,24 @@
         INSERT INTO `option`(<include refid="insertOptionFields"></include>)
         VALUES(#{optionId}, #{optionContent}, #{questionId}, #{optionCreateTime})
     </insert>
+
+    <!-- 更新选项信息 -->
+    <!-- int updateOptionByOId(OptionEntity o); -->
+    <update id="updateOptionByOId" parameterType="OptionEntity">
+        UPDATE `option`
+        <set>
+            <if test="optionContent != null">
+                option_content = #{optionContent},
+            </if>
+            <if test="questionId != null">
+                question_id = #{questionId},
+            </if>
+            <if test="optionCreateTime != null">
+                option_create_time = #{optionCreateTime},
+            </if>
+        </set>
+        WHERE option_id = #{optionId}
+    </update>
 
     <!-- 删除选项信息 -->
     <!-- int deleteOptionByOId(String oId); -->

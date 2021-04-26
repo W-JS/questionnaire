@@ -2,10 +2,14 @@ $(function () {
     isURL();
     HideAddOption();// 隐藏新建选项
 
+    // GenerateQNTitle();// 生成问卷标题
+    // GenerateQTitle();// 生成问题标题
+    GenerateQNTitleAndQTitle();// 生成问卷标题和问题标题
+
     $("#oContent").focus();
     GenerateQAndO();// 动态生成当前问题的所有选项
 
-    $("#oContent").blur(OContent);
+    // $("#oContent").blur(OContent);
 
     $('#oContent').bind('keypress', oContentEnter);
 

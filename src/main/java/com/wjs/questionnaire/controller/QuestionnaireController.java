@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
 import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQNID;
 
 /**
@@ -64,7 +64,7 @@ public class QuestionnaireController {
     }
 
     /**
-     * 根据 qnId 得到问卷信息
+     * 根据 qnId 得到在线问卷信息
      *
      * @return 问卷信息
      */
@@ -73,6 +73,19 @@ public class QuestionnaireController {
     public JSONResult getQuestionnaire() {
         String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
         return questionnaireService.getQuestionnaireByQnId(qnId);
+    }
+
+    /**
+     * 根据 qnId 和 qId 得到 在线问卷信息 和 在线问题信息
+     *
+     * @return 问卷信息和问题信息
+     */
+    @GetMapping(value = "/getQuestionnaireAndQuestion")
+    @ResponseBody
+    public JSONResult getQuestionnaireAndQuestion() {
+        String qnId = (String) redisTemplate.opsForValue().get(OnlineQNID);
+        String qId = (String) redisTemplate.opsForValue().get(OnlineQID);
+        return questionnaireService.getQuestionnaireAndQuestionByQnIdAndQId(qnId, qId);
     }
 
     /**

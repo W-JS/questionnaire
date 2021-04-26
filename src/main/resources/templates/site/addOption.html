@@ -32,7 +32,19 @@
 
                         <!-- 内容顶部 -->
                         <div id="top" class="moduleTitle am-cf">
-                            <ul class="am-icon-book on"> 调查问卷管理</ul>
+                            <ul class="am-icon-book"> 调查问卷管理</ul>
+                            <ul>
+                                <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问卷:</p>
+                            </ul>
+                            <ul>
+                                <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qnTitle"></p>
+                            </ul>
+                            <ul>
+                                <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问题:</p>
+                            </ul>
+                            <ul>
+                                <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qTitle"></p>
+                            </ul>
                             <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                                 <a th:href="@{/option/addOption}">新建选项</a>
                             </dl>
@@ -49,10 +61,12 @@
                                 </div>
 
                                 <div class="am-form-group am-cf">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <button type="button" class="am-btn am-btn-success am-radius" id="save">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <button type="button" class="am-btn am-btn-default am-radius" id="cancel">取消</button>
+                                    <div class="popup-right">
+                                        <p>
+                                            <button style="margin-right: 100px;" type="button" class="am-btn am-btn-success am-radius" id="save">保存
+                                            </button>
+                                            <button type="button" class="am-btn am-btn-default am-radius" id="cancel">取消</button>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -90,6 +104,7 @@
         <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/GenerateQNTitleORQTitle.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/addOption.js}"></script>
     </body>
 </html>

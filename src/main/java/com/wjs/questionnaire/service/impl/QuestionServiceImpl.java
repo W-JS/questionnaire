@@ -41,43 +41,6 @@ public class QuestionServiceImpl implements IQuestionService {
     private RedisTemplate redisTemplate;
 
     /**
-     * 设置所有问卷的所有问题信息列表分页参数
-     *
-     * @param page 分页对象参数
-     * @return 分页结果
-     */
-    @Override
-    public PageUtil setQuestionListPage(PageUtil page) {
-        page.setRows(questionMapper.findQuestionRows());
-        page.setPath("/question/AllQuestion");
-        return page;
-    }
-
-    /**
-     * 获取所有问卷的所有问题信息列表
-     *
-     * @param offset 获取当前页的起始行
-     * @param limit  显示记录条数
-     * @return 问题信息列表
-     */
-    @Override
-    public List<Map<String, Object>> getQuestionList(int offset, int limit) {
-        List<Map<String, Object>> list = new ArrayList<>();
-
-        // 根据 qnId 查询当前问卷的所有问题
-        List<QuestionEntity> questionList = questionMapper.findAllQuestionPage( offset, limit);
-
-        if (questionList != null) {
-            for (QuestionEntity question : questionList) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("question", question);
-                list.add(map);
-            }
-        }
-        return list;
-    }
-
-    /**
      * 设置当前问卷所有问题信息列表分页参数
      *
      * @param page 分页对象参数
@@ -105,6 +68,42 @@ public class QuestionServiceImpl implements IQuestionService {
 
         // 根据 qnId 查询当前问卷的所有问题
         List<QuestionEntity> questionList = questionMapper.findQuestionPageByQnId(qnId, offset, limit);
+
+        if (questionList != null) {
+            for (QuestionEntity question : questionList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("question", question);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 设置所有问卷的所有问题信息列表分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    @Override
+    public PageUtil setAllQuestionListPage(PageUtil page) {
+        page.setRows(questionMapper.findAllQuestionRows());
+        page.setPath("/question/AllQuestion");
+        return page;
+    }
+
+    /**
+     * 获取所有问卷的所有问题信息列表
+     *
+     * @param offset 获取当前页的起始行
+     * @param limit  显示记录条数
+     * @return 问题信息列表
+     */
+    @Override
+    public List<Map<String, Object>> getAllQuestionList(int offset, int limit) {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        List<QuestionEntity> questionList = questionMapper.findAllQuestionPage(offset, limit);
 
         if (questionList != null) {
             for (QuestionEntity question : questionList) {
@@ -181,7 +180,6 @@ public class QuestionServiceImpl implements IQuestionService {
         jsonResult = JSONResult.build(data);
         return jsonResult;
     }
-
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题和连续后置问题
@@ -296,7 +294,7 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 一个指定的问题信息
      */
     @Override
-    public JSONResult getQuestionByQnIdAndQId(String qId) {
+    public JSONResult getQuestionByQId(String qId) {
         List<Map<String, Object>> data = new ArrayList<>();
         QuestionEntity question = questionMapper.findQuestionByQId(qId);
 

@@ -65,25 +65,6 @@ function HideQuestion() {
     });
 }
 
-// 生成问卷标题
-function GenerateQNTitle() {
-    $.ajax({
-        async: true, // 异步请求
-        type: "get",
-        url: CONTEXT_PATH + '/questionnaire/getQuestionnaire',
-        data: {},
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                let html = "<a href=\"#\" style=\"text-decoration: none;\">" + result.data.questionnaireTitle + "</a>";
-                $(html).appendTo($('#top ul .qnTitle'));
-            } else {
-                ShowFailure(result.message);
-            }
-        }
-    });
-}
-
 // 动态生成前置问题的页数
 function GeneratePQP() {
     $.ajax({
@@ -227,7 +208,7 @@ function PQGeneratePO() {
         $.ajax({
             async: false, // 异步请求
             type: "get",
-            url: CONTEXT_PATH + '/option/getOptionByQId',
+            url: CONTEXT_PATH + '/option/getOptionByPQId',
             data: {
                 'pQId': pQVal,
             },

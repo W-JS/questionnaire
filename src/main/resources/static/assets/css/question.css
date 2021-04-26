@@ -2,16 +2,6 @@ a {
     text-decoration: none !important;
 }
 
-ul .currentQN {
-    color: green;
-    font-family: 等线;
-}
-
-ul .qnTitle {
-    color: blue;
-    font-family: 等线;
-}
-
 thead .qTitle {
     min-width: 470px;
     max-width: 470px;
@@ -114,6 +104,11 @@ tbody .operating {
 
 .updateQuestion .popup-right p {
     text-align: center;
+}
+
+.updateQuestion .popup-right .am-btn-success, .updateQuestion .popup-right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: 1rem 1.8rem;
 }
 
 .updateQuestion .center .am-btn-group .am-selected .am-selected-content ul li span {

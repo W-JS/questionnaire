@@ -2,16 +2,6 @@ a {
     text-decoration: none !important;
 }
 
-ul .currentQN {
-    color: green;
-    font-family: 等线;
-}
-
-ul .qnTitle {
-    color: blue;
-    font-family: 等线;
-}
-
 .am-text-my {
     font-size: 20px;
 }
@@ -119,11 +109,6 @@ ul .qnTitle {
 
 .showQNAndQ .right .am-input-sm {
     font-size: 1.2rem !important
-}
-
-.showQNAndQ .right .am-btn-success, .showQNAndQ .right .am-btn-default {
-    font-size: 1.4rem !important;
-    padding: .65rem 1rem;
 }
 
 .am-form .am-input-my{

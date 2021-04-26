@@ -230,6 +230,11 @@ tbody .operating {
     text-align: center;
 }
 
+.updateQuestionnaire .popup-right .am-btn-success, .updateQuestionnaire .popup-right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: 1rem 1.8rem;
+}
+
 .updateQuestionnaire .center .am-btn-group .am-selected .am-selected-content ul li span {
     /*text-align: center;*/
     /*margin-left: 53px;*/

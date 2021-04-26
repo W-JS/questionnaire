@@ -9,29 +9,6 @@ import java.util.List;
 public interface QuestionMapper {
 
     /**
-     * 获取所有问卷的所有问题信息列表（不分页）
-     *
-     * @return 问题信息列表
-     */
-    List<QuestionEntity> findAllQuestionList();
-
-    /**
-     * 获取所有问卷的所有问题信息列表的行数
-     *
-     * @return 所有问卷的所有问题的行数
-     */
-    int findQuestionRows();
-
-    /**
-     * 获取所有问卷的所有问题信息列表（分页）
-     *
-     * @param offset 从第几条数据查询
-     * @param limit  需要查询的记录条数
-     * @return 所有问卷的所有问题
-     */
-    List<QuestionEntity> findAllQuestionPage(int offset, int limit);
-
-    /**
      * 根据 qnId 查询当前问卷的所有问题（不分页）
      *
      * @param qnId 当前问卷编号
@@ -56,6 +33,29 @@ public interface QuestionMapper {
      * @return 问题信息列表
      */
     List<QuestionEntity> findQuestionPageByQnId(String qnId, int offset, int limit);
+
+    /**
+     * 获取所有问卷的所有问题信息列表（不分页）
+     *
+     * @return 问题信息列表
+     */
+    List<QuestionEntity> findAllQuestionList();
+
+    /**
+     * 获取所有问卷的所有问题信息列表的行数
+     *
+     * @return 所有问卷的所有问题的行数
+     */
+    int findAllQuestionRows();
+
+    /**
+     * 获取所有问卷的所有问题信息列表（分页）
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 所有问卷的所有问题
+     */
+    List<QuestionEntity> findAllQuestionPage(int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题的行数
