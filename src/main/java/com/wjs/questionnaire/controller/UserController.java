@@ -201,4 +201,16 @@ public class UserController {
     public JSONResult getCodeExists(String userId, String code) {
         return userService.getCodeExists(userId, code);
     }
+
+
+    /**
+     * 获取在线用户信息
+     *
+     * @return 在线用户信息
+     */
+    @GetMapping(value = "/getOnlineUser")
+    @ResponseBody
+    public JSONResult getOnlineUser() {
+        return userService.getOnlineUser();
+    }
 }

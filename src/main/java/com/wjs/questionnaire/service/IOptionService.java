@@ -121,9 +121,4 @@ public interface IOptionService {
      * @return 选项信息是否删除成功
      */
     JSONResult getDeleteSubmit2(String option);
-
-    /**
-     * @return 存了 user 信息的 map
-     */
-    Map<String, Object> GetOnlineUser();
 }

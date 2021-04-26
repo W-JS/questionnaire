@@ -44,9 +44,7 @@ public class QuestionnaireController {
 //        List<Map<String, Object>> questionnaires = questionnaireService.getAllQuestionnaireList();
         PageUtil page = questionnaireService.setQuestionnaireListPage(pageUtil);
         List<Map<String, Object>> questionnaires = questionnaireService.getQuestionnaireList(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
         model.addAttribute("questionnaires", questionnaires);
-        model.addAttribute("map", onlineUser);
         return "/site/index";
     }
 
@@ -55,8 +53,6 @@ public class QuestionnaireController {
      */
     @GetMapping(value = "/addQuestionnaire")
     public String jumpAddQuestionnairePage(Model model) {
-        Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
-        model.addAttribute("map", onlineUser);
         return "/site/addQuestionnaire";
     }
 
@@ -71,9 +67,7 @@ public class QuestionnaireController {
     public String jumpIndexSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
         PageUtil page = questionnaireService.setLikeQuestionnaireListPage(pageUtil, searchWay, searchContent);
         List<Map<String, Object>> questionnaires = questionnaireService.getLikeQuestionnaireList(page.getOffset(), page.getLimit(), searchWay, searchContent);
-        Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
         model.addAttribute("questionnaires", questionnaires);
-        model.addAttribute("map", onlineUser);
         return "/site/index";
     }
 

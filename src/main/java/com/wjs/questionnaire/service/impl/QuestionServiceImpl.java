@@ -827,16 +827,4 @@ public class QuestionServiceImpl implements IQuestionService {
         }
         return jsonResult2;
     }
-
-    /**
-     * @return 存了 user 信息的 map
-     */
-    @Override
-    public Map<String, Object> GetOnlineUser() {
-        String OnlineUserID = (String) redisTemplate.opsForValue().get(ONLINEUSERID);
-        UserEntity user = userMapper.findUserByUserId(OnlineUserID);
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        return map;
-    }
 }

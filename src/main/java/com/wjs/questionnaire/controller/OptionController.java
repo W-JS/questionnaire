@@ -38,10 +38,8 @@ public class OptionController {
         redisTemplate.opsForValue().set(OnlineQID, qId);// 显示当前问题的所有选项，将 qId 存进Redis
         PageUtil page = optionService.setOptionListPageByQId(pageUtil);
         List<Map<String, Object>> options = optionService.getOptionListByQId(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = optionService.GetOnlineUser();
 
         model.addAttribute("options", options);
-        model.addAttribute("map", onlineUser);
         return "/site/Option";
     }
 
@@ -55,10 +53,8 @@ public class OptionController {
 //        List<Map<String, Object>> options = optionService.getAllOptionList();
         PageUtil page = optionService.setOptionListPageByQId(pageUtil);
         List<Map<String, Object>> options = optionService.getOptionListByQId(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = optionService.GetOnlineUser();
 
         model.addAttribute("options", options);
-        model.addAttribute("map", onlineUser);
         return "/site/Option";
     }
 
@@ -71,10 +67,8 @@ public class OptionController {
     public String jumpOptionPage3(Model model, PageUtil pageUtil) {
         PageUtil page = optionService.setAllOptionListPage(pageUtil);
         List<Map<String, Object>> options = optionService.getAllOptionList(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = optionService.GetOnlineUser();
 
         model.addAttribute("options", options);
-        model.addAttribute("map", onlineUser);
         return "/site/Option";
     }
 
@@ -83,8 +77,6 @@ public class OptionController {
      */
     @GetMapping(value = "/addOption")
     public String jumpAddOptionPage(Model model) {
-        Map<String, Object> onlineUser = optionService.GetOnlineUser();
-        model.addAttribute("map", onlineUser);
         return "/site/addOption";
     }
 
@@ -99,9 +91,7 @@ public class OptionController {
     public String jumpOptionSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
         PageUtil page = optionService.setLikeOptionListPage(pageUtil, searchWay, searchContent);
         List<Map<String, Object>> options = optionService.getLikeOptionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
-        Map<String, Object> onlineUser = optionService.GetOnlineUser();
         model.addAttribute("options", options);
-        model.addAttribute("map", onlineUser);
         return "/site/Option";
     }
 

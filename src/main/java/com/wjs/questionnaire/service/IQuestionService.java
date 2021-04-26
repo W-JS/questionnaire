@@ -221,9 +221,4 @@ public interface IQuestionService {
      * * @return 问题信息是否删除成功
      */
     JSONResult getDeleteSubmit3(String question);
-
-    /**
-     * @return 存了 user 信息的 map
-     */
-    Map<String, Object> GetOnlineUser();
 }

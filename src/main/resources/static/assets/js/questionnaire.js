@@ -298,7 +298,7 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                window.location.href = CONTEXT_PATH + "/questionnaire/index" + window.location.search;
+                window.location.href = window.location.pathname + window.location.search;
             } else {
                 ShowFailure(result.message);
             }
@@ -324,7 +324,7 @@ function DeleteSubmit() {
                 success: function (result) {
                     if (result.state == 1) {
                         ShowSuccess("删除成功！！！");
-                        window.location.href = CONTEXT_PATH + "/questionnaire/index" + window.location.search;
+                        window.location.href = window.location.pathname + window.location.search;
                     } else {
                         ShowFailure(result.message);
                     }
@@ -360,7 +360,7 @@ function DeleteChoose() {
                     success: function (result) {
                         if (result.state == 1) {
                             ShowSuccess("删除成功！！！");
-                            window.location.href = CONTEXT_PATH + "/questionnaire/index" + window.location.search;
+                            window.location.href = window.location.pathname + window.location.search;
                         } else {
                             ShowFailure(result.message);
                         }

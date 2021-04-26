@@ -33,8 +33,7 @@ function isURL() {
     // console.log(window.location.search);// ?current=7
     let index = url.lastIndexOf("/");
     url = url.substring(index + 1, url.length);
-
-    if (url == "Question" || url == "QuestionByQNId" || url == "AllQuestion") {
+    if (url == "Question" || url == "QuestionByQNId" || url == "AllQuestion" || url == "search") {
         Question();
     }
 }
@@ -622,11 +621,8 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                if (url == "AllQuestion") {
-                    window.location.href = CONTEXT_PATH + "/question/AllQuestion" + window.location.search;
-                } else {
-                    window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
-                }
+                window.location.href = window.location.pathname + window.location.search;
+
             } else {
                 ShowFailure(result.message);
             }
@@ -653,7 +649,7 @@ function DeleteSubmit() {
                 success: function (result) {
                     if (result.state == 1) {
                         ShowSuccess("删除成功！！！");
-                        window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                        window.location.href = window.location.pathname + window.location.search;
                     } else {
                         ShowFailure(result.message);
                     }
@@ -689,7 +685,7 @@ function DeleteChoose() {
                     success: function (result) {
                         if (result.state == 1) {
                             ShowSuccess("删除成功！！！");
-                            window.location.href = CONTEXT_PATH + "/question/Question" + window.location.search;
+                            window.location.href = window.location.pathname + window.location.search;
                         } else {
                             ShowFailure(result.message);
                         }

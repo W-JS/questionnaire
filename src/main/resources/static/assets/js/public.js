@@ -1,4 +1,6 @@
 $(function () {
+    GenerateOnlineUser();
+
     $("#search").click(Search);// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
 });
 
@@ -62,6 +64,26 @@ function GenerateQTitle() {
         }
     });
 }*/
+
+function GenerateOnlineUser() {
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/user/getOnlineUser',
+        data: {},
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                $('#userOperating option:first-child').val(result.data.userId);// 设置值
+                $('#userOperating option:first-child').text(result.data.userName);// 设置文本
+                // console.log($.trim($('#onlineUser').val()));// 取值
+                // console.log($.trim($('#onlineUser').text()));// 取文本
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
 
 // 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
 function Search() {

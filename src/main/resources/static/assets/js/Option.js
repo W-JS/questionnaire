@@ -217,11 +217,7 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                if (url == "AllOption") {
-                    window.location.href = CONTEXT_PATH + "/option/AllOption" + window.location.search;
-                } else {
-                    window.location.href = CONTEXT_PATH + "/option/Option" + window.location.search;
-                }
+                window.location.href = window.location.pathname + window.location.search;
             } else {
                 ShowFailure(result.message);
             }
@@ -248,11 +244,7 @@ function DeleteSubmit() {
                 success: function (result) {
                     if (result.state == 1) {
                         ShowSuccess("删除成功！！！");
-                        if (url == "AllOption") {
-                            window.location.href = CONTEXT_PATH + "/option/AllOption" + window.location.search;
-                        } else {
-                            window.location.href = CONTEXT_PATH + "/option/Option" + window.location.search;
-                        }
+                        window.location.href = window.location.pathname + window.location.search;
                     } else {
                         ShowFailure(result.message);
                     }
@@ -288,11 +280,7 @@ function DeleteChoose() {
                     success: function (result) {
                         if (result.state == 1) {
                             ShowSuccess("删除成功！！！");
-                            if (url == "AllOption") {
-                                window.location.href = CONTEXT_PATH + "/option/AllOption" + window.location.search;
-                            } else {
-                                window.location.href = CONTEXT_PATH + "/option/Option" + window.location.search;
-                            }
+                            window.location.href = window.location.pathname + window.location.search;
                         } else {
                             ShowFailure(result.message);
                         }

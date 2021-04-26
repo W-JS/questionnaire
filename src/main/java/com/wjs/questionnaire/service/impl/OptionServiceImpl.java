@@ -1,7 +1,6 @@
 package com.wjs.questionnaire.service.impl;
 
 import com.wjs.questionnaire.entity.OptionEntity;
-import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.OptionMapper;
 import com.wjs.questionnaire.mapper.UserMapper;
@@ -301,17 +300,5 @@ public class OptionServiceImpl implements IOptionService {
             jsonResult2 = JSONResult.build("问卷信息删除失败！！！");
         }
         return jsonResult2;
-    }
-
-    /**
-     * @return 存了 user 信息的 map
-     */
-    @Override
-    public Map<String, Object> GetOnlineUser() {
-        String OnlineUserID = (String) redisTemplate.opsForValue().get(ONLINEUSERID);
-        UserEntity user = userMapper.findUserByUserId(OnlineUserID);
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        return map;
     }
 }

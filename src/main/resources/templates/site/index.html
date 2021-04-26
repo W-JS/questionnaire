@@ -13,8 +13,6 @@
         <title>调查问卷后台管理-首页</title>
     </head>
     <body>
-        <input type="hidden" id="userId" name="userId" th:value="${map.user.userId}">
-
         <!-- 头部 -->
         <header class="am-topbar admin-header" th:fragment="header">
             <div class="am-topbar-brand"><img th:src="@{/assets/img/index.png}"></div>
@@ -38,10 +36,13 @@
                     </li>-->
 
                     <li class="topFunction">
-                        <p id="user">
-                            <select data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
-                                <option th:utext="${map.user.userName}">在线用户名</option>
-                                <option value="o">个人中心</option>
+<!--                        <input type="hidden" id="userId" name="userId" th:value="${map.user.userId}">-->
+                        <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎系统管理员:</p>
+                        <p>
+                            <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
+<!--                                <option th:utext="${map.user.userName}">在线用户名</option>-->
+                                <option id="onlineUser" value="">在线用户名</option>
+                                <option id="personalCenter" value="o">个人中心</option>
                                 <option value="o">退出</option>
                             </select>
                         </p>
@@ -74,7 +75,7 @@
         <div class="am-cf admin-main">
             <!-- 左侧边栏 -->
             <sidebar class="nav-navicon admin-main admin-sidebar" th:fragment="sidebar">
-                <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> 欢迎系统管理员：清风抚雪</div>
+<!--                <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> 欢迎系统管理员：清风抚雪</div>-->
                 <div class="sideMenu">
                     <h3 class="am-icon-book on"><a href="#">调查问卷管理</a></h3>
                     <ul>

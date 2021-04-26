@@ -118,9 +118,4 @@ public interface IQuestionnaireService {
      * 生成测试问卷信息
      */
     JSONResult GenerateQuestionnaire() throws Exception;
-
-    /**
-     * @return 存了 user 信息的 map
-     */
-    Map<String, Object> GetOnlineUser();
 }

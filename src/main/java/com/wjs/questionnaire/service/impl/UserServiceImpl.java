@@ -312,4 +312,17 @@ public class UserServiceImpl implements IUserService {
         }
         return jsonResult;
     }
+
+
+    /**
+     * 获取在线用户信息
+     *
+     * @return 在线用户信息
+     */
+    @Override
+    public JSONResult getOnlineUser() {
+        String OnlineUserID = (String) redisTemplate.opsForValue().get(ONLINEUSERID);
+        UserEntity user = userMapper.findUserByUserId(OnlineUserID);
+        return JSONResult.build(user);
+    }
 }

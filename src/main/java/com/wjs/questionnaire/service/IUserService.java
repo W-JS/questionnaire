@@ -1,6 +1,8 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.util.JSONResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 处理用户信息数据的业务层接口
@@ -111,5 +113,13 @@ public interface IUserService {
      * @return 验证码是否正确
      */
     JSONResult getCodeExists(String userId, String code);
+
+
+    /**
+     * 获取在线用户信息
+     *
+     * @return 在线用户信息
+     */
+     JSONResult getOnlineUser();
 
 }

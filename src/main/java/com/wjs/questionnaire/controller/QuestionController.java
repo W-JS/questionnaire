@@ -39,10 +39,8 @@ public class QuestionController {
         redisTemplate.opsForValue().set(OnlineQNID, qnId);// 显示当前问卷的所有问题，将 qnId 存进Redis
         PageUtil page = questionService.setQuestionListPageByQNId(pageUtil);
         List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = questionService.GetOnlineUser();
 
         model.addAttribute("questions", questions);
-        model.addAttribute("map", onlineUser);
         return "/site/Question";
     }
 
@@ -55,10 +53,8 @@ public class QuestionController {
     public String jumpQuestionPage2(Model model, PageUtil pageUtil) {
         PageUtil page = questionService.setQuestionListPageByQNId(pageUtil);
         List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = questionService.GetOnlineUser();
 
         model.addAttribute("questions", questions);
-        model.addAttribute("map", onlineUser);
         return "/site/Question";
     }
 
@@ -71,10 +67,8 @@ public class QuestionController {
     public String jumpQuestionPage3(Model model, PageUtil pageUtil) {
         PageUtil page = questionService.setAllQuestionListPage(pageUtil);
         List<Map<String, Object>> questions = questionService.getAllQuestionList(page.getOffset(), page.getLimit());
-        Map<String, Object> onlineUser = questionService.GetOnlineUser();
 
         model.addAttribute("questions", questions);
-        model.addAttribute("map", onlineUser);
         return "/site/Question";
     }
 
@@ -83,8 +77,6 @@ public class QuestionController {
      */
     @GetMapping(value = "/addQuestion")
     public String jumpAddOptionsPage(Model model) {
-        Map<String, Object> onlineUser = questionService.GetOnlineUser();
-        model.addAttribute("map", onlineUser);
         return "/site/addQuestion";
     }
 
@@ -99,9 +91,7 @@ public class QuestionController {
     public String jumpQuestionSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
         PageUtil page = questionService.setLikeQuestionListPage(pageUtil, searchWay, searchContent);
         List<Map<String, Object>> questions = questionService.getLikeQuestionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
-        Map<String, Object> onlineUser = questionService.GetOnlineUser();
         model.addAttribute("questions", questions);
-        model.addAttribute("map", onlineUser);
         return "/site/Question";
     }
 
