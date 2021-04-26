@@ -20,16 +20,34 @@ public interface QuestionnaireMapper {
      *
      * @return 问卷信息列表的行数
      */
-    int findQuestionnaireRows();
+    int findAllQuestionnaireRows();
 
     /**
-     * 获取所有问卷信息列表
+     * 获取所有问卷信息列表（分页）
      *
      * @param offset 从第几条数据查询
      * @param limit  需要查询的记录条数
      * @return 问卷信息列表
      */
-    List<QuestionnaireEntity> findQuestionnairePage(int offset, int limit);
+    List<QuestionnaireEntity> findAllQuestionnairePage(int offset, int limit);
+
+    /**
+     * 获取模糊查询 问卷标题 的问卷信息列表的行数
+     *
+     * @param qnTitle 问卷标题
+     * @return 模糊查询 问卷标题 的问卷信息列表的行数
+     */
+    int findLikeQuestionnaireRowsByQnTitle(String qnTitle);
+
+    /**
+     * 获取模糊查询 问卷标题 的问卷信息列表（分页）
+     *
+     * @param qnTitle 问卷标题
+     * @param offset  从第几条数据查询
+     * @param limit   需要查询的记录条数
+     * @return 模糊查询 问卷标题 的问卷信息列表
+     */
+    List<QuestionnaireEntity> findLikeQuestionnairePageByQnTitle(String qnTitle, int offset, int limit);
 
     /**
      * 根据 qnId 得到问卷信息

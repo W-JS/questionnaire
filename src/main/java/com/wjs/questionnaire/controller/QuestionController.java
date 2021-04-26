@@ -89,6 +89,23 @@ public class QuestionController {
     }
 
     /**
+     * 根据搜索内容模糊查询问题信息
+     *
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 进入 调查问卷后台管理-问题
+     */
+    @GetMapping(value = "/search")
+    public String jumpQuestionSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
+        PageUtil page = questionService.setLikeQuestionListPage(pageUtil, searchWay, searchContent);
+        List<Map<String, Object>> questions = questionService.getLikeQuestionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
+        Map<String, Object> onlineUser = questionService.GetOnlineUser();
+        model.addAttribute("questions", questions);
+        model.addAttribute("map", onlineUser);
+        return "/site/Question";
+    }
+
+    /**
      * 根据 qnId 查询当前问卷的所有问题
      *
      * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题

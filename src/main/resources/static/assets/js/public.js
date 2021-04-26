@@ -1,3 +1,7 @@
+$(function () {
+    $("#search").click(Search);// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
+});
+
 // 生成问卷标题
 function GenerateQNTitle() {
     $.ajax({
@@ -58,3 +62,24 @@ function GenerateQTitle() {
         }
     });
 }*/
+
+// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
+function Search() {
+    let searchWay = $.trim($('#searchWay option:selected').val());// 搜索方式：问卷/问题/选项
+    let searchContent = $.trim($('#searchContent').val());// 搜索内容
+
+    if (searchContent != "" && searchContent.length != 0) {
+        if (searchWay == "questionnaire") {
+            window.location.href = CONTEXT_PATH + "/questionnaire/search" + "?searchWay=" + searchWay + "&searchContent=" + searchContent;
+        } else if (searchWay == "question") {
+            window.location.href = CONTEXT_PATH + "/question/search" + "?searchWay=" + searchWay + "&searchContent=" + searchContent;
+        } else if (searchWay == "option") {
+            window.location.href = CONTEXT_PATH + "/option/search" + "?searchWay=" + searchWay + "&searchContent=" + searchContent;
+        }
+    } else {
+        $('#searchContent').focus();
+        ShowFailure("请输入搜索内容！！！");
+    }
+
+
+}

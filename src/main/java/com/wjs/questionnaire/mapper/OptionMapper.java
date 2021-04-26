@@ -58,6 +58,24 @@ public interface OptionMapper {
     List<OptionEntity> findAllOptionPage(int offset, int limit);
 
     /**
+     * 获取模糊查询 选项内容 的选项信息列表的行数
+     *
+     * @param oContent 选项内容
+     * @return模糊查询 选项内容 的选项信息列表的行数
+     */
+    int findLikeOptionRowsByoContent(String oContent);
+
+    /**
+     * 获取模糊查询 选项内容 的选项信息列表（分页）
+     *
+     * @param oContent 选项内容
+     * @param offset   从第几条数据查询
+     * @param limit    需要查询的记录条数
+     * @return 模糊查询 选项内容 的选项信息列表
+     */
+    List<OptionEntity> findLikeOptionPageByoContent(String oContent, int offset, int limit);
+
+    /**
      * 根据 oId 查询选项信息
      *
      * @param oId 当前选项编号

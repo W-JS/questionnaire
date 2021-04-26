@@ -17,4 +17,9 @@ public class UUIDGenerator {
         String randomUUID = UUID.randomUUID().toString().replace("-", "");
         return randomUUID;
     }
+
+    // 生成随机字符串
+    public static String generateUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 }

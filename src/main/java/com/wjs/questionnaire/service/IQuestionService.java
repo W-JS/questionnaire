@@ -46,6 +46,27 @@ public interface IQuestionService {
     List<Map<String, Object>> getAllQuestionList(int offset, int limit);
 
     /**
+     * 设置分页参数
+     *
+     * @param page          分页对象参数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 分页结果
+     */
+    PageUtil setLikeQuestionListPage(PageUtil page, String searchWay, String searchContent);
+
+    /**
+     * 获取模糊查询 问题标题 的问题信息列表
+     *
+     * @param offset        从第几条数据查询
+     * @param limit         需要查询的记录条数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 问题信息列表
+     */
+    List<Map<String, Object>> getLikeQuestionList(int offset, int limit, String searchWay, String searchContent);
+
+    /**
      * 根据 qnId 查询当前问卷的所有问题
      *
      * @return JSON格式数据：根据 qnId 查询当前问卷的所有问题

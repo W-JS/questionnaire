@@ -34,7 +34,7 @@ public class OptionController {
      * @return 进入 调查问卷后台管理-选项
      */
     @GetMapping(value = "/OptionByQId")
-    public String jumpQuestionPage1(@RequestParam("qId") String qId, Model model, PageUtil pageUtil) {
+    public String jumpOptionPage1(@RequestParam("qId") String qId, Model model, PageUtil pageUtil) {
         redisTemplate.opsForValue().set(OnlineQID, qId);// 显示当前问题的所有选项，将 qId 存进Redis
         PageUtil page = optionService.setOptionListPageByQId(pageUtil);
         List<Map<String, Object>> options = optionService.getOptionListByQId(page.getOffset(), page.getLimit());
@@ -86,6 +86,23 @@ public class OptionController {
         Map<String, Object> onlineUser = optionService.GetOnlineUser();
         model.addAttribute("map", onlineUser);
         return "/site/addOption";
+    }
+
+    /**
+     * 根据搜索内容模糊查询选项信息
+     *
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 进入 调查问卷后台管理-选项
+     */
+    @GetMapping(value = "/search")
+    public String jumpOptionSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
+        PageUtil page = optionService.setLikeOptionListPage(pageUtil, searchWay, searchContent);
+        List<Map<String, Object>> options = optionService.getLikeOptionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
+        Map<String, Object> onlineUser = optionService.GetOnlineUser();
+        model.addAttribute("options", options);
+        model.addAttribute("map", onlineUser);
+        return "/site/Option";
     }
 
     /**

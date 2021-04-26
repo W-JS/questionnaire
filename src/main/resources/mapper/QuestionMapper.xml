@@ -78,6 +78,25 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <!-- 获取模糊查询 问题标题 的问题信息列表的行数 -->
+    <!-- int findLikeQuestionRowsByQTitle(String qTitle); -->
+    <select id="findLikeQuestionRowsByQTitle" resultType="int">
+        SELECT COUNT(question_id)
+        FROM `question`
+        WHERE question_title LIKE CONCAT(CONCAT('%',#{qTitle},'%'))
+    </select>
+
+    <!-- 获取模糊查询 问题标题 的问题信息列表（分页） -->
+    <!-- List<QuestionEntity> findLikeQuestionPageByQTitle(String qTitle, int offset, int limit); -->
+    <select id="findLikeQuestionPageByQTitle" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question`
+        WHERE question_title LIKE CONCAT(CONCAT('%',#{qTitle},'%'))
+        ORDER BY question_create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <!-- 根据 qnId 查询当前问卷未被前置的问题的行数 -->
     <!-- int findNoPrependedQuestionRowsByQnId(String qnId); -->
     <select id="findNoPrependedQuestionRowsByQnId" resultType="int">

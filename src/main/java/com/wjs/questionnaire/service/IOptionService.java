@@ -46,6 +46,27 @@ public interface IOptionService {
     List<Map<String, Object>> getAllOptionList(int offset, int limit);
 
     /**
+     * 设置分页参数
+     *
+     * @param page          分页对象参数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 分页结果
+     */
+    PageUtil setLikeOptionListPage(PageUtil page, String searchWay, String searchContent);
+
+    /**
+     * 获取模糊查询 选项内容 的选项信息列表
+     *
+     * @param offset        从第几条数据查询
+     * @param limit         需要查询的记录条数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 选项信息列表
+     */
+    List<Map<String, Object>> getLikeOptionList(int offset, int limit, String searchWay, String searchContent);
+
+    /**
      * 获取所有选项信息列表
      *
      * @return 选项信息列表

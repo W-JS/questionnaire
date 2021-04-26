@@ -1,6 +1,7 @@
 package com.wjs.questionnaire.service.impl;
 
 import com.wjs.questionnaire.entity.OptionEntity;
+import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.OptionMapper;
 import com.wjs.questionnaire.mapper.UserMapper;
@@ -97,6 +98,46 @@ public class OptionServiceImpl implements IOptionService {
         List<Map<String, Object>> list = new ArrayList<>();
 
         List<OptionEntity> optionList = optionMapper.findAllOptionPage(offset, limit);
+
+        if (optionList != null) {
+            for (OptionEntity option : optionList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("option", option);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 设置分页参数
+     *
+     * @param page          分页对象参数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 分页结果
+     */
+    @Override
+    public PageUtil setLikeOptionListPage(PageUtil page, String searchWay, String searchContent) {
+        page.setRows(optionMapper.findLikeOptionRowsByoContent(searchContent));
+        page.setPath("/option/search" + "?searchWay=" + searchWay + "&searchContent=" + searchContent);
+        return page;
+    }
+
+    /**
+     * 获取模糊查询 选项内容 的选项信息列表
+     *
+     * @param offset        从第几条数据查询
+     * @param limit         需要查询的记录条数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 选项信息列表
+     */
+    @Override
+    public List<Map<String, Object>> getLikeOptionList(int offset, int limit, String searchWay, String searchContent) {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        List<OptionEntity> optionList = optionMapper.findLikeOptionPageByoContent(searchContent, offset, limit);
 
         if (optionList != null) {
             for (OptionEntity option : optionList) {

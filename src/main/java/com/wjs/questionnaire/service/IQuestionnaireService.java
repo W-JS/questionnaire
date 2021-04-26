@@ -24,7 +24,7 @@ public interface IQuestionnaireService {
      * @param page 分页对象参数
      * @return 分页结果
      */
-    PageUtil setPage(PageUtil page);
+    PageUtil setQuestionnaireListPage(PageUtil page);
 
     /**
      * 获取所有问卷信息列表
@@ -33,7 +33,28 @@ public interface IQuestionnaireService {
      * @param limit  需要查询的记录条数
      * @return 问卷信息列表
      */
-    List<Map<String, Object>> findQuestionnairePage(int offset, int limit);
+    List<Map<String, Object>> getQuestionnaireList(int offset, int limit);
+
+    /**
+     * 设置分页参数
+     *
+     * @param page          分页对象参数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 分页结果
+     */
+    PageUtil setLikeQuestionnaireListPage(PageUtil page, String searchWay, String searchContent);
+
+    /**
+     * 获取模糊查询 问卷标题 的问卷信息列表
+     *
+     * @param offset        从第几条数据查询
+     * @param limit         需要查询的记录条数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 问卷信息列表
+     */
+    List<Map<String, Object>> getLikeQuestionnaireList(int offset, int limit, String searchWay, String searchContent);
 
     /**
      * 根据 qnId 得到问卷信息
@@ -42,7 +63,6 @@ public interface IQuestionnaireService {
      * @return JSON格式数据：问卷信息
      */
     JSONResult getQuestionnaireByQnId(String qnId);
-
 
     /**
      * 根据 qnId 和 qId 得到 在线问卷信息 和 在线问题信息

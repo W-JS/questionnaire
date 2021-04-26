@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -45,8 +42,8 @@ public class QuestionnaireController {
     @GetMapping(value = "/index")
     public String jumpIndexPage(Model model, PageUtil pageUtil) {
 //        List<Map<String, Object>> questionnaires = questionnaireService.getAllQuestionnaireList();
-        PageUtil page = questionnaireService.setPage(pageUtil);
-        List<Map<String, Object>> questionnaires = questionnaireService.findQuestionnairePage(page.getOffset(), page.getLimit());
+        PageUtil page = questionnaireService.setQuestionnaireListPage(pageUtil);
+        List<Map<String, Object>> questionnaires = questionnaireService.getQuestionnaireList(page.getOffset(), page.getLimit());
         Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
         model.addAttribute("questionnaires", questionnaires);
         model.addAttribute("map", onlineUser);
@@ -61,6 +58,23 @@ public class QuestionnaireController {
         Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
         model.addAttribute("map", onlineUser);
         return "/site/addQuestionnaire";
+    }
+
+    /**
+     * 根据搜索内容模糊查询问卷信息
+     *
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 进入 调查问卷后台管理-问卷
+     */
+    @GetMapping(value = "/search")
+    public String jumpIndexSearchPage(Model model, PageUtil pageUtil, @RequestParam("searchWay") String searchWay, @RequestParam("searchContent") String searchContent) {
+        PageUtil page = questionnaireService.setLikeQuestionnaireListPage(pageUtil, searchWay, searchContent);
+        List<Map<String, Object>> questionnaires = questionnaireService.getLikeQuestionnaireList(page.getOffset(), page.getLimit(), searchWay, searchContent);
+        Map<String, Object> onlineUser = questionnaireService.GetOnlineUser();
+        model.addAttribute("questionnaires", questionnaires);
+        model.addAttribute("map", onlineUser);
+        return "/site/index";
     }
 
     /**

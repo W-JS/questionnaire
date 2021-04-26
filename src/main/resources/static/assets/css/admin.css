@@ -1092,6 +1092,7 @@ form .form-group:last-child{padding-bottom:0;}
 .topFunction .am-input-sm {
     padding: 0 4px;
     height: 28px;
+    width: 500px;
     line-height: 28px;
     border: solid 1px #e6e6e6;
     border-left: none;

@@ -1,6 +1,7 @@
 package com.wjs.questionnaire.mapper;
 
 import com.wjs.questionnaire.entity.QuestionEntity;
+import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -56,6 +57,24 @@ public interface QuestionMapper {
      * @return 所有问卷的所有问题
      */
     List<QuestionEntity> findAllQuestionPage(int offset, int limit);
+
+    /**
+     * 获取模糊查询 问题标题 的问题信息列表的行数
+     *
+     * @param qTitle 问题标题
+     * @return 模糊查询 问题标题 的问题信息列表的行数
+     */
+    int findLikeQuestionRowsByQTitle(String qTitle);
+
+    /**
+     * 获取模糊查询 问题标题 的问题信息列表（分页）
+     *
+     * @param qTitle 问题标题
+     * @param offset  从第几条数据查询
+     * @param limit   需要查询的记录条数
+     * @return 模糊查询 问题标题 的问题信息列表
+     */
+    List<QuestionEntity> findLikeQuestionPageByQTitle(String qTitle, int offset, int limit);
 
     /**
      * 根据 qnId 查询当前问卷未被前置的问题的行数

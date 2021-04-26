@@ -73,8 +73,8 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
      * @return 分页结果
      */
     @Override
-    public PageUtil setPage(PageUtil page) {
-        page.setRows(questionnaireMapper.findQuestionnaireRows());
+    public PageUtil setQuestionnaireListPage(PageUtil page) {
+        page.setRows(questionnaireMapper.findAllQuestionnaireRows());
         page.setPath("/questionnaire/index");
         return page;
     }
@@ -87,10 +87,50 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
      * @return 问卷信息列表
      */
     @Override
-    public List<Map<String, Object>> findQuestionnairePage(int offset, int limit) {
+    public List<Map<String, Object>> getQuestionnaireList(int offset, int limit) {
         List<Map<String, Object>> list = new ArrayList<>();
 
-        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findQuestionnairePage(offset, limit);
+        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findAllQuestionnairePage(offset, limit);
+
+        if (questionnaireList != null) {
+            for (QuestionnaireEntity questionnaire : questionnaireList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("questionnaire", questionnaire);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 设置分页参数
+     *
+     * @param page          分页对象参数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 分页结果
+     */
+    @Override
+    public PageUtil setLikeQuestionnaireListPage(PageUtil page, String searchWay, String searchContent) {
+        page.setRows(questionnaireMapper.findLikeQuestionnaireRowsByQnTitle(searchContent));
+        page.setPath("/questionnaire/search" + "?searchWay=" + searchWay + "&searchContent=" + searchContent);
+        return page;
+    }
+
+    /**
+     * 获取模糊查询 问卷标题 的问卷信息列表
+     *
+     * @param offset        从第几条数据查询
+     * @param limit         需要查询的记录条数
+     * @param searchWay     搜索方式
+     * @param searchContent 搜索内容
+     * @return 问卷信息列表
+     */
+    @Override
+    public List<Map<String, Object>> getLikeQuestionnaireList(int offset, int limit, String searchWay, String searchContent) {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findLikeQuestionnairePageByQnTitle(searchContent, offset, limit);
 
         if (questionnaireList != null) {
             for (QuestionnaireEntity questionnaire : questionnaireList) {

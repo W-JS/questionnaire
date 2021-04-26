@@ -25,18 +25,37 @@
     </select>
 
     <!-- 获取所有问卷信息列表的行数 -->
-    <!-- int findQuestionnaireRows(); -->
-    <select id="findQuestionnaireRows" resultType="int">
+    <!-- int findAllQuestionnaireRows(); -->
+    <select id="findAllQuestionnaireRows" resultType="int">
         SELECT COUNT(questionnaire_id)
         FROM `questionnaire`
     </select>
 
     <!-- 获取所有问卷信息列表 -->
-    <!-- List<QuestionnaireEntity> findQuestionnairePage(int offset, int limit); -->
-    <select id="findQuestionnairePage" resultType="QuestionnaireEntity">
+    <!-- List<QuestionnaireEntity> findAllQuestionnairePage(int offset, int limit); -->
+    <select id="findAllQuestionnairePage" resultType="QuestionnaireEntity">
         SELECT
         <include refid="selectQuestionnaireFields"></include>
         FROM `questionnaire`
+        ORDER BY questionnaire_create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取模糊查询 问卷标题 的问卷信息列表的行数 -->
+    <!-- int findLikeQuestionnaireRowsByQnTitle(String qnTitle); -->
+    <select id="findLikeQuestionnaireRowsByQnTitle" resultType="int">
+        SELECT COUNT(questionnaire_id)
+        FROM `questionnaire`
+        WHERE questionnaire_title LIKE CONCAT(CONCAT('%',#{qnTitle},'%'))
+    </select>
+
+    <!-- 获取模糊查询 问卷标题 的问卷信息列表（分页） -->
+    <!-- List<QuestionnaireEntity> findLikeQuestionnairePageByQnTitle(String qnTitle, int offset, int limit); -->
+    <select id="findLikeQuestionnairePageByQnTitle" resultType="QuestionnaireEntity">
+        SELECT
+        <include refid="selectQuestionnaireFields"></include>
+        FROM `questionnaire`
+        WHERE questionnaire_title LIKE CONCAT(CONCAT('%',#{qnTitle},'%'))
         ORDER BY questionnaire_create_time DESC
         LIMIT #{offset}, #{limit}
     </select>
@@ -54,7 +73,8 @@
     <!-- int insertQuestionnaire(QuestionnaireEntity qn); -->
     <insert id="insertQuestionnaire" parameterType="QuestionnaireEntity">
         INSERT INTO `questionnaire`(<include refid="insertQuestionnaireFields"></include>)
-        VALUES(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus}, #{questionnaireCreateTime}, #{userId})
+        VALUES(#{questionnaireId}, #{questionnaireTitle}, #{questionnaireFuTitle}, #{questionnaireDescription}, #{questionnaireStatus},
+        #{questionnaireCreateTime}, #{userId})
     </insert>
 
     <!-- 更新问卷信息 -->
