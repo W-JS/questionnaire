@@ -338,7 +338,14 @@ function saveSubmit() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                window.location.href = CONTEXT_PATH + "/option/addOption";
+                if (qt == "singleChoice" || qt == "multipleChoice") {
+                    window.location.href = CONTEXT_PATH + "/option/addOption";
+                } else {
+                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                    setTimeout(function () {
+                        window.location.href = CONTEXT_PATH + "/question/addQuestion";
+                    }, 1000);
+                }
             } else {
                 ShowFailure(result.message);
             }

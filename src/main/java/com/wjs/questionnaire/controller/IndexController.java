@@ -1,6 +1,7 @@
 package com.wjs.questionnaire.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -19,5 +20,13 @@ public class IndexController {
 //        return "forward:/user/login";// 转发：不修改URL地址，进入login页面无法加载静态资源
 //        return "redirect:/user/login";// 重定向：修改URL地址，进入login页面可以加载静态资源
         return "forward:/questionnaire/index";
+    }
+
+    /**
+     * @return 进入 问卷
+     */
+    @GetMapping(value = "/questionnaire")
+    public String jumpAddOptionsPage(Model model) {
+        return "/site/questionnaire";
     }
 }

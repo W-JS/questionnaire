@@ -1,365 +1,254 @@
-a {
-    text-decoration: none !important;
-}
-
-.sideMenu {
-    padding: 0px;
-    margin: 0px
-}
-
-.sideMenu h3 {
-    height: 32px;
-    line-height: 32px;
-    color: #aeb2b7;
-    cursor: pointer;
-    padding: 0 0 0 10px;
-    margin: 20px 0 0 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    font-weight: 400;
-    width: 100%
-}
-
-.sideMenu h3 em {
-    float: right;
-    display: block;
-    width: 40px;
-    height: 32px;
-    background: url(../img/icoAdd.png) 16px 12px no-repeat;
-    cursor: pointer
-}
-
-.sideMenu h3.on em {
-    background-position: 16px -57px
-}
-
-.sideMenu h3.on {
-    color: #ff6c60;
-    background: #35404d
-}
-
-.sideMenu h3 a {
-    color: #aeb2b7;
-}
-
-.sideMenu ul {
-    line-height: 24px;
-    color: #999;
-    display: none; /* 默认都隐藏 */;
-    background: #35404d;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-    padding: 0px 0 10px 0;
-    margin: 0px
-}
-
-.sideMenu li {
-    text-indent: 25px;
-    width: 100%
-}
-
-.sideMenu li {
-    text-indent: 25px;
-    width: 100%
-}
-
-.sideMenu li a {
-    color: #aeb2b7;
-}
-
-.sideMenu li a:hover {
-    color: #f8675e
-}
-
-.qns {
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
-}
-
-.qns a:hover {
-    color: blue; /*鼠标移动到链接的颜色*/
-    text-decoration: none; /*去掉下划线*/
-}
-
-.qn {
-    background-color: #42cac0;
-    height: 228px;
-    color: #fff;
-    box-sizing: border-box;
-    flex: 0 14%;
-    margin: 15px;
-    text-align: center;
-}
-
-.qns .qn .qntitle {
-    margin: 0px;
-    font-size: 20px;
-    border-bottom: solid white 1px;
-}
-
-.qns .qn .qnfutitle {
-    margin: 0px;
-    font-size: 15px;
-    width: 100%;
-    border-bottom: solid white 1px;
-}
-
-.qns .qn .qndes {
-    font-size: 15px;
-    width: 100%;
-    text-align: left;
-    margin: 0px 5px;
+.navigation {
+    left: 0px;
+    background-color: #2575d4;
 }
 
 
-thead .qnTitle {
-    min-width: 235px;
-    max-width: 235px;
-    text-align: center;
+.tableList {
+    background-color: #f1f2f7;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 85px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-thead .qnFuTitle {
-    min-width: 235px;
-    max-width: 235px;
-    text-align: center;
+/*
+
+.tableList .am-btn-default {
+    background-color: #fff;
+    border-color: #e6e6e6
 }
 
-thead .qnDescription {
-    min-width: 600px;
-    max-width: 600px;
-    text-align: center;
+.tableList .am-btn-default:hover {
+    background-color: #e6e6e6
 }
 
-thead .operating {
-    min-width: 150px;
-    max-width: 150px;
-    text-align: center;
+.tableList .am-btn {
+    padding: .3em 1em
 }
 
-
-tbody .qnTitle {
-    min-width: 235px;
-    max-width: 235px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-tbody .qnFuTitle {
-    min-width: 235px;
-    max-width: 235px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-tbody .qnTitle a {
-    text-decoration: none;
-}
-
-tbody .qnDescription {
-    min-width: 600px;
-    max-width: 600px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-tbody .operating {
-    min-width: 150px;
-    max-width: 150px;
-    display: flex;
-    justify-content: center;
-}
-
-.mt-5 .page {
-    margin-left: 5px;
-}
-
-.am-text-my {
-    font-size: 20px;
-}
-
-.txFixedSize1 {
-    min-height: 50px;
-    max-height: 80px;
-    min-width: 820px;
-    max-width: 830px;
-}
-
-.txFixedSize2 {
-    height: auto;
-    min-height: 50px;
-    max-height: 240px;
-    min-width: 820px;
-    max-width: 830px;
-}
-
-.table-check {
-    width: 30px
-}
-
-.updateQuestionnaire {
-    width: 100%;
-    margin: 0 auto;
+.tableList .am-u-sm-12 {
+    padding: .3em 0.9em;
     font-size: 14px;
 }
 
-.updateQuestionnaire .left {
-    width: 15%;
+.tableList .am-input-zm {
+    padding: 3px !important;
+    text-align: center;
+    font-size: 12px !important;
+    text-align: left;
+    width: 100px;
+    background-color: #fff;
+    list-style-type: none;
+}
+
+.tableList .am-input-xm {
+    padding: 3px !important;
+    text-align: center;
+    font-size: 12px !important;
+    text-align: left;
+    width: 100px;
+    background-color: #fff;
+    list-style-type: none;
+    margin-top: 3px;
+}
+
+.tableList .am-btn-sm {
+    height: 24px;
+    font-size: 12px
+}
+
+.tableList .am-btn-toolbar .am-selected-list li {
+    padding: 2px 8px
+}
+
+.tableList .am-btn-toolbar .am-selected-list {
+    font-size: 12px !important
+}
+
+.tableList .am-btn-toolbars {
+    background-color: #fff;
+    width: 98%;
+    margin: 0 auto;
+    padding-top: 5px;
+}
+
+.tableList .am-g {
+    background-color: #fff;
+    width: 98%;
+    margin: 0 auto 15px auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 15px .9em 0px 1em;
+    font-size: 14px;
+}
+
+.tableList .am-tabs {
+    background-color: #fff;
+    width: 98%;
+    margin: 0 auto 15px auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 15px 1em;
+    font-size: 14px;
+}
+
+.tableList .am-selected-list .am-icon-check {
+    top: 2px
+}
+
+.tableList .am-table {
+    margin-bottom: 0.8rem;
+}
+
+.tableList .am-pagination {
+    margin: 0;
+}
+
+.tableList .am-btn-group {
+    z-index: 999
+}*/
+
+
+.questionnaire {
+    width: 98%;
+    margin: 0 auto 15px auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    min-height: 400px;
+}
+
+.questionnaire .am-form-group {
+    margin: 2px auto;
+    width: 100%;
+}
+
+.questionnaire .left {
+    width: 1%;
     text-align: left;
     margin-right: 1%;
     float: left;
     line-height: 33px;
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
-.updateQuestionnaire .right {
-    width: 84%;
+.questionnaire .right {
+    width: 97%;
     float: right;
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
-.updateQuestionnaire .popup-right {
-    width: 100%;
-    margin-bottom: 10px;
+.questionnaire .QN-Title {
+    margin: 20px 100px;
+    font-size: 30px;
+    color: #01ceb2;
+    font-family: cursive;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.updateQuestionnaire .popup-right p {
-    text-align: center;
+.questionnaire .QN-FuTitle {
+    margin: 10px 70px;
+    font-size: 20px;
+    color: #00A680;
+    font-family: cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.updateQuestionnaire .popup-right .am-btn-success, .updateQuestionnaire .popup-right .am-btn-default {
-    font-size: 1.4rem !important;
-    padding: 1rem 1.8rem;
+.questionnaire .QN-Description {
+    margin: 10px 30px;
+    font-size: 20px;
+    color: #00b180;
+    font-family: cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.updateQuestionnaire .center .am-btn-group .am-selected .am-selected-content ul li span {
-    /*text-align: center;*/
-    /*margin-left: 53px;*/
-    margin-left: 363px;
-}
-
-.updateQuestionnaire .right .am-input-sm {
-    font-size: 1.2rem !important
-}
-
-.updateQuestionnaire .am-form-group {
-    margin: 2px auto
-}
-
-@media all and (min-width: 630px) and (min-height: 630px) {
-    .am-popup {
-        width: 1030px;
-        height: 630px;
-        /*background: #f8f8f8;*/
-        left: 50%;
-        top: 50%;
-        margin-left: -520px;
-        margin-top: -350px;
-        -webkit-transform: translateY(1024px);
-        -ms-transform: translateY(1024px);
-        transform: translateY(1024px)
-    }
-}
-
-.admin-content .am-popup {
-    max-height: 690px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.am-popup-inner {
-    padding-top: 30px;
-    height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch
-}
-
-.am-popup-hd {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 43px;
-    border-bottom: 1px solid #dedede;
-    background-color: #fff
-}
-
-.am-popup-hd .am-popup-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 43px;
-    text-align: center;
-    margin: 0 30px;
-    color: #333;
-    display: block;
-    word-wrap: normal;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden
-}
-
-.am-popup-hd .am-close {
-    position: absolute;
-    right: 10px;
-    top: 8px;
-    cursor: pointer;
-    -webkit-transition: all .3s;
-    transition: all .3s;
-    color: #999
-}
-
-.am-popup-hd .am-close:hover {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-    color: #555
-}
-
-.am-popup-bd {
-    padding: 25px;
-    background: #f8f8f8;
-    color: #555
-}
-
-.foods {
-    width: 100%;
-    background-color: #5b6e84;
-    height: 43px;
+.questionnaire .QNumber {
+    width: 1%;
     float: left;
-    text-align: center;
-    font-size: 12px;
-    line-height: 43px;
-    color: #fff;
-    overflow: hidden;
+    margin: 10px 0px 10px 20px;
+    font-size: 20px;
 }
 
-.foods ul {
-    width: 95%;
-    float: left;
-    padding: 0px;
-    margin: 0px
-}
-
-.foods dl {
-    width: 5%;
+.questionnaire .topic {
+    width: 87%;
     float: right;
-    padding: 0px;
-    margin: 0px
+    margin: 10px 60px 10px 40px;
+    font-size: 20px;
 }
 
-.foods dl .am-icon-btn {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    display: inline-block;
-    width: 23px;
-    height: 23px;
-    font-size: 18px;
-    line-height: 23px;
-    border-radius: 50%;
-    background-color: #acb6c1;
-    color: #555;
-    text-align: center;
-    margin-top: 12px
+.questionnaire .radio {
+    width: 89%;
+    float: right;
+    margin: 2px 0px;
+}
+
+.questionnaire .radio-mr {
+    font-size: 20px;
+    font-weight: normal;
+    margin-right: 120px;
+}
+
+.questionnaire .input-r {
+    zoom: 150%;
+}
+
+.questionnaire .checkbox {
+    width: 89%;
+    float: right;
+    margin: 2px 0px;
+}
+
+.questionnaire .checkbox-mr {
+    font-size: 20px;
+    font-weight: normal;
+    margin-right: 120px;
+}
+
+.questionnaire .input-cb {
+    zoom: 150%;
+}
+
+.questionnaire .fillBlank {
+    width: 77%;
+    float: left;
+    margin: 2px 120px;
+}
+
+.questionnaire .fillBlank textarea {
+    min-height: 50px;
+    max-height: 200px;
+}
+
+.questionnaire .score {
+    width: 77%;
+    float: left;
+    margin: 2px 120px;
+}
+
+.questionnaire .score span {
+    font-size: 20px;
+    color: #FFB800;
+    margin-top: -15px;
+}
+
+.questionnaire .userComments {
+    width: 87%;
+    float: right;
+    margin: 10px 60px 10px 40px;
+    font-size: 20px;
 }

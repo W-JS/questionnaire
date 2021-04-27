@@ -168,8 +168,10 @@ function saveSubmit() {
         },
         dataType: 'json',
         success: function (result) {
-            if (result.state == 1) {
-                window.location.href = CONTEXT_PATH + "/question/addQuestion";
+            if (result.state == 1) {ShowSuccess("问卷：" + qnTitle + " 保存成功！！！");
+                setTimeout(function () {
+                    window.location.href = CONTEXT_PATH + "/question/addQuestion";
+                }, 1000);
             } else {
                 ShowFailure(result.message);
             }

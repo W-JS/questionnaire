@@ -1,3 +1,4 @@
+/*
 a {
     text-decoration: none !important;
 }
@@ -48,4 +49,370 @@ a {
 .header_my a {
     color: #fff;
     text-decoration: none;
+}*/
+
+a {
+    text-decoration: none !important;
+}
+
+.sideMenu {
+    padding: 0px;
+    margin: 0px
+}
+
+.sideMenu h3 {
+    height: 32px;
+    line-height: 32px;
+    color: #aeb2b7;
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    margin: 20px 0 0 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-weight: 400;
+    width: 100%
+}
+
+.sideMenu h3 em {
+    float: right;
+    display: block;
+    width: 40px;
+    height: 32px;
+    background: url(../img/icoAdd.png) 16px 12px no-repeat;
+    cursor: pointer
+}
+
+.sideMenu h3.on em {
+    background-position: 16px -57px
+}
+
+.sideMenu h3.on {
+    color: #ff6c60;
+    background: #35404d
+}
+
+.sideMenu h3 a {
+    color: #aeb2b7;
+}
+
+.sideMenu ul {
+    line-height: 24px;
+    color: #999;
+    display: none; /* 默认都隐藏 */;
+    background: #35404d;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 0px 0 10px 0;
+    margin: 0px
+}
+
+.sideMenu li {
+    text-indent: 25px;
+    width: 100%
+}
+
+.sideMenu li {
+    text-indent: 25px;
+    width: 100%
+}
+
+.sideMenu li a {
+    color: #aeb2b7;
+}
+
+.sideMenu li a:hover {
+    color: #f8675e
+}
+
+.qns {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.qns a:hover {
+    color: blue; /*鼠标移动到链接的颜色*/
+    text-decoration: none; /*去掉下划线*/
+}
+
+.qn {
+    background-color: #42cac0;
+    height: 228px;
+    color: #fff;
+    box-sizing: border-box;
+    flex: 0 14%;
+    margin: 15px;
+    text-align: center;
+}
+
+.qns .qn .qntitle {
+    margin: 0px;
+    font-size: 20px;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qnfutitle {
+    margin: 0px;
+    font-size: 15px;
+    width: 100%;
+    border-bottom: solid white 1px;
+}
+
+.qns .qn .qndes {
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+    margin: 0px 5px;
+}
+
+
+thead .qnTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-align: center;
+}
+
+thead .qnFuTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-align: center;
+}
+
+thead .qnDescription {
+    min-width: 600px;
+    max-width: 600px;
+    text-align: center;
+}
+
+thead .operating {
+    min-width: 150px;
+    max-width: 150px;
+    text-align: center;
+}
+
+
+tbody .qnTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .qnFuTitle {
+    min-width: 235px;
+    max-width: 235px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .qnTitle a {
+    text-decoration: none;
+}
+
+tbody .qnDescription {
+    min-width: 600px;
+    max-width: 600px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody .operating {
+    min-width: 150px;
+    max-width: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.mt-5 .page {
+    margin-left: 5px;
+}
+
+.am-text-my {
+    font-size: 20px;
+}
+
+.txFixedSize1 {
+    min-height: 50px;
+    max-height: 80px;
+    min-width: 820px;
+    max-width: 830px;
+}
+
+.txFixedSize2 {
+    height: auto;
+    min-height: 50px;
+    max-height: 240px;
+    min-width: 820px;
+    max-width: 830px;
+}
+
+.table-check {
+    width: 30px
+}
+
+.updateQuestionnaire {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.updateQuestionnaire .left {
+    width: 15%;
+    text-align: left;
+    margin-right: 1%;
+    float: left;
+    line-height: 33px;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .right {
+    width: 84%;
+    float: right;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .popup-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.updateQuestionnaire .popup-right p {
+    text-align: center;
+}
+
+.updateQuestionnaire .popup-right .am-btn-success, .updateQuestionnaire .popup-right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: 1rem 1.8rem;
+}
+
+.updateQuestionnaire .center .am-btn-group .am-selected .am-selected-content ul li span {
+    /*text-align: center;*/
+    /*margin-left: 53px;*/
+    margin-left: 363px;
+}
+
+.updateQuestionnaire .right .am-input-sm {
+    font-size: 1.2rem !important
+}
+
+.updateQuestionnaire .am-form-group {
+    margin: 2px auto
+}
+
+@media all and (min-width: 630px) and (min-height: 630px) {
+    .am-popup {
+        width: 1030px;
+        height: 630px;
+        /*background: #f8f8f8;*/
+        left: 50%;
+        top: 50%;
+        margin-left: -520px;
+        margin-top: -350px;
+        -webkit-transform: translateY(1024px);
+        -ms-transform: translateY(1024px);
+        transform: translateY(1024px)
+    }
+}
+
+.admin-content .am-popup {
+    max-height: 690px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.am-popup-inner {
+    padding-top: 30px;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch
+}
+
+.am-popup-hd {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 43px;
+    border-bottom: 1px solid #dedede;
+    background-color: #fff
+}
+
+.am-popup-hd .am-popup-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 43px;
+    text-align: center;
+    margin: 0 30px;
+    color: #333;
+    display: block;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden
+}
+
+.am-popup-hd .am-close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    cursor: pointer;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    color: #999
+}
+
+.am-popup-hd .am-close:hover {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+    color: #555
+}
+
+.am-popup-bd {
+    padding: 25px;
+    background: #f8f8f8;
+    color: #555
+}
+
+.foods {
+    width: 100%;
+    background-color: #5b6e84;
+    height: 43px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    line-height: 43px;
+    color: #fff;
+    overflow: hidden;
+}
+
+.foods ul {
+    width: 95%;
+    float: left;
+    padding: 0px;
+    margin: 0px
+}
+
+.foods dl {
+    width: 5%;
+    float: right;
+    padding: 0px;
+    margin: 0px
+}
+
+.foods dl .am-icon-btn {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    font-size: 18px;
+    line-height: 23px;
+    border-radius: 50%;
+    background-color: #acb6c1;
+    color: #555;
+    text-align: center;
+    margin-top: 12px
 }
