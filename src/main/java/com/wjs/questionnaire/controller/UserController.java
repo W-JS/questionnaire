@@ -3,10 +3,12 @@ package com.wjs.questionnaire.controller;
 import com.wjs.questionnaire.service.IUserService;
 import com.wjs.questionnaire.util.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static com.wjs.questionnaire.util.EncryptUtil.md5AndSha;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.ONLINEUSERID;
 
 /**
  * 处理用户相关请求的控制器类
@@ -18,6 +20,9 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * 访问URL：http://localhost:8080/questionnaire/user/login
      *
@@ -26,6 +31,18 @@ public class UserController {
     @GetMapping(value = "/login")
     public String jumpLoginPage() {
         return "/site/login";
+    }
+
+    /**
+     * 退出登录
+     *
+     * @return 进入登录页面
+     */
+    @GetMapping(value = "/logout")
+    public String SetLogout() {
+        redisTemplate.opsForValue().set(ONLINEUSERID, "null");// 退出登录，将 null 存进Redis
+//        return "forward:/user/login";// 转发：不修改URL地址，进入login页面无法加载静态资源
+        return "redirect:/user/login";// 重定向：修改URL地址，进入login页面可以加载静态资源
     }
 
     /**
@@ -63,7 +80,7 @@ public class UserController {
      *
      * @return JSON格式数据：所有用户信息
      */
-    @GetMapping("allUser")
+    @GetMapping(value = "/allUser")
     @ResponseBody
     public JSONResult getAllUserList() {
         return userService.getAllUserList();

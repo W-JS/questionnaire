@@ -1,7 +1,9 @@
 $(function () {
-    GenerateOnlineUser();
+    GenerateOnlineUser();// 生成在线用户信息
 
     $("#search").click(Search);// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
+
+    $("#userOperating").change(UserOperating);// 用户操作
 });
 
 // 生成问卷标题
@@ -65,6 +67,7 @@ function GenerateQTitle() {
     });
 }*/
 
+// 生成在线用户信息
 function GenerateOnlineUser() {
     $.ajax({
         async: true, // 异步请求
@@ -74,8 +77,8 @@ function GenerateOnlineUser() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                $('#userOperating option:first-child').val(result.data.userId);// 设置值
-                $('#userOperating option:first-child').text(result.data.userName);// 设置文本
+                $('#onlineUser').val(result.data.userId);// 设置值
+                $('#onlineUser').text(result.data.userName);// 设置文本
                 // console.log($.trim($('#onlineUser').val()));// 取值
                 // console.log($.trim($('#onlineUser').text()));// 取文本
             } else {
@@ -104,4 +107,27 @@ function Search() {
     }
 
 
+}
+
+
+// 用户操作
+function UserOperating() {
+    let userOperating = $.trim($('#userOperating option:selected').val());
+    if (userOperating == "personalCenter") {
+        PersonalCenter();
+    } else if (userOperating == "exit") {
+        Exit();
+    }
+}
+
+// 个人中心
+function PersonalCenter() {
+    console.log("personalCenter personalCenter personalCenter personalCenter personalCenter");
+}
+
+// 退出登录
+function Exit() {
+    // $.trim($('#onlineUser').val());
+    window.location.href = CONTEXT_PATH + "/user/logout";
+    // window.location.href = CONTEXT_PATH + "/user/logout" + "?userId=" + $.trim($('#onlineUser').val());
 }

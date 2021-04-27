@@ -36,14 +36,12 @@
                     </li>-->
 
                     <li class="topFunction">
-<!--                        <input type="hidden" id="userId" name="userId" th:value="${map.user.userId}">-->
                         <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎系统管理员:</p>
                         <p>
                             <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
-<!--                                <option th:utext="${map.user.userName}">在线用户名</option>-->
                                 <option id="onlineUser" value="">在线用户名</option>
-                                <option id="personalCenter" value="o">个人中心</option>
-                                <option value="o">退出</option>
+                                <option value="personalCenter">个人中心</option>
+                                <option value="exit">退出</option>
                             </select>
                         </p>
                     </li>
