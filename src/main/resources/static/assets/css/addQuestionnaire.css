@@ -56,15 +56,15 @@ a {
     font-size: 1.2rem !important
 }
 
-.addQuestionnaire .popup-right .am-btn-success, .addQuestionnaire .popup-right .am-btn-default {
+.addQuestionnaire .popup-right .am-btn-primary, .addQuestionnaire .popup-right .am-btn-success, .addQuestionnaire .popup-right .am-btn-default {
     font-size: 1.4rem !important;
     padding: 1rem 1.8rem;
 }
 
-.am-form input{
+.am-form input {
     width: 1100px !important;
 }
 
-.am-form textarea{
+.am-form textarea {
     width: 1100px;
 }

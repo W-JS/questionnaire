@@ -66,7 +66,7 @@ a {
     padding: .65rem 1rem;
 }
 
-.addQuestion .popup-right .am-btn-success, .addQuestion .popup-right .am-btn-default {
+.addQuestion .popup-right .am-btn-primary, .addQuestion .popup-right .am-btn-success, .addQuestion .popup-right .am-btn-default {
     font-size: 1.4rem !important;
     padding: 1rem 1.8rem;
 }
@@ -111,10 +111,10 @@ a {
     font-size: 1.2rem !important
 }
 
-.am-form .am-input-my{
+.am-form .am-input-my {
     width: 1080px !important;
 }
 
-.am-form textarea{
+.am-form textarea {
     width: 1080px;
 }

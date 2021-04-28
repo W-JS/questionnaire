@@ -6,6 +6,7 @@ $(function () {
     $("#qnFuTitle").blur(QNFuTitle);
     $("#qnDescription").blur(QNDescription);
     $("#save").click(Save);
+    $("#reset").click(Reset);
     $("#cancel").click(Cancel);
 });
 
@@ -177,6 +178,16 @@ function saveSubmit() {
             }
         }
     });
+}
+
+// 重置问卷信息
+function Reset() {
+    $("#qnTitle").val("");// 重置 问卷标题
+    $("#qnFuTitle").val("");// 重置 问卷副标题
+    $("#qnDescription").val("");// 重置 问卷描述
+
+    $("#qnTitle").focus();
+    ShowSuccess("问卷信息重置成功！！！");
 }
 
 function Cancel() {

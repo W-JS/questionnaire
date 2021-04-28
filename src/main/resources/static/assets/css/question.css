@@ -106,7 +106,12 @@ tbody .operating {
     text-align: center;
 }
 
-.updateQuestion .popup-right .am-btn-success, .updateQuestion .popup-right .am-btn-default {
+.updateQuestion .popup-right p .deleteBtn{
+    margin-right: 100px;
+}
+
+.updateQuestion .popup-right .am-btn-primary, .updateQuestion .popup-right .am-btn-success,
+.updateQuestion .popup-right .am-btn-danger, .updateQuestion .popup-right .am-btn-default {
     font-size: 1.4rem !important;
     padding: 1rem 1.8rem;
 }

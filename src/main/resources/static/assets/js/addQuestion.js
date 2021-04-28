@@ -22,6 +22,7 @@ $(function () {
     $("#qDescription").blur(QDescription);
 
     $("#save").click(Save);
+    $("#reset").click(Reset);
     $("#cancel").click(Cancel);
 });
 
@@ -79,7 +80,7 @@ function GeneratePQP() {
                 }
                 $(html).appendTo($('#pQP'));
 
-                $("#pQP option:first").prop("selected", 'selected');
+                // $("#pQP option:first").prop("selected", 'selected');
             } else {
                 ShowFailure(result.message);
             }
@@ -128,8 +129,17 @@ function PQPGeneratePQ() {
                 if (result.state == 1) {
                     $('#pQ option').remove();
                     let html = "";
+                    let length = result.data[0].questionList.length;// 前置问题列表的长度
                     for (let i = 0; i < result.data[0].questionList.length; i++) {
+                        // 前置问题不能为填空题
+                        if (result.data[0].questionList[i].questiontypeId == "fillBlank") {
+                            length--;
+                            continue;
+                        }
                         html += "<option value=\"" + result.data[0].questionList[i].questionId + "\">" + result.data[0].questionList[i].questionTitle + "</option>";
+                    }
+                    if (length == 0) {
+                        html += "<option value=\"null\">&nbsp;</option>";
                     }
                     $(html).appendTo($('#pQ'));
                     $("#pQ option:first").prop("selected", 'selected');
@@ -319,10 +329,69 @@ function saveSubmit() {
     let qStatus = $.trim($("input[name='qStatus']:checked").val());
     let pQVal = $.trim($('#pQ option:selected').val());
     let pOVal = $.trim($('#pO option:selected').val());
-    // let qt = $.trim($("input[name='qt']:checked").val());
     let qt = $.trim($('#qt option:selected').val());
+    let oContent = "";
+    let flag = true;// 是否直接生成选项，默认是
+
+    if (qt == "singleChoice" || qt == "multipleChoice" || qt == "judgment") {
+        // 单项选择题、多项选择题和判断题，跳转到新建选项页面
+        flag = false;
+    } else if (qt == "fillBlank") {
+        // 填空题 不跳转，重置问题信息
+        oContent = "填空题";
+    } else if (qt == "score") {
+        // 评分题 不跳转，重置问题信息
+        oContent = "评分题";
+    }
 
     $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/question/questionSubmit',
+        data: {
+            'qTitle': qTitle,
+            'qDescription': qDescription,
+            'qStatus': qStatus,
+            'pQId': pQVal,
+            'pOId': pOVal,
+            'qtId': qt,
+            'qCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                if (flag) {
+                    $.ajax({
+                        async: true, // 异步请求
+                        type: "post",
+                        url: CONTEXT_PATH + '/option/optionSubmit',
+                        data: {
+                            'oContent': oContent,
+                            'oCreateTime': getNowFormatDate()
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.state == 1) {
+                                Reset();
+                                ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                            } else {
+                                ShowFailure(result.message);
+                            }
+                        }
+                    });
+                } else {
+                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                    setTimeout(function () {
+                        // window.location.href = CONTEXT_PATH + "/option/addOption";
+                    }, 1000);
+                }
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+
+    /*$.ajax({
         async: true, // 异步请求
         type: "post",
         url: CONTEXT_PATH + '/question/questionSubmit',
@@ -350,7 +419,22 @@ function saveSubmit() {
                 ShowFailure(result.message);
             }
         }
-    });
+    });*/
+}
+
+// 重置问题信息
+function Reset() {
+    $("#qTitle").val("");// 重置 问题标题
+    $("#qDescription").val("");// 重置 问题描述
+    $("input:radio[name='qStatus']")[0].checked = true;// 重置 是否必填
+
+    $("#pQP option[value='null']").attr("selected", true);// 重置 前置问题和前置选项（选择前置问题分页第一项）
+    $("#pQP option[value='null']").removeAttr("selected");// 删除属性，否则只能重置一次（属性存在，无法重新设置）
+    $("#qt option:first").attr("selected", true);// 重置 问题类型
+    $("#qt option:first").removeAttr("selected");// 删除属性，否则只能重置一次（属性存在，无法重新设置）
+
+    $("#qTitle").focus();
+    ShowSuccess("问题信息重置成功！！！");
 }
 
 function Cancel() {

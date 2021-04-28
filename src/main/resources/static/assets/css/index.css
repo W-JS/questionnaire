@@ -283,7 +283,12 @@ tbody .operating {
     text-align: center;
 }
 
-.updateQuestionnaire .popup-right .am-btn-success, .updateQuestionnaire .popup-right .am-btn-default {
+.updateQuestionnaire .popup-right p .updateBtn, .updateQuestionnaire .popup-right p .resetBtn {
+    margin-right: 100px;
+}
+
+.updateQuestionnaire .popup-right .am-btn-primary, .updateQuestionnaire .popup-right .am-btn-success,
+.updateQuestionnaire .popup-right .am-btn-danger, .updateQuestionnaire .popup-right .am-btn-default {
     font-size: 1.4rem !important;
     padding: 1rem 1.8rem;
 }

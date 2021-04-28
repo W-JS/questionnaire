@@ -26,7 +26,7 @@ public class IndexController {
      * @return 进入 问卷
      */
     @GetMapping(value = "/questionnaire")
-    public String jumpAddOptionsPage(Model model) {
+    public String jumpQuestionnairePage(Model model) {
         return "/site/questionnaire";
     }
 }

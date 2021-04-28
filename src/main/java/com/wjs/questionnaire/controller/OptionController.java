@@ -73,14 +73,6 @@ public class OptionController {
     }
 
     /**
-     * @return 进入 调查问卷后台管理-新建选项
-     */
-    @GetMapping(value = "/addOption")
-    public String jumpAddOptionPage(Model model) {
-        return "/site/addOption";
-    }
-
-    /**
      * 根据搜索内容模糊查询选项信息
      *
      * @param searchWay     搜索方式

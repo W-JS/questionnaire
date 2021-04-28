@@ -77,8 +77,10 @@ function Checkbox() {
 
         $('#updateQuestionnaire .am-popup-hd h4').remove();
         let html1 = "";
-        $('#updateQuestionnaire .am-popup-bd .updateQuestionnaire p .Btn').remove();
+        $('#updateQuestionnaire .am-popup-bd .updateQuestionnaire p .updateBtn').remove();
         let html2 = "";
+        $('#updateQuestionnaire .am-popup-bd .updateQuestionnaire p .resetBtn').remove();
+        let html3 = "";
 
         $("#qnTitle").attr("disabled", "disabled");
         $("#qnFuTitle").attr("disabled", "disabled");
@@ -86,21 +88,23 @@ function Checkbox() {
 
         if (udQNId == "show") {
             html1 = "<h4 class=\"am-popup-title\">查看问卷</h4>";
-            html2 = "<input style=\"margin-right: 100px;\" class=\"Btn\" type=\"hidden\"/>";
+            html2 = "<input class=\"updateBtn\" type=\"hidden\"/>";
         }
         if (udQNId == "update") {
             $("#qnTitle").removeAttr("disabled");
             $("#qnFuTitle").removeAttr("disabled");
             $("#qnDescription").removeAttr("disabled");
             html1 = "<h4 class=\"am-popup-title\">修改问卷</h4>";
-            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"Update()\">修改</button>";
+            html2 = "<button type=\"button\" class=\"am-btn am-btn-primary am-radius updateBtn\" onclick=\"Update()\">修改</button>";
+            html3 = "<button type=\"button\" class=\"am-btn am-btn-success am-radius resetBtn\" onclick=\"Reset()\">重置</button>";
         }
         if (udQNId == "delete") {
             html1 = "<h4 class=\"am-popup-title\">删除问卷</h4>";
-            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"DeleteSubmit()\">删除</button>";
+            html2 = "<button type=\"button\" class=\"am-btn am-btn-danger am-radius updateBtn\" onclick=\"DeleteSubmit()\">删除</button>";
         }
 
         $(html1).appendTo($('#updateQuestionnaire .am-popup-hd'));
+        $(html3).prependTo($('#updateQuestionnaire .am-popup-bd .updateQuestionnaire p'));
         $(html2).prependTo($('#updateQuestionnaire .am-popup-bd .updateQuestionnaire p'));
         SetUpdateQuestion();
     }
@@ -335,6 +339,14 @@ function DeleteSubmit() {
             $("#updateCancel").click();
         },
     });
+}
+
+// 重置问卷信息
+function Reset() {
+    $("#qnTitle").val(questionnaire[2]);// 填充问卷标题
+    $("#qnFuTitle").val(questionnaire[3]);// 填充问卷副标题
+    $("#qnDescription").val(questionnaire[4]);// 填充问卷描述
+    ShowSuccess("问卷信息重置成功！！！");
 }
 
 // 删除选择的问题

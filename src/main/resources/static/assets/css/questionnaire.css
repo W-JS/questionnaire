@@ -191,6 +191,10 @@
     font-size: 20px;
 }
 
+.questionnaire .topic .qStatus {
+    color: red;
+}
+
 .questionnaire .radio {
     width: 89%;
     float: right;

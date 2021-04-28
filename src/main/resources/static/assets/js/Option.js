@@ -1,6 +1,7 @@
 let url = window.location.pathname;
 let option = new Array();// 保存原始选项信息
 let deleteOption = new Array(); // 保存删除勾选的问题
+let flag = false;// 是否已经保存和修改
 
 $(function () {
     isURL();
@@ -11,8 +12,9 @@ $(function () {
     GenerateQNTitleAndQTitle();// 生成问卷标题和问题标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
-
     $("#deleteChoose").click(DeleteChoose);// 删除选择的选项
+
+    $('#oContent').bind('keypress', oContentEnter);
 });
 
 // 判断url是否正确
@@ -76,30 +78,35 @@ function Checkbox() {
 
         let udOId = option[0];
 
-        $('#updateOption .am-popup-hd h4').remove();
-        let html1 = "";
-        $('#updateOption .am-popup-bd .updateOption p .Btn').remove();
-        let html2 = "";
-
-        $("#oContent").attr("disabled", "disabled");
-
         if (udOId == "show") {
-            html1 = "<h4 class=\"am-popup-title\">查看选项</h4>";
-            html2 = "<input style=\"margin-right: 100px;\" class=\"Btn\" type=\"hidden\"/>";
-        }
-        if (udOId == "update") {
-            $("#oContent").removeAttr("disabled");
-            html1 = "<h4 class=\"am-popup-title\">修改选项</h4>";
-            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"Update()\">修改</button>";
-        }
-        if (udOId == "delete") {
-            html1 = "<h4 class=\"am-popup-title\">删除选项</h4>";
-            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"DeleteSubmit()\">删除</button>";
-        }
+            $("#optionOperation").text("查看选项");
 
-        $(html1).appendTo($('#updateOption .am-popup-hd'));
-        $(html2).prependTo($('#updateOption .am-popup-bd .updateOption p'));
-        SetUpdateOption();
+            $("#oContent").attr("disabled", "disabled");
+
+            $("#save").attr("hidden", "hidden");
+            $("#update").attr("hidden", "hidden");
+            $("#delete").attr("hidden", "hidden");
+            $("#reset").attr("hidden", "hidden");
+        } else if (udOId == "update") {
+            $("#optionOperation").text("修改选项");
+
+            $("#oContent").removeAttr("disabled");
+
+            $("#update").removeAttr("hidden");
+            $("#reset").removeAttr("hidden");
+            $("#save").attr("hidden", "hidden");
+            $("#delete").attr("hidden", "hidden");
+        } else if (udOId == "delete") {
+            $("#optionOperation").text("删除选项");
+
+            $("#oContent").attr("disabled", "disabled");
+
+            $("#delete").removeAttr("hidden");
+            $("#save").attr("hidden", "hidden");
+            $("#update").attr("hidden", "hidden");
+            $("#reset").attr("hidden", "hidden");
+        }
+        SetOption();
     }
     setChecked(this);
 }
@@ -131,8 +138,8 @@ function setChecked(obj) {
     }
 }
 
-// 将当前选项信息填充到修改选项弹出层中
-function SetUpdateOption() {
+// 将当前选项信息填充到选项弹出层中
+function SetOption() {
     let oId = option[1];// 选项编号
     $.ajax({
         async: true, // 异步请求
@@ -184,12 +191,45 @@ function OContentExists() {
     return flag;
 }
 
+// 提交选项前表单验证
+function Save() {
+    if (!OContentExists()) {
+        return false;
+    }
+    saveSubmit();
+}
+
+// 提交选项信息
+function saveSubmit() {
+    let oContent = $.trim($("#oContent").val());
+
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/option/optionSubmit',
+        data: {
+            'oContent': oContent,
+            'oCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                ShowSuccess("选项：" + oContent + " 保存成功！！！");
+                flag = true;
+                $("#oContent").val("");
+                $("#oContent").focus();
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
 // 提交选项前表单验证 从修改选项弹出层中获取修改后最新的选项数据信息
 function Update() {
     if (!OContentExists()) {
         return false;
     }
-
     UpdateSubmit();
 }
 
@@ -200,7 +240,7 @@ function UpdateSubmit() {
 
     if (option[2] == oContent) {
         ShowWarn("内容未修改！！！");
-        $("#updateCancel").click();
+        $("#cancel").click();
         return;
     }
 
@@ -252,7 +292,7 @@ function DeleteSubmit() {
             });
         },
         onCancel: function () {
-            $("#updateCancel").click();
+            $("#cancel").click();
         },
     });
 }
@@ -301,6 +341,45 @@ function DeleteChoose() {
     }
 }
 
+// 重置选项信息
+function Reset() {
+    let udOId = option[0];
+    if (udOId == "add") {
+        $("#oContent").val("");// 重置 选项内容
+        $("#oContent").focus();
+        ShowSuccess("新建选项信息重置成功！！！");
+    } else if (udOId == "update") {
+        $("#oContent").val(option[2]);// 填充选项内容
+        ShowSuccess("修改选项信息重置成功！！！");
+    }
+}
+
+function Cancel() {
+    let udOId = option[0];
+    if (udOId == "add" || udOId == "update") {
+        if (flag) {
+            window.location.href = window.location.pathname + window.location.search;
+        }
+    }
+}
+
+// 点击新建选项按钮
+function AddOption() {
+    option.length = 0;//将原始选项信息清空
+    option.push("add");// 0 向数组存选项操作
+
+    Reset();
+
+    $("#optionOperation").text("新建选项");
+
+    $("#oContent").removeAttr("disabled");
+
+    $("#save").removeAttr("hidden");
+    $("#reset").removeAttr("hidden");
+    $("#update").attr("hidden", "hidden");
+    $("#delete").attr("hidden", "hidden");
+}
+
 // 点击显示选项按钮
 function ShowOption() {
     option.length = 0;//将原始选项信息清空
@@ -317,4 +396,11 @@ function UpdateOption() {
 function DeleteOption() {
     option.length = 0;//将原始选项信息清空
     option.push("delete");// 0 向数组存选项操作
+}
+
+// 新建选项回车触发保存按钮
+function oContentEnter(event) {
+    if (event.keyCode == "13") {
+        Save();
+    }
 }

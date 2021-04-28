@@ -20,6 +20,7 @@ $(function () {
     $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
 
     $("#update").click(Update);// 从修改问题弹出层中获取修改后最新的问题数据信息
+    $("#reset").click(Reset);
     $("#deleteChoose").click(DeleteChoose);// 删除选择的问题
 });
 
@@ -110,13 +111,13 @@ function PQPGeneratePQ() {
             dataType: 'json',
             success: function (result) {
                 if (result.state == 1) {
-                    // 1、前置选项列表不能出现当前问题的后置选项
+                    // 1、前置问题列表不能出现当前问题的后置问题
                     let length1 = result.data.length - 1;// 0: 未被前置，无后置问题 1: 被前置，有后置问题
                     $('#pQ option').remove();
                     let html = "";
                     for (let i = length1; i >= 0; i--) {
                         if (i == 0) {
-                            let length2 = result.data[i].questionList.length;// 前置选项列表的长度
+                            let length2 = result.data[i].questionList.length;// 前置问题列表的长度
                             for (let j = 0; j < result.data[i].questionList.length; j++) {
                                 if (length1 == 1) {// 当前问题有传递后置问题
                                     let flag = false;
@@ -134,6 +135,11 @@ function PQPGeneratePQ() {
                                 }
                                 // 前置问题不能为当前问题
                                 if (result.data[i].questionList[j].questionId == qId) {
+                                    length2--;
+                                    continue;
+                                }
+                                // 前置问题不能为填空题
+                                if (result.data[i].questionList[j].questiontypeId == "fillBlank") {
                                     length2--;
                                     continue;
                                 }
@@ -313,12 +319,12 @@ function Checkbox() {
 
         $('#deleteQuestion .am-popup-hd h4').remove();
         let html1 = "";
-        $('#deleteQuestion .am-popup-bd .updateQuestion p .Btn').remove();
+        $('#deleteQuestion .am-popup-bd .updateQuestion p .deleteBtn').remove();
         let html2 = "";
 
         if (udQId == "show") {
             html1 = "<h4 class=\"am-popup-title\">查看问题</h4>";
-            html2 = "<input style=\"margin-right: 100px;\" class=\"Btn\" type=\"hidden\"/>";
+            html2 = "<input class=\"deleteBtn\" type=\"hidden\"/>";
             SetDeleteQuestion();
         }
         if (udQId == "update") {
@@ -326,7 +332,7 @@ function Checkbox() {
         }
         if (udQId == "delete") {
             html1 = "<h4 class=\"am-popup-title\">删除问题</h4>";
-            html2 = "<button style=\"margin-right: 100px;\" type=\"button\" class=\"am-btn am-btn-success am-radius Btn\" onclick=\"DeleteSubmit()\">删除</button>";
+            html2 = "<button type=\"button\" class=\"am-btn am-btn-danger am-radius deleteBtn\" onclick=\"DeleteSubmit()\">删除</button>";
             SetDeleteQuestion();
         }
 
@@ -662,6 +668,16 @@ function DeleteSubmit() {
     });
 }
 
+// 重置问题信息
+function Reset() {
+    $("#qTitle").val(question[2]);// 填充问题标题
+    $("#qDescription").val(question[3]);// 填充问题描述
+    $(":radio[name='qStatus'][value='" + question[4] + "']").prop("checked", "checked");// 选中正确的是否必填项
+    GeneratePQP();// 动态生成前置问题的页数
+    GenerateQT();// 动态生成问题类型
+    ShowSuccess("问题信息重置成功！！！");
+}
+
 // 删除选择的问题
 function DeleteChoose() {
     let cbs = $("input[name='cb[]']");//获取所有复选框对象
@@ -710,6 +726,8 @@ function DeleteChoose() {
 function ShowQuestion() {
     question.length = 0;//将原始问题信息清空
     question.push("show");// 0 向数组存问题操作
+    $("#pQDelete").val("");// 填充问题描述
+    $("#pODelete").val("");// 填充问题描述
 }
 
 // 点击修改问题按钮
