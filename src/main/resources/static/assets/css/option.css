@@ -80,10 +80,6 @@ tbody .operating {
     margin-left: 5px;
 }
 
-.am-text-my {
-    font-size: 20px;
-}
-
 .txFixedSize1 {
     min-height: 50px;
     max-height: 80px;
@@ -110,7 +106,8 @@ tbody .operating {
 }
 
 .Option .left {
-    width: 15%;
+    width: 10%;
+    font-size: 20px;
     text-align: left;
     margin-right: 1%;
     float: left;
@@ -119,7 +116,7 @@ tbody .operating {
 }
 
 .Option .right {
-    width: 84%;
+    width: 89%;
     float: right;
     margin-bottom: 10px;
 }
@@ -133,7 +130,7 @@ tbody .operating {
     text-align: center;
 }
 
-.Option .popup-right p .Btn{
+.Option .popup-right p .Btn {
     margin-right: 100px;
 }
 
@@ -167,7 +164,7 @@ tbody .operating {
 }
 
 .admin-content .am-popup {
-    max-height: 200px;
+    max-height: 180px;
     border-radius: 4px;
     overflow: hidden;
 }

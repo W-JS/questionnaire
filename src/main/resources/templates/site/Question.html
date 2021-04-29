@@ -190,10 +190,12 @@
                     <div id="top" class="moduleTitle am-cf">
                         <ul class="am-icon-book"> 调查问卷管理</ul>
                         <ul>
-                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问卷:</p>
+                            <p class="text currentTitle">当前问卷:</p>
                         </ul>
                         <ul>
-                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qnTitle" ></p>
+                            <p class="text title">
+                                <a id="qnTitle" href="">问卷标题</a>
+                            </p>
                         </ul>
                         <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                             <a th:href="@{/question/Question}">问题</a>

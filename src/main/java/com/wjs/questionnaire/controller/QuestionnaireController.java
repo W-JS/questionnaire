@@ -49,14 +49,6 @@ public class QuestionnaireController {
     }
 
     /**
-     * @return 进入 调查问卷后台管理-新建问卷
-     */
-    @GetMapping(value = "/addQuestionnaire")
-    public String jumpAddQuestionnairePage(Model model) {
-        return "/site/addQuestionnaire";
-    }
-
-    /**
      * 根据搜索内容模糊查询问卷信息
      *
      * @param searchWay     搜索方式

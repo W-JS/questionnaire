@@ -16,8 +16,8 @@ function GenerateQNTitle() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                let html = "<a href=\"" + CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data.questionnaireId + "\" style=\"text-decoration: none;\">" + result.data.questionnaireTitle + "</a>";
-                $(html).appendTo($('#top .qnTitle'));
+                $('#qnTitle').attr("href",CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data.questionnaireId);
+                $('#qnTitle').text(result.data.questionnaireTitle);
             } else {
                 ShowFailure(result.message);
             }
@@ -35,11 +35,11 @@ function GenerateQNTitleAndQTitle() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                let html1 = "<a href=\"" + CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data[0].questionnaire.questionnaireId + "\" style=\"text-decoration: none;\">" + result.data[0].questionnaire.questionnaireTitle + "</a>";
-                $(html1).appendTo($('#top .qnTitle'));
+                $('#qnTitle').attr("href", CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data[0].questionnaire.questionnaireId);
+                $('#qnTitle').text(result.data[0].questionnaire.questionnaireTitle);
 
-                let html2 = "<a href=\"" + CONTEXT_PATH + "/option/OptionByQId?qId=" + result.data[1].question.questionId + "\" style=\"text-decoration: none;\">" + result.data[1].question.questionTitle + "</a>";
-                $(html2).appendTo($('#top .qTitle'));
+                $('#qTitle').attr("href", CONTEXT_PATH + "/option/OptionByQId?qId=" + result.data[1].question.questionId);
+                $('#qTitle').text(result.data[1].question.questionTitle);
             } else {
                 ShowFailure(result.message);
             }

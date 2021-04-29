@@ -797,6 +797,24 @@ form .form-group:last-child{padding-bottom:0;}
     padding-left: 1em
 }
 
+.moduleTitle .text {
+    text-align: center;
+    font-family: 等线;
+    font-size: 17px;
+}
+
+.moduleTitle .currentTitle {
+    color: green;
+}
+
+.moduleTitle .title {
+    color: blue;
+}
+
+.moduleTitle .title a {
+    text-decoration: none;
+}
+
 .moduleTitle dl {
     float: left;
     margin: 9px 18px 0 15px;

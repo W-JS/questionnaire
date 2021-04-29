@@ -27,15 +27,15 @@
                 <contentHeader th:replace="/site/index::contentHeader"></contentHeader>
 
                 <!-- 选项弹出层 -->
-                <div class="am-popup am-popup-inner">
+                <div class="am-popup am-popup-inner" id="optionPopups">
                     <div class="am-popup-hd">
                         <h4 class="am-popup-title" id="optionOperation">选项</h4>
                         <span data-am-modal-close class="am-close">&times;</span>
                     </div>
                     <div class="am-popup-bd">
                         <div class="am-form Option">
-                            <div class="am-form-group am-cf" style="margin-bottom: 25px;">
-                                <div class="left am-text-my">选项内容：</div>
+                            <div class="am-form-group am-cf" style="margin: 10px 0px;">
+                                <div class="left">选项内容：</div>
                                 <div class="right">
                                     <input id="oContent" type="text" class="am-input-my" placeholder="请输入选项内容" value="">
                                 </div>
@@ -46,9 +46,11 @@
                                     <p>
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="save" onclick="Save()" value="保存">
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="update" onclick="Update()" value="修改">
-                                        <input type="button" class="am-btn am-btn-danger am-radius Btn" id="delete" onclick="DeleteSubmit()" value="删除">
+                                        <input type="button" class="am-btn am-btn-danger am-radius Btn" id="delete" onclick="DeleteSubmit()"
+                                               value="删除">
                                         <input type="button" class="am-btn am-btn-success am-radius Btn" id="reset" onclick="Reset()" value="重置">
-                                        <input type="button" class="am-btn am-btn-default am-radius" id="cancel" onclick="Cancel()" data-am-modal-close value="取消">
+                                        <input type="button" class="am-btn am-btn-default am-radius" id="cancel" onclick="Cancel()"
+                                               data-am-modal-close value="取消">
                                     </p>
                                 </div>
                             </div>
@@ -57,7 +59,7 @@
                 </div>
 
                 <!-- 确认删除选项模态窗口 -->
-                <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                <div class="am-modal am-modal-confirm" tabindex="-1" id="optionModal">
                     <div class="am-modal-dialog" style="background-color: #a8a8a8;">
                         <div class="am-modal-hd" style="color: red;">删除提示</div>
                         <div class="am-modal-bd">
@@ -75,18 +77,22 @@
 
                     <!-- 内容顶部 -->
                     <div id="top" class="moduleTitle am-cf">
-                        <ul class="am-icon-book on"> 调查问卷管理</ul>
+                        <ul class="am-icon-book"> 调查问卷管理</ul>
                         <ul>
-                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问卷:</p>
+                            <p class="text currentTitle">当前问卷:</p>
                         </ul>
                         <ul>
-                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qnTitle"></p>
+                            <p class="text title">
+                                <a id="qnTitle" href="">问卷标题</a>
+                            </p>
                         </ul>
                         <ul>
-                            <p style="text-align: center;color: green;font-family: 等线;font-size: 17px;">当前问题:</p>
+                            <p class="text currentTitle">当前问题:</p>
                         </ul>
                         <ul>
-                            <p style="text-align: center;color: blue;font-family: 等线;font-size: 17px;" class="qTitle"></p>
+                            <p class="text title">
+                                <a id="qTitle" href="">问题标题</a>
+                            </p>
                         </ul>
                         <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
                             <a th:href="@{/option/Option}">选项</a>
@@ -125,18 +131,18 @@
                                     <td class="operating">
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
-                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                        data-am-modal="{target: '#Option'}" name="showOption" onclick="ShowOption()"
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#optionPopups'}" onclick="ShowOption()"
                                                         title="查看选项">
                                                     <span class="am-icon-eye"></span>
                                                 </button>
-                                                <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                        data-am-modal="{target: '#Option'}" name="updateOption" onclick="UpdateOption()"
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#optionPopups'}" onclick="UpdateOption()"
                                                         title="修改选项">
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
-                                                <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#Option'}" name="deleteOption" onclick="DeleteOption()"
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        data-am-modal="{target: '#optionPopups'}" onclick="DeleteOption()"
                                                         title="删除选项">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>
@@ -149,8 +155,8 @@
 
                         <!-- 多个操作按钮 -->
                         <div class="am-btn-group am-btn-group-xs">
-                            <button type="button" class="am-btn am-btn-default"
-                                    data-am-modal="{target: '#Option'}" name="addOption" onclick="AddOption()">
+                            <button class="am-btn am-btn-default"
+                                    data-am-modal="{target: '#optionPopups'}" onclick="AddOption()">
                                 <span class="am-icon-plus"></span>
                                 <span> 新建选项</span>
                             </button>

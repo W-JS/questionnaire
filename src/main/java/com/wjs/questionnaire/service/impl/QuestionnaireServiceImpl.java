@@ -192,7 +192,7 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
         if (flag) {
             jsonResult = JSONResult.build(data);
         } else {
-            jsonResult = JSONResult.build("暂时还未创建选项！！！");
+            jsonResult = JSONResult.build("暂时还未选择问卷和问题！！！");
         }
         return jsonResult;
     }

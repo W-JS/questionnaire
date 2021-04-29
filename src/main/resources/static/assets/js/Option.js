@@ -1,7 +1,8 @@
 let url = window.location.pathname;
 let option = new Array();// 保存原始选项信息
 let deleteOption = new Array(); // 保存删除勾选的问题
-let flag = false;// 是否已经保存和修改
+let setRowFlag = -1;// 设置当前选项所在行行数
+let cancelFlag = false;// 是否已经保存和修改
 
 $(function () {
     isURL();
@@ -12,6 +13,7 @@ $(function () {
     GenerateQNTitleAndQTitle();// 生成问卷标题和问题标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
+
     $("#deleteChoose").click(DeleteChoose);// 删除选择的选项
 
     $('#oContent').bind('keypress', oContentEnter);
@@ -22,7 +24,7 @@ function isURL() {
     let index = url.lastIndexOf("/")
     url = url.substring(index + 1, url.length);
 
-    if (url == "Option" || url == "OptionByQId" || url == "AllOption") {
+    if (url == "Option" || url == "OptionByQId" || url == "AllOption" || url == "search") {
         Option();
     }
 }
@@ -76,6 +78,11 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
+        if (setRowFlag != row) {// 选择其他行，设置选项弹出层；选择同一行，不设置选项弹出层
+            setRowFlag = row;
+            SetOption();// 设置选项弹出层
+        }
+
         let udOId = option[0];
 
         if (udOId == "show") {
@@ -106,7 +113,6 @@ function Checkbox() {
             $("#update").attr("hidden", "hidden");
             $("#reset").attr("hidden", "hidden");
         }
-        SetOption();
     }
     setChecked(this);
 }
@@ -215,7 +221,7 @@ function saveSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("选项：" + oContent + " 保存成功！！！");
-                flag = true;
+                cancelFlag = true;
                 $("#oContent").val("");
                 $("#oContent").focus();
             } else {
@@ -257,7 +263,9 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                window.location.href = window.location.pathname + window.location.search;
+                setTimeout(function () {
+                    window.location.href = window.location.pathname + window.location.search;
+                }, 1000);
             } else {
                 ShowFailure(result.message);
             }
@@ -269,7 +277,7 @@ function UpdateSubmit() {
 function DeleteSubmit() {
     let oId = option[1];// 信息编号
 
-    $('#my-confirm').modal({
+    $('#optionModal').modal({
         relatedTarget: this,
         onConfirm: function (options) {
             console.log(oId);
@@ -284,7 +292,9 @@ function DeleteSubmit() {
                 success: function (result) {
                     if (result.state == 1) {
                         ShowSuccess("删除成功！！！");
-                        window.location.href = window.location.pathname + window.location.search;
+                        setTimeout(function () {
+                            window.location.href = window.location.pathname + window.location.search;
+                        }, 1000);
                     } else {
                         ShowFailure(result.message);
                     }
@@ -306,7 +316,7 @@ function DeleteChoose() {
         }
     }
     if (deleteOption.length > 0) {
-        $('#my-confirm').modal({
+        $('#optionModal').modal({
             relatedTarget: this,
             onConfirm: function (options) {
                 $.ajax({
@@ -320,7 +330,9 @@ function DeleteChoose() {
                     success: function (result) {
                         if (result.state == 1) {
                             ShowSuccess("删除成功！！！");
-                            window.location.href = window.location.pathname + window.location.search;
+                            setTimeout(function () {
+                                window.location.href = window.location.pathname + window.location.search;
+                            }, 1000);
                         } else {
                             ShowFailure(result.message);
                         }
@@ -349,15 +361,17 @@ function Reset() {
         $("#oContent").focus();
         ShowSuccess("新建选项信息重置成功！！！");
     } else if (udOId == "update") {
+        setRowFlag = -1;
         $("#oContent").val(option[2]);// 填充选项内容
         ShowSuccess("修改选项信息重置成功！！！");
     }
 }
 
+// 退出选项弹出层
 function Cancel() {
     let udOId = option[0];
     if (udOId == "add" || udOId == "update") {
-        if (flag) {
+        if (cancelFlag) {
             window.location.href = window.location.pathname + window.location.search;
         }
     }
@@ -368,7 +382,9 @@ function AddOption() {
     option.length = 0;//将原始选项信息清空
     option.push("add");// 0 向数组存选项操作
 
-    Reset();
+    setRowFlag = -1;
+
+    $("#oContent").val("");// 重置 选项内容
 
     $("#optionOperation").text("新建选项");
 
