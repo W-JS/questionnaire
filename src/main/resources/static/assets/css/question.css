@@ -52,23 +52,18 @@ tbody .operating {
     margin-left: 5px;
 }
 
-.am-text-my {
-    font-size: 20px;
-}
-
 .txFixedSize1 {
-    min-height: 50px;
+    min-height: 80px;
     max-height: 80px;
     min-width: 820px;
     max-width: 830px;
 }
 
 .txFixedSize2 {
-    height: auto;
-    min-height: 50px;
-    max-height: 240px;
-    min-width: 820px;
-    max-width: 830px;
+    min-height: 120px;
+    max-height: 120px;
+    min-width: 862px;
+    max-width: 862px;
 }
 
 .table-check {
@@ -76,14 +71,15 @@ tbody .operating {
 }
 
 /*tjlanmu*/
-.updateQuestion {
+.Question1 {
     width: 100%;
     margin: 0 auto;
     font-size: 14px;
 }
 
-.updateQuestion .left {
+.Question1 .left {
     width: 15%;
+    font-size: 20px;
     text-align: left;
     margin-right: 1%;
     float: left;
@@ -91,54 +87,90 @@ tbody .operating {
     margin-bottom: 10px;
 }
 
-.updateQuestion .right {
+.Question1 .right {
     width: 84%;
     float: right;
-    margin-bottom: 10px;
+    margin: 3px 0px;
 }
 
-.updateQuestion .popup-right {
+.Question1 .popup-right {
     width: 100%;
     margin-bottom: 10px;
 }
 
-.updateQuestion .popup-right p {
+.Question1 .popup-right p {
     text-align: center;
 }
 
-.updateQuestion .popup-right p .deleteBtn{
+.Question1 .popup-right p .Btn {
     margin-right: 100px;
 }
 
-.updateQuestion .popup-right .am-btn-primary, .updateQuestion .popup-right .am-btn-success,
-.updateQuestion .popup-right .am-btn-danger, .updateQuestion .popup-right .am-btn-default {
+.Question1 .popup-right .am-btn-primary, .Question1 .popup-right .am-btn-success, .Question1 .popup-right .am-btn-default {
     font-size: 1.4rem !important;
     padding: 1rem 1.8rem;
 }
 
-.updateQuestion .center .am-btn-group .am-selected .am-selected-content ul li span {
+.Question1 .center .am-btn-group .am-selected .am-selected-content ul li span {
     /*text-align: center;*/
     /*margin-left: 53px;*/
     margin-left: 363px;
 }
 
-.updateQuestion .right .am-input-sm {
+.Question1 .right .am-input-sm {
     font-size: 1.2rem !important
 }
 
-.updateQuestion .am-form-group {
-    margin: 2px auto
+.Question1 .am-form-group {
+    margin: 4px auto
+}
+
+.Question2 {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.Question2 .left {
+    width: 11%;
+    font-size: 20px;
+    text-align: left;
+    margin-right: 1%;
+    float: left;
+    line-height: 33px;
+}
+
+.Question2 .right {
+    width: 88%;
+    float: right;
+}
+
+.Question2 .popup-right {
+    width: 100%;
+}
+
+.Question2 .popup-right p {
+    text-align: center;
+}
+
+.Question2 .popup-right p .Btn {
+    margin-right: 100px;
+}
+
+.Question2 .popup-right .am-btn-danger, .Question2 .popup-right .am-btn-default {
+    font-size: 1.4rem !important;
+    padding: 1rem 1.8rem;
 }
 
 @media all and (min-width: 630px) and (min-height: 630px) {
     .am-popup {
         width: 1030px;
         height: 630px;
-        /*background: #f8f8f8;*/
+        background: #f8f8f8;
         left: 50%;
         top: 50%;
         margin-left: -520px;
-        margin-top: -350px;
+        margin-top: -355px;
         -webkit-transform: translateY(1024px);
         -ms-transform: translateY(1024px);
         transform: translateY(1024px)
@@ -146,7 +178,7 @@ tbody .operating {
 }
 
 .admin-content .am-popup {
-    max-height: 690px;
+    max-height: 710px;
     border-radius: 4px;
     overflow: hidden;
 }

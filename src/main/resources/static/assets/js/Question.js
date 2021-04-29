@@ -1,8 +1,11 @@
 let url = window.location.pathname;
 let pOId = "null";// 前置选项Id
 let question = new Array();// 保存原始问题信息
-let flag = false; // 默认不改变前置问题和前置选项
 let deleteQuestion = new Array(); // 保存删除勾选的问题
+let flag = false; // 默认不改变前置问题和前置选项
+let setRowFlag1 = -1;// 设置当前选项所在行行数
+let setRowFlag2 = -1;// 设置当前选项所在行行数
+let cancelFlag = false;// 是否已经保存和修改
 
 // 当文档结构完全加载完毕再去执行函数中的代码
 $(function () {
@@ -16,6 +19,10 @@ $(function () {
     $("#pQP").change(PQPGeneratePQ);// 根据前置问题的页数动态生成前置问题
     // 点击前置问题分页下拉框，当前置问题被默认选中后，将自动调用（因为前置问题下拉框的默认选中被改变）PQGeneratePO()
     // 即生成前置问题的同时也生成前置选项，不需要刻意调用 PQGeneratePO()
+
+    // 新建问题的前置问题为未被前置的问题
+    // 被前置的问题：问题A的 question_id 存在于（等于）问题B的 pre_question_id，说明问题A是被前置的问题
+    // 未被前置的问题：问题A的 question_id 不存在于（不等于）问题B的 pre_question_id，说明问题A是未被前置的问题
 
     $("#pQ").change(PQGeneratePO);// 根据前置问题动态生成前置选项
 
@@ -95,89 +102,132 @@ function PQPGeneratePQ() {
     let pQPText = $.trim($('#pQP option:selected').text());// 前置问题分页文本
 
     let qId = question[1];// 问题编号
-    // console.log("当前问题编号：" + qId);
 
-    if (pQPVal != "null") {// 选中前置问题分页具体项
-        pOId = "null";// 选中前置问题分页具体项
-        flag = true;// 改变了前置问题和前置选项
-        $.ajax({
-            async: true, // 异步请求
-            type: "get",
-            url: CONTEXT_PATH + '/question/getNoPrependedQuestionPage2ByQnId',
-            data: {
-                "qId": qId,
-                'current': pQPVal,
-            },
-            dataType: 'json',
-            success: function (result) {
-                if (result.state == 1) {
-                    // 1、前置问题列表不能出现当前问题的后置问题
-                    let length1 = result.data.length - 1;// 0: 未被前置，无后置问题 1: 被前置，有后置问题
-                    $('#pQ option').remove();
-                    let html = "";
-                    for (let i = length1; i >= 0; i--) {
-                        if (i == 0) {
-                            let length2 = result.data[i].questionList.length;// 前置问题列表的长度
-                            for (let j = 0; j < result.data[i].questionList.length; j++) {
-                                if (length1 == 1) {// 当前问题有传递后置问题
-                                    let flag = false;
-                                    for (let k = 0; k < result.data[1].rearQuestionList.length; k++) {
-                                        // 前置问题不能为当前问题的传递后置问题
-                                        if (result.data[i].questionList[j].questionId == result.data[1].rearQuestionList[k].questionId) {
-                                            length2--;
-                                            flag = true;
-                                            break;
-                                        }
-                                    }
-                                    if (flag) {
-                                        continue;
-                                    }
-                                }
-                                // 前置问题不能为当前问题
-                                if (result.data[i].questionList[j].questionId == qId) {
-                                    length2--;
-                                    continue;
-                                }
-                                // 前置问题不能为填空题
-                                if (result.data[i].questionList[j].questiontypeId == "fillBlank") {
-                                    length2--;
-                                    continue;
-                                }
-                                html += "<option value=\"" + result.data[i].questionList[j].questionId + "\">" + result.data[i].questionList[j].questionTitle + "</option>";
+    let udQId = question[0];
+    if (udQId == "add") {
+        if (pQPVal != "null") {
+            $.ajax({
+                async: true, // 异步请求
+                type: "get",
+                url: CONTEXT_PATH + '/question/getNoPrependedQuestionPage1ByQnId',
+                data: {
+                    'current': pQPVal,
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.state == 1) {
+                        $('#pQ option').remove();
+                        let html = "";
+                        let length = result.data[0].questionList.length;// 前置问题列表的长度
+                        for (let i = 0; i < result.data[0].questionList.length; i++) {
+                            // 前置问题不能为填空题
+                            if (result.data[0].questionList[i].questiontypeId == "fillBlank") {
+                                length--;
+                                continue;
                             }
-                            if (length2 == 0) {
-                                html += "<option value=\"null\">&nbsp;</option>";
-                            }
+                            html += "<option value=\"" + result.data[0].questionList[i].questionId + "\">" + result.data[0].questionList[i].questionTitle + "</option>";
                         }
-
+                        if (length == 0) {
+                            html += "<option value=\"null\">&nbsp;</option>";
+                        }
+                        $(html).appendTo($('#pQ'));
+                        $("#pQ option:first").prop("selected", 'selected');
+                    } else {
+                        ShowFailure("前置问题： " + pQPText + " " + result.message);
                     }
-                    $(html).appendTo($('#pQ'));
-                    $("#pQ option:first").prop("selected", 'selected');
-                } else {
-                    ShowFailure("前置问题： " + pQPText + " " + result.message);
                 }
-            }
-        });
-    } else {// 选中前置问题分页第一项
-        pOId = question[8];// 选中前置问题分页第一项
-        let pQId = question[6];// 前置问题Id
-        let pQTitle;// 前置问题Title
-        if (question[7]) {
-            pQTitle = question[7];// 前置问题Title
+            });
         } else {
-            pQTitle = "";// 前置问题Title
-        }
-        if (pQId != "" && pQTitle != "") {// 有前置问题
-            SetPQ(pQId, pQTitle);// 设置前置问题
-            flag = true;// 改变了前置问题和前置选项
-        } else {// 无前置问题
             $('#pQ option').remove();
-            let html1 = "<option value=\"not\" selected>&nbsp;</option>";
+            let html1 = "<option value=\"null\" selected>&nbsp;</option>";
             $(html1).appendTo($('#pQ'));
             $('#pO option').remove();
-            let html2 = "<option value=\"not\" selected>&nbsp;</option>";
+            let html2 = "<option value=\"null\" selected>&nbsp;</option>";
             $(html2).appendTo($('#pO'));
-            flag = false;// 没有改变前置问题和前置选项
+        }
+    } else if (udQId == "update") {
+        if (pQPVal != "null") {// 选中前置问题分页具体项
+            pOId = "null";// 选中前置问题分页具体项
+            flag = true;// 改变了前置问题和前置选项
+            $.ajax({
+                async: true, // 异步请求
+                type: "get",
+                url: CONTEXT_PATH + '/question/getNoPrependedQuestionPage2ByQnId',
+                data: {
+                    "qId": qId,
+                    'current': pQPVal,
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.state == 1) {
+                        // 1、前置问题列表不能出现当前问题的后置问题
+                        let length1 = result.data.length - 1;// 0: 未被前置，无后置问题 1: 被前置，有后置问题
+                        $('#pQ option').remove();
+                        let html = "";
+                        for (let i = length1; i >= 0; i--) {
+                            if (i == 0) {
+                                let length2 = result.data[i].questionList.length;// 前置问题列表的长度
+                                for (let j = 0; j < result.data[i].questionList.length; j++) {
+                                    if (length1 == 1) {// 当前问题有传递后置问题
+                                        let flag = false;
+                                        for (let k = 0; k < result.data[1].rearQuestionList.length; k++) {
+                                            // 前置问题不能为当前问题的传递后置问题
+                                            if (result.data[i].questionList[j].questionId == result.data[1].rearQuestionList[k].questionId) {
+                                                length2--;
+                                                flag = true;
+                                                break;
+                                            }
+                                        }
+                                        if (flag) {
+                                            continue;
+                                        }
+                                    }
+                                    // 前置问题不能为当前问题
+                                    if (result.data[i].questionList[j].questionId == qId) {
+                                        length2--;
+                                        continue;
+                                    }
+                                    // 前置问题不能为填空题
+                                    if (result.data[i].questionList[j].questiontypeId == "fillBlank") {
+                                        length2--;
+                                        continue;
+                                    }
+                                    html += "<option value=\"" + result.data[i].questionList[j].questionId + "\">" + result.data[i].questionList[j].questionTitle + "</option>";
+                                }
+                                if (length2 == 0) {
+                                    html += "<option value=\"null\">&nbsp;</option>";
+                                }
+                            }
+
+                        }
+                        $(html).appendTo($('#pQ'));
+                        $("#pQ option:first").prop("selected", 'selected');
+                    } else {
+                        ShowFailure("前置问题： " + pQPText + " " + result.message);
+                    }
+                }
+            });
+        } else {// 选中前置问题分页第一项
+            pOId = question[8];// 选中前置问题分页第一项
+            let pQId = question[6];// 前置问题Id
+            let pQTitle;// 前置问题Title
+            if (question[7]) {
+                pQTitle = question[7];// 前置问题Title
+            } else {
+                pQTitle = "";// 前置问题Title
+            }
+            if (pQId != "" && pQTitle != "") {// 有前置问题
+                SetPQ(pQId, pQTitle);// 设置前置问题
+                flag = true;// 改变了前置问题和前置选项
+            } else {// 无前置问题
+                $('#pQ option').remove();
+                let html1 = "<option value=\"not\" selected>&nbsp;</option>";
+                $(html1).appendTo($('#pQ'));
+                $('#pO option').remove();
+                let html2 = "<option value=\"not\" selected>&nbsp;</option>";
+                $(html2).appendTo($('#pO'));
+                flag = false;// 没有改变前置问题和前置选项
+            }
         }
     }
 }
@@ -315,29 +365,34 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
+        if (setRowFlag1 != row) {// 选择其他行，设置问题弹出层1；选择同一行，不设置问题弹出层1
+            setRowFlag1 = row;
+            SetQuestion1();// 设置问题弹出层1
+        }
+
+        if (setRowFlag2 != row) {// 选择其他行，设置问题弹出层2；选择同一行，不设置问题弹出层2
+            setRowFlag2 = row;
+            SetQuestion2();// 设置问题弹出层2
+        }
+
         let udQId = question[0];
 
-        $('#deleteQuestion .am-popup-hd h4').remove();
-        let html1 = "";
-        $('#deleteQuestion .am-popup-bd .updateQuestion p .deleteBtn').remove();
-        let html2 = "";
-
         if (udQId == "show") {
-            html1 = "<h4 class=\"am-popup-title\">查看问题</h4>";
-            html2 = "<input class=\"deleteBtn\" type=\"hidden\"/>";
-            SetDeleteQuestion();
+            $("#questionOperation2").text("查看问题");
+
+            $("#delete").attr("hidden", "hidden");
         }
         if (udQId == "update") {
-            SetUpdateQuestion();
+            $("#questionOperation1").text("修改问题");
+
+            $("#update").removeAttr("hidden");
+            $("#save").attr("hidden", "hidden");
         }
         if (udQId == "delete") {
-            html1 = "<h4 class=\"am-popup-title\">删除问题</h4>";
-            html2 = "<button type=\"button\" class=\"am-btn am-btn-danger am-radius deleteBtn\" onclick=\"DeleteSubmit()\">删除</button>";
-            SetDeleteQuestion();
-        }
+            $("#questionOperation2").text("删除问题");
 
-        $(html1).appendTo($('#deleteQuestion .am-popup-hd'));
-        $(html2).prependTo($('#deleteQuestion .am-popup-bd .updateQuestion p'));
+            $("#delete").removeAttr("hidden");
+        }
     }
     setChecked(this);
 }
@@ -370,7 +425,7 @@ function setChecked(obj) {
 }
 
 // 将当前问题信息填充到修改问题弹出层中
-function SetUpdateQuestion() {
+function SetQuestion1() {
     let qId = question[1];// 问题编号
     $.ajax({
         async: true, // 异步请求
@@ -426,7 +481,7 @@ function SetUpdateQuestion() {
 }
 
 // 将当前问题信息填充到删除问题弹出层中
-function SetDeleteQuestion() {
+function SetQuestion2() {
     let qId = question[1];// 问题编号
     $.ajax({
         async: true, // 异步请求
@@ -546,6 +601,121 @@ function QDescriptionExists() {
     return flag;
 }
 
+// 提交问题前表单验证
+function Save() {
+    if (!QTitleExists()) {
+        return false;
+    }
+
+    if (!QDescriptionExists()) {
+        return false;
+    }
+
+    saveSubmit();
+}
+
+// 提交问题信息
+function saveSubmit() {
+    let qTitle = $.trim($("#qTitle").val());
+    let qDescription = $.trim($("#qDescription").val());
+    let qStatus = $.trim($("input[name='qStatus']:checked").val());
+    let pQVal = $.trim($('#pQ option:selected').val());
+    let pOVal = $.trim($('#pO option:selected').val());
+    let qt = $.trim($('#qt option:selected').val());
+    let oContent = "";
+    let flag = true;// 是否直接生成选项，默认是
+
+    if (qt == "singleChoice" || qt == "multipleChoice" || qt == "judgment") {
+        // 单项选择题、多项选择题和判断题，跳转到新建选项页面
+        flag = false;
+    } else if (qt == "fillBlank") {
+        // 填空题 不跳转，重置问题信息
+        oContent = "填空题";
+    } else if (qt == "score") {
+        // 评分题 不跳转，重置问题信息
+        oContent = "评分题";
+    }
+
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/question/questionSubmit',
+        data: {
+            'qTitle': qTitle,
+            'qDescription': qDescription,
+            'qStatus': qStatus,
+            'pQId': pQVal,
+            'pOId': pOVal,
+            'qtId': qt,
+            'qCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                if (flag) {
+                    $.ajax({
+                        async: true, // 异步请求
+                        type: "post",
+                        url: CONTEXT_PATH + '/option/optionSubmit',
+                        data: {
+                            'oContent': oContent,
+                            'oCreateTime': getNowFormatDate()
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.state == 1) {
+                                ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                                setTimeout(function () {
+                                    window.location.href = window.location.pathname + window.location.search;
+                                }, 1000);
+                            } else {
+                                ShowFailure(result.message);
+                            }
+                        }
+                    });
+                } else {
+                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                    setTimeout(function () {
+                        window.location.href = window.location.pathname + window.location.search;
+                    }, 1000);
+                }
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+
+    /*$.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/question/questionSubmit',
+        data: {
+            'qTitle': qTitle,
+            'qDescription': qDescription,
+            'qStatus': qStatus,
+            'pQId': pQVal,
+            'pOId': pOVal,
+            'qtId': qt,
+            'qCreateTime': getNowFormatDate()
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                if (qt == "singleChoice" || qt == "multipleChoice") {
+                    window.location.href = CONTEXT_PATH + "/option/addOption";
+                } else {
+                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
+                    setTimeout(function () {
+                        window.location.href = CONTEXT_PATH + "/question/addQuestion";
+                    }, 1000);
+                }
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });*/
+}
+
 // 提交问题前表单验证 从修改问题弹出层中获取修改后最新的问题数据信息
 function Update() {
     if (!QTitleExists()) {
@@ -593,7 +763,7 @@ function UpdateSubmit() {
 
         ) {
             ShowWarn("内容未修改！！！");
-            $("#updateCancel").click();
+            $("#cancel1").click();
             return;
         }
     } else {
@@ -604,7 +774,7 @@ function UpdateSubmit() {
             question[5] == qt
         ) {
             ShowWarn("内容未修改！！！");
-            $("#updateCancel").click();
+            $("#cancel1").click();
             return;
         }
     }
@@ -627,7 +797,9 @@ function UpdateSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("修改成功！！！");
-                window.location.href = window.location.pathname + window.location.search;
+                setTimeout(function () {
+                    window.location.href = window.location.pathname + window.location.search;
+                }, 1000);
 
             } else {
                 ShowFailure(result.message);
@@ -640,7 +812,7 @@ function UpdateSubmit() {
 function DeleteSubmit() {
     let qId = question[1];// 问题编号
 
-    $('#my-confirm').modal({
+    $('#questionModal').modal({
         relatedTarget: this,
         onConfirm: function (options) {
             $.ajax({
@@ -655,7 +827,9 @@ function DeleteSubmit() {
                 success: function (result) {
                     if (result.state == 1) {
                         ShowSuccess("删除成功！！！");
-                        window.location.href = window.location.pathname + window.location.search;
+                        setTimeout(function () {
+                            window.location.href = window.location.pathname + window.location.search;
+                        }, 1000);
                     } else {
                         ShowFailure(result.message);
                     }
@@ -663,19 +837,9 @@ function DeleteSubmit() {
             });
         },
         onCancel: function () {
-            $("#deleteCancel").click();
+            $("#cancel2").click();
         },
     });
-}
-
-// 重置问题信息
-function Reset() {
-    $("#qTitle").val(question[2]);// 填充问题标题
-    $("#qDescription").val(question[3]);// 填充问题描述
-    $(":radio[name='qStatus'][value='" + question[4] + "']").prop("checked", "checked");// 选中正确的是否必填项
-    GeneratePQP();// 动态生成前置问题的页数
-    GenerateQT();// 动态生成问题类型
-    ShowSuccess("问题信息重置成功！！！");
 }
 
 // 删除选择的问题
@@ -687,7 +851,7 @@ function DeleteChoose() {
         }
     }
     if (deleteQuestion.length > 0) {
-        $('#my-confirm').modal({
+        $('#questionModal').modal({
             relatedTarget: this,
             onConfirm: function (options) {
                 $.ajax({
@@ -701,7 +865,9 @@ function DeleteChoose() {
                     success: function (result) {
                         if (result.state == 1) {
                             ShowSuccess("删除成功！！！");
-                            window.location.href = window.location.pathname + window.location.search;
+                            setTimeout(function () {
+                                window.location.href = window.location.pathname + window.location.search;
+                            }, 1000);
                         } else {
                             ShowFailure(result.message);
                         }
@@ -720,6 +886,70 @@ function DeleteChoose() {
     } else {
         ShowFailure("请选择需要删除的问题！！！");
     }
+}
+
+// 重置问题信息
+function Reset() {
+    let udQId = question[0];
+
+    if (udQId == "add") {
+        $("#qTitle").val("");// 重置 问题标题
+        $("#qDescription").val("");// 重置 问题描述
+        $("input:radio[name='qStatus']")[0].checked = true;// 重置 是否必填
+
+        GeneratePQP();// 动态生成前置问题的页数
+        GenerateQT();// 动态生成问题类型
+        ShowSuccess("新建问题信息重置成功！！！");
+    } else if (udQId == "update") {
+        setRowFlag = -1;
+
+        $("#qTitle").val(question[2]);// 填充问题标题
+        $("#qDescription").val(question[3]);// 填充问题描述
+        $(":radio[name='qStatus'][value='" + question[4] + "']").prop("checked", "checked");// 选中正确的是否必填项
+        GeneratePQP();// 动态生成前置问题的页数
+        GenerateQT();// 动态生成问题类型
+
+        ShowSuccess("修改问题信息重置成功！！！");
+    }
+}
+
+// 退出选项弹出层
+function Cancel() {
+    let udQId = question[0];
+    if (udQId == "add" || udQId == "update") {
+        if (cancelFlag) {
+            window.location.href = window.location.pathname + window.location.search;
+        }
+    }
+}
+
+// 点击新建问题按钮
+function AddQuestion() {
+    question.length = 0;//将原始选项信息清空
+    question.push("add");// 0 向数组存选项操作
+
+    setRowFlag1 = -1;
+    setRowFlag2 = -1;
+
+    GeneratePQP();// 动态生成前置问题的页数
+    GenerateQT();// 动态生成问题类型
+
+    // $("#oContent").val("");// 重置 选项内容
+    $("#qTitle").val("");// 重置 问题标题
+    $("#qDescription").val("");// 重置 问题描述
+    $("input:radio[name='qStatus']")[0].checked = true;// 重置 是否必填
+
+    // $("#pQP option[value='null']").attr("selected", true);// 重置 前置问题和前置选项（选择前置问题分页第一项）
+    // $("#pQP option[value='null']").removeAttr("selected");// 删除属性，否则只能重置一次（属性存在，无法重新设置）
+    // $("#qt option:first").attr("selected", true);// 重置 问题类型
+    // $("#qt option:first").removeAttr("selected");// 删除属性，否则只能重置一次（属性存在，无法重新设置）
+
+    $("#questionOperation1").text("新建问题");
+
+    // $("#oContent").removeAttr("disabled");
+
+    $("#save").removeAttr("hidden");
+    $("#update").attr("hidden", "hidden");
 }
 
 // 点击显示问题按钮

@@ -73,14 +73,6 @@ public class QuestionController {
     }
 
     /**
-     * @return 进入 调查问卷后台管理-新建问题
-     */
-    @GetMapping(value = "/addQuestion")
-    public String jumpAddOptionsPage(Model model) {
-        return "/site/addQuestion";
-    }
-
-    /**
      * 根据搜索内容模糊查询问题信息
      *
      * @param searchWay     搜索方式

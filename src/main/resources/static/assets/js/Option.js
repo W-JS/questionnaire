@@ -349,7 +349,7 @@ function DeleteChoose() {
             },
         });
     } else {
-        ShowFailure("请选择需要删除的问题！！！");
+        ShowFailure("请选择需要删除的选项！！！");
     }
 }
 
