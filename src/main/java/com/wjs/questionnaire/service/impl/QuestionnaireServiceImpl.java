@@ -3,11 +3,9 @@ package com.wjs.questionnaire.service.impl;
 import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionnaireEntity;
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.OptionMapper;
 import com.wjs.questionnaire.mapper.QuestionMapper;
 import com.wjs.questionnaire.mapper.QuestionnaireMapper;
-import com.wjs.questionnaire.mapper.UserMapper;
 import com.wjs.questionnaire.service.IQuestionnaireService;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
@@ -23,14 +21,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.wjs.questionnaire.util.DateUtil.StringToDate;
-import static com.wjs.questionnaire.util.QuestionnaireConstant.ONLINEUSERID;
 import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQNID;
 
 @Service
 public class QuestionnaireServiceImpl implements IQuestionnaireService {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private QuestionnaireMapper questionnaireMapper;

@@ -3,11 +3,9 @@ package com.wjs.questionnaire.service.impl;
 import com.wjs.questionnaire.entity.OptionEntity;
 import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionTypeEntity;
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.OptionMapper;
 import com.wjs.questionnaire.mapper.QuestionMapper;
 import com.wjs.questionnaire.mapper.QuestionTypeMapper;
-import com.wjs.questionnaire.mapper.UserMapper;
 import com.wjs.questionnaire.service.IQuestionService;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
@@ -24,9 +22,6 @@ import static com.wjs.questionnaire.util.QuestionnaireConstant.*;
 
 @Service
 public class QuestionServiceImpl implements IQuestionService {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private QuestionMapper questionMapper;

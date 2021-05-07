@@ -240,6 +240,18 @@
         WHERE q1.question_id = #{qId})
     </select>
 
+    <!-- 获取当前问卷的不同题型的问题信息 -->
+    <!-- List<QuestionEntity> findQuestionByQnIdAndQtId(String qnId, String qtId); -->
+    <select id="findQuestionByQnIdAndQtId" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question`
+        WHERE questionnaire_id = #{qnId}
+        AND questiontype_id = #{qtId}
+        AND pre_question_id IS NULL
+        ORDER BY question_create_time ASC
+    </select>
+
     <!-- 保存问题信息 -->
     <!-- int insertQuestion(QuestionEntity qn); -->
     <insert id="insertQuestion" parameterType="QuestionEntity">

@@ -1,9 +1,7 @@
 package com.wjs.questionnaire.service.impl;
 
 import com.wjs.questionnaire.entity.OptionEntity;
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.OptionMapper;
-import com.wjs.questionnaire.mapper.UserMapper;
 import com.wjs.questionnaire.service.IOptionService;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
@@ -19,13 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 import static com.wjs.questionnaire.util.DateUtil.StringToDate;
-import static com.wjs.questionnaire.util.QuestionnaireConstant.*;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineOID;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
 
 @Service
 public class OptionServiceImpl implements IOptionService {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private OptionMapper optionMapper;
