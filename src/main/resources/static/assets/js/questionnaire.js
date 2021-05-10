@@ -5,7 +5,13 @@ let currentMCQuestion = false;// 默认不是当前问题（多项选择题）
 let currentJMQuestionId = "";// 当前问题（判断题）
 let currentJMQuestion = false;// 默认不是当前问题（判断题）
 
-let array = new Array();
+let rearQuestionArray = new Array();// 保存当前问题和后置问题的问题信息（key: 当前问题编号，value: 后置问题编号）
+
+let scQuestionArray = new Array();// 保存用户选中的 单项选择题 的选项信息（key: 问题编号，value: 选项编号）
+let mcQuestionArray = new Array();// 保存用户选中的 多项选择题 的选项信息（key: 选项编号，value: 问题编号）
+let jmQuestionArray = new Array();// 保存用户选中的 判断题 的选项信息（key: 问题编号，value: 选项编号）
+let fbQuestionArray = new Array();// 保存用户选中的 填空题 的选项信息（key: 选项编号，value: 值）
+let sQuestionArray = new Array();// 保存用户选中的 评分题 的选项信息（key: 选项编号，value: 值）
 
 $(function () {
     layui.use('rate', function () {
@@ -32,33 +38,38 @@ $(function () {
                     this.span.text(arrs[value] || (value + "星"));
                 }
                 , choose: function (value) {
-                    console.log("id: " + this.elem[0].id + " value: " + value);
+                    // sQuestionArray[this.elem[0].id] = String(value);
+                    sQuestionArray[this.elem[0].id] = value.toString();
+                    // console.log("id: " + this.elem[0].id + " value: " + value);
                 }
             });
         })
     });
+
+    $("#save").click(Save);
 });
 
+// 鼠标点击触发（单项选择题/多项选择题/判断题）
 function ClickOption(object) {
     if ($($(object).parent("label").parent("div").parent("div").find("div:nth-child(2)").children("span:first")[0]).attr("value") == "true") {// 当前选项所在的问题有后置问题
         if (object.value == "sc-true" || object.value == "jm-true") {// 当前选项有后置问题（单项选择题）
-            // console.log("当前选项所在的问题有后置问题 当前选项有后置问题");
-
             $(object).parent("label").parent("div").parent("div").next().attr("style", "display:block;color:green;");
-
             let key = object.name;// key: 当前问题的问题编号
             let value = $(object).parent("label").parent("div").parent("div").next().children("div:nth-child(3)").children("label").children("input")[0].name;// value: 下一个问题的问题编号
-            array[key] = value;
+            rearQuestionArray[key] = value;
         } else if (object.value == "sc-false" || object.value == "jm-false") {// 当前选项无后置问题（单项选择题）
-            // console.log("当前选项所在的问题有后置问题 当前选项无后置问题");
             let key = object.name;// key: 当前问题的问题编号
             let value;// value: 下一个问题的问题编号
-
             let flag = true;
             while (flag) {
-                value = array[key];// value: 下一个问题的问题编号
+                value = rearQuestionArray[key];// value: 下一个问题的问题编号
                 if (value != null) {
-                    delete array[key];
+                    delete rearQuestionArray[key];
+                    if (object.value == "sc-false") {
+                        delete scQuestionArray[value];
+                    } else if (object.value == "jm-false") {
+                        delete jmQuestionArray[value];
+                    }
                     if ($(":radio[name=" + value + "]:checked").length == 0) {// 后置问题没有被选中
                         $(":radio[name=" + value + "]").parent("label").parent("div").parent("div").attr("style", "display:none;");
                     } else {// 后置问题被选中
@@ -73,22 +84,23 @@ function ClickOption(object) {
         }
 
         if (object.value == "mc-true") {// 当前选项有后置问题（多项选择题）
-            // console.log("当前选项所在的问题有后置问题 当前选项有后置问题");
-
             $(object).parent("label").parent("div").parent("div").next().attr("style", "display:block;color:blue;");
-
             let key = object.name;// key: 当前问题的问题编号
-
-            if (array[key] == null) {
+            if (rearQuestionArray[key] == null) {
                 let value = $(object).parent("label").parent("div").parent("div").next().children("div:nth-child(3)").children("label").children("input")[0].name;// value: 下一个问题的问题编号
-                array[key] = value;
+                rearQuestionArray[key] = value;
             } else {
                 let value;// value: 下一个问题的问题编号
                 let flag = true;
                 while (flag) {
-                    value = array[key];// value: 下一个问题的问题编号
+                    value = rearQuestionArray[key];// value: 下一个问题的问题编号
                     if (value != null) {
-                        delete array[key];
+                        delete rearQuestionArray[key];
+                        for (let i in mcQuestionArray) {
+                            if (mcQuestionArray[i] == value) {
+                                delete mcQuestionArray[i];
+                            }
+                        }
                         if ($(":checkbox[name=" + value + "]:checked").length == 0) {// 后置问题没有被选中
                             $(":checkbox[name=" + value + "]").parent("label").parent("div").parent("div").attr("style", "display:none;");
                         } else {// 后置问题被选中
@@ -102,30 +114,20 @@ function ClickOption(object) {
                 }
             }
         }
-        /*else if (object.value == "mc-false") {// 当前选项无后置问题（多项选择题）
-            // console.log("当前选项所在的问题有后置问题 当前选项无后置问题");
-            let key = object.name;// key: 当前问题的问题编号
-            let value;// value: 下一个问题的问题编号
-
-            let flag = true;
-            while (flag) {
-                value = array[key];// value: 下一个问题的问题编号
-                if (value != null) {
-                    delete array[key];
-                    if ($(":checkbox[name=" + value + "]:checked").length == 1) {// 后置问题被选中
-                        $(":checkbox[name=" + value + "]:checked").parent("label").parent("div").parent("div").attr("style", "display:none;");
-                        $(":checkbox[name=" + value + "]:checked").prop("checked", false);
-                    } else {// 后置问题没有被选中
-                        $(":checkbox[name=" + value + "]").parent("label").parent("div").parent("div").attr("style", "display:none;");
-                    }
-                    key = value;
-                } else {
-                    flag = false;
-                }
-            }
-        }*/
     } else {
         // console.log("当前选项所在的问题无后置问题");
+    }
+
+    if (object.value == "sc-true" || object.value == "sc-false") {
+        scQuestionArray[object.name] = object.id;
+    } else if (object.value == "jm-true" || object.value == "jm-false") {
+        jmQuestionArray[object.name] = object.id;
+    } else if (object.value == "mc-true" || object.value == "mc-false") {
+        if (mcQuestionArray[object.id] != null) {
+            delete mcQuestionArray[object.id];
+        } else {
+            mcQuestionArray[object.id] = object.name;
+        }
     }
 
     /*$.ajax({
@@ -201,6 +203,99 @@ function ClickOption(object) {
             }
         }
     });*/
+}
+
+// 鼠标移出触发（填空题）
+function BlurOption(object) {
+    let value = $.trim($(object).val());
+    if (value != null && value != "") {
+        fbQuestionArray[object.id] = value;
+    } else {
+        delete fbQuestionArray[object.id];
+    }
+}
+
+// 提交用户填写的问卷信息
+function Save() {
+    console.log("单项选择题: ");
+    let sc = new Array();
+    for (let i in scQuestionArray) {
+        console.log("qId: " + i + " oId: " + scQuestionArray[i]);
+        let object = new Object();
+        object.qId = i;
+        object.oId = scQuestionArray[i];
+        sc.push(object);
+    }
+
+    console.log("多项选择题: ");
+    let mc = new Array();
+    for (let i in mcQuestionArray) {
+        console.log("oId: " + i + " qId: " + mcQuestionArray[i]);
+        let object = new Object();
+        object.oId = i;
+        object.qId = mcQuestionArray[i];
+        mc.push(object);
+    }
+
+    console.log("判断题: ");
+    let jm = new Array();
+    for (let i in jmQuestionArray) {
+        console.log("qId: " + i + " oId: " + jmQuestionArray[i]);
+        let object = new Object();
+        object.qId = i;
+        object.oId = jmQuestionArray[i];
+        jm.push(object);
+    }
+
+    console.log("填空题: ");
+    let fb = new Array();
+    for (let i in fbQuestionArray) {
+        console.log("oId: " + i + " value: " + fbQuestionArray[i]);
+        let object = new Object();
+        object.oId = i;
+        object.value = fbQuestionArray[i];
+        fb.push(object);
+    }
+
+    console.log("评分题: ");
+    let s = new Array();
+    for (let i in sQuestionArray) {
+        console.log("oId: " + i + " value: " + sQuestionArray[i]);
+        let object = new Object();
+        object.oId = i;
+        object.value = sQuestionArray[i];
+        s.push(object);
+    }
+
+    let userComments = $.trim($("#userComments").val());
+    console.log("用户留言: ");
+    console.log(userComments);
+
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/saveSubmit',
+        data: {
+            'JSONsc': JSON.stringify(sc),
+            'JSONmc': JSON.stringify(mc),
+            'JSONjm': JSON.stringify(jm),
+            'JSONfb': JSON.stringify(fb),
+            'JSONs': JSON.stringify(s),
+            'userComments': userComments,
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                ShowSuccess("success");
+                // ShowSuccess("删除成功！！！");
+                // setTimeout(function () {
+                //     window.location.href = window.location.pathname + window.location.search;
+                // }, 1000);
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
 }
 
 // 动态生成问题信息和选项信息（单项选择题）

@@ -171,8 +171,29 @@ public class IndexServiceImpl implements IIndexService {
      * @return 问题信息列表
      */
     @Override
-    public List<QuestionEntity> findQuestionByQnIdAndQtId2(String qnId, String qtId) {
-        return questionMapper.findQuestionByQnIdAndQtId(qnId, qtId);
+    public List<Map<String, Object>> findQuestionByQnIdAndQtId2(String qnId, String qtId) {
+        List<Map<String, Object>> data1 = new ArrayList<>();
+        List<QuestionEntity> questionList = questionMapper.findQuestionByQnIdAndQtId(qnId, qtId);
+        if (questionList != null) {
+            for (QuestionEntity question : questionList) {
+                Map<String, Object> map1 = new HashMap<>();
+                map1.put("question", question);
+
+                List<Map<String, Object>> data2 = new ArrayList<>();
+                List<OptionEntity> optionList = optionMapper.findOptionByQId(question.getQuestionId());
+                if (optionList != null) {
+                    for (OptionEntity option : optionList) {
+                        Map<String, Object> map2 = new HashMap<>();
+                        map2.put("option", option);
+                        data2.add(map2);
+
+                    }
+                    map1.put("option", data2);
+                }
+                data1.add(map1);
+            }
+        }
+        return data1;
     }
 
     /**

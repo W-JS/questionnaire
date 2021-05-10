@@ -44,7 +44,7 @@ public interface IIndexService {
      * @param qtId 题型
      * @return 问题信息列表
      */
-    List<QuestionEntity> findQuestionByQnIdAndQtId2(String qnId, String qtId);
+    List<Map<String, Object>> findQuestionByQnIdAndQtId2(String qnId, String qtId);
 
     /**
      * 查询当前问题的当前选项的后置问题

@@ -15,7 +15,7 @@
     </head>
     <body>
         <!-- 头部 -->
-        <header class="am-topbar admin-header" style="position: fixed;">
+        <header class="am-topbar admin-header" style="position: fixed;z-index: 1;">
             <div class="am-topbar-brand">欢迎填写问卷</div>
             <!--            <div class="am-topbar-brand"><img th:src="@{/assets/img/index.png}"></div>-->
 
@@ -82,8 +82,7 @@
                             </div>
                             <div class="checkbox" th:each="o:${mc.option}">
                                 <label class="checkbox-mr">
-                                    <input onclick="ClickOption(this)" class="input-cb" type="checkbox"
-                                           th:value="${o.q == 'true' ? 'mc-true':'mc-false'}"
+                                    <input onclick="ClickOption(this)" class="input-cb" type="checkbox" th:value="${o.q == 'true' ? 'mc-true':'mc-false'}"
                                            th:id="${o.option.optionId}" th:name="${o.option.questionId}" th:text="' '+${o.option.optionContent}">
                                 </label>
                             </div>
@@ -108,29 +107,29 @@
                         <div class="am-form-group am-cf" th:each="fb,fbStat:${fbQuestion}">
                             <div class="QNumber" th:text="${fbStat.count} + '、'">4、</div>
                             <div class="topic">
-                                <span class="qTitle" th:text="${fb.questionTitle}">填空题</span>
+                                <span class="qTitle" th:text="${fb.question.questionTitle}">填空题</span>
                                 <span class="qt">（填空）</span>
-                                <span class="qStatus" th:if="${fb.questionStatus == 1}">*</span>
+                                <span class="qStatus" th:if="${fb.question.questionStatus == 1}">*</span>
                             </div>
-                            <div class="fillBlank">
-                                <textarea rows="5" placeholder="请输入意见或建议！！！"></textarea>
+                            <div class="fillBlank" th:each="o:${fb.option}">
+                                <textarea onblur="BlurOption(this)" th:id="${o.option.optionId}"  rows="5" placeholder="请输入意见或建议！！！"></textarea>
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="s,sStat:${sQuestion}" th:style="${s.preQuestionId==null} ? '':'display:none;'">
+                        <div class="am-form-group am-cf" th:each="s,sStat:${sQuestion}" th:style="${s.question.preQuestionId==null} ? '':'display:none;'">
                             <div class="QNumber" th:text="${sStat.count} + '、'">5、</div>
                             <div class="topic">
-                                <span class="qTitle" th:text="${s.questionTitle}">评分题</span>
+                                <span class="qTitle" th:text="${s.question.questionTitle}">评分题</span>
                                 <span class="qt">（评分）</span>
-                                <span class="qStatus" th:if="${s.questionStatus == 1}">*</span>
+                                <span class="qStatus" th:if="${s.question.questionStatus == 1}">*</span>
                             </div>
-                            <div onclick="ClickOption(this)" class="score" th:id="${s.questionId}"></div>
+                            <div class="score" th:each="o:${s.option}" th:id="${o.option.optionId}"></div>
                         </div>
 
                         <div class="am-form-group am-cf">
                             <div class="userComments"><span class="qTitle">用户留言</span><span>（非必填）</span></div>
                             <div class="fillBlank">
-                                <textarea rows="5" placeholder="请输入留言内容，我们后续会发送邮件回复！！！"></textarea>
+                                <textarea id="userComments" rows="5" placeholder="请输入留言内容，我们后续会发送邮件回复！！！"></textarea>
                             </div>
                         </div>
 
