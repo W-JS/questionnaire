@@ -45,4 +45,15 @@ public interface IIndexService {
      * @return 问题信息列表
      */
     List<QuestionEntity> findQuestionByQnIdAndQtId2(String qnId, String qtId);
+
+    /**
+     * 查询当前问题的当前选项的后置问题
+     *
+     * @param qId 当前问题编号
+     * @param oId 当前选项编号
+     * @return JSON格式数据
+     */
+    JSONResult findRearQuestionByQIdAndOId(String qId, String oId);
+
+//    JSONResult test(String qId);
 }

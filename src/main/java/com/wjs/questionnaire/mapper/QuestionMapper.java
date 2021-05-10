@@ -136,6 +136,15 @@ public interface QuestionMapper {
     QuestionEntity findRearQuestionByQId(String qId);
 
     /**
+     * 查询当前问题的当前选项的后置问题
+     *
+     * @param qId 当前问题编号
+     * @param oId 当前选项编号
+     * @return问题信息
+     */
+    QuestionEntity findRearQuestionByQIdAndOId(String qId, String oId);
+
+    /**
      * 获取当前问卷的不同题型的问题信息
      *
      * @param qnId 当前问卷编号
@@ -143,6 +152,22 @@ public interface QuestionMapper {
      * @return 问题信息列表
      */
     List<QuestionEntity> findQuestionByQnIdAndQtId(String qnId, String qtId);
+
+    /**
+     * 获取当前记录的上一条记录
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    QuestionEntity findLastQuestionByQId(String qId);
+
+    /**
+     * 获取当前记录的下一条记录
+     *
+     * @param qId 当前问题编号
+     * @return 问题信息
+     */
+    QuestionEntity findNextQuestionByQId(String qId);
 
     /**
      * 保存问题信息

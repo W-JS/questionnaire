@@ -327,9 +327,10 @@ function GenerateQT() {
                         $(html).appendTo($('#qt'));
                     }
                     if (i == 1) {
+                        let selectedOption = question[0] == "add" ? result.data[i].qtId : question[5];
                         // 遍历select的option，然后设置一项为选中
                         $("#qt option").each(function () {
-                            if ($(this).val() == question[5]) {
+                            if ($(this).val() == selectedOption) {
                                 $(this).attr("selected", true);
                             }
                         });
@@ -424,7 +425,7 @@ function setChecked(obj) {
     }
 }
 
-// 将当前问题信息填充到修改问题弹出层中
+// 将当前问题信息填充到问题弹出层1（新建和修改）中
 function SetQuestion1() {
     let qId = question[1];// 问题编号
     $.ajax({
@@ -480,7 +481,7 @@ function SetQuestion1() {
     });
 }
 
-// 将当前问题信息填充到删除问题弹出层中
+// 将当前问题信息填充到问题弹出层2（显示和删除）中
 function SetQuestion2() {
     let qId = question[1];// 问题编号
     $.ajax({

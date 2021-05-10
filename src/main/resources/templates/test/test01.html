@@ -14,6 +14,7 @@
             });
 
             function Add() {
+                // 里面
                 $("p").prepend("<b>test01</b>"); //prepend() 方法在被选元素的开头插入指定内容。
 
                 // $("<b>test02</b>").prependTo("#a"); //prependTo() 方法在被选元素的开头插入 HTML 元素。
@@ -23,6 +24,17 @@
                 // $(".a").appendTo(".b"); //appendTo() 方法在被选元素的结尾插入 HTML 元素。
 
                 // $("#a").append("<b>test04</b>."); //append() 方法在被选元素的结尾插入指定内容。
+
+                // 外面
+                // $("p").before("<b>test01</b>"); //before() 方法在被选元素的开头插入指定内容。
+
+                // $("<b>test02</b>").insertBefore("#a"); //insertBefore() 方法在被选元素的开头插入 HTML 元素。
+                // $("#b").insertBefore("#a"); //insertBefore() 方法在被选元素的开头插入 HTML 元素。
+
+                // $("<b>test03</b>").insertAfter(".b"); //insertAfter() 方法在被选元素的结尾插入 HTML 元素。
+                // $(".a").insertAfter(".b"); //insertAfter() 方法在被选元素的结尾插入 HTML 元素。
+
+                // $("#a").after("<b>test04</b>."); //after() 方法在被选元素的结尾插入指定内容。
             }
 
             function Show() {
@@ -35,6 +47,21 @@
         </script>
     </head>
     <body>
+        <p>
+            jquery如何给元素添加一个元素
+            jQuery添加插入元素技巧：
+            jquery添加分为在指定元素的里面添加和外面添加两种：
+
+            里面添加使用（append和prepend）
+            里面添加又分为在里面的前面添加和后面添加
+            里面的前面添加使用 prepend 或 prependTo
+            里面的后面添加使用 append 或 appendTo
+
+            外面添加使用（after和before）
+            外面添加又分为在外面的前面添加和后面添加
+            外面的前面添加使用 before 或 insertBefore
+            外面的后面添加使用 after 或 insertAfter
+        </p>
         <button id="add">Jquery动态添加标签元素</button>
         <p id="a"> A </p>
         <b id="b"> B1 </b>

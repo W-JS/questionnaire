@@ -28,7 +28,7 @@ function GenerateQNTitle() {
 // 生成问卷标题和问题标题
 function GenerateQNTitleAndQTitle() {
     $.ajax({
-        async: true, // 异步请求
+        async: false, // 同步请求
         type: "get",
         url: CONTEXT_PATH + '/questionnaire/getQuestionnaireAndQuestion',
         data: {},
@@ -38,6 +38,7 @@ function GenerateQNTitleAndQTitle() {
                 $('#qnTitle').attr("href", CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data[0].questionnaire.questionnaireId);
                 $('#qnTitle').text(result.data[0].questionnaire.questionnaireTitle);
 
+                $('#qt').val(result.data[1].question.questiontypeId);
                 $('#qTitle').attr("href", CONTEXT_PATH + "/option/OptionByQId?qId=" + result.data[1].question.questionId);
                 $('#qTitle').text(result.data[1].question.questionTitle);
             } else {

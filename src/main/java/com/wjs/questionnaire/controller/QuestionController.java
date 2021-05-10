@@ -221,7 +221,7 @@ public class QuestionController {
      * 如果当前问题的前置问题也有前置问题，则找到当前问题的前置问题的前置问题（循环），最终找到的前置问题是没有前置问题的问题
      *
      * @param qId    当前问题编号
-     * @param status 1: 连续后置问题 0: 最后一个后置问题
+     * @param status 1: 连续前置问题 0: 最先一个前置问题
      * @return 问题信息
      */
     @GetMapping("/getFinallyPrependedQuestionByQId")

@@ -91,6 +91,7 @@
                         </ul>
                         <ul>
                             <p class="text title">
+                                <input id="qt" type="hidden" value="">
                                 <a id="qTitle" href="">问题标题</a>
                             </p>
                         </ul>
@@ -156,7 +157,7 @@
                         <!-- 多个操作按钮 -->
                         <div class="am-btn-group am-btn-group-xs">
                             <button class="am-btn am-btn-default"
-                                    data-am-modal="{target: '#optionPopups'}" onclick="AddOption()">
+                                    data-am-modal="{target: '#optionPopups'}" onclick="AddOption()" id="addOption">
                                 <span class="am-icon-plus"></span>
                                 <span> 新建选项</span>
                             </button>

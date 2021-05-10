@@ -56,44 +56,51 @@
                             <div class="QN-Description" th:text="${questionnaire.questionnaireDescription}">问卷描述</div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="sc,scStat:${scQuestion}">
+                        <div class="am-form-group am-cf" th:each="sc,scStat:${scQuestion}"
+                             th:style="${sc.question.preQuestionId==null} ? '':'display:none;'">
                             <div class="QNumber" th:text="${scStat.count} + '、'">1、</div>
                             <div class="topic">
-                                <span class="qTitle" th:text="${sc.question.questionTitle}">单项选择题</span>
+                                <span class="qTitle" th:text="${sc.question.questionTitle}" th:value="${sc.q == 'true' ? 'true':'false'}">单项选择题</span>
                                 <span class="qt">（单选）</span>
                                 <span class="qStatus" th:if="${sc.question.questionStatus == 1}">*</span>
                             </div>
                             <div class="radio" th:each="o:${sc.option}">
                                 <label class="radio-mr">
-                                    <input class="input-r" type="radio" th:name="${o.option.questionId}" value="" th:text="' '+${o.option.optionContent}">
+                                    <input onclick="ClickOption(this)" class="input-r" type="radio" th:value="${o.q == 'true' ? 'sc-true':'sc-false'}"
+                                           th:id="${o.option.optionId}" th:name="${o.option.questionId}" th:text="' '+${o.option.optionContent}">
                                 </label>
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="mc,mcStat:${mcQuestion}">
+                        <div class="am-form-group am-cf" th:each="mc,mcStat:${mcQuestion}"
+                             th:style="${mc.question.preQuestionId==null} ? '':'display:none;'">
                             <div class="QNumber" th:text="${mcStat.count} + '、'">2、</div>
                             <div class="topic">
-                                <span class="qTitle" th:text="${mc.question.questionTitle}">多项选择题</span>
+                                <span class="qTitle" th:text="${mc.question.questionTitle}" th:value="${mc.q == 'true' ? 'true':'false'}">多项选择题</span>
                                 <span class="qt">（多选）</span>
                                 <span class="qStatus" th:if="${mc.question.questionStatus == 1}">*</span>
                             </div>
                             <div class="checkbox" th:each="o:${mc.option}">
                                 <label class="checkbox-mr">
-                                    <input class="input-cb" type="checkbox" th:name="${o.option.questionId}" value="" th:text="' '+${o.option.optionContent}">
+                                    <input onclick="ClickOption(this)" class="input-cb" type="checkbox"
+                                           th:value="${o.q == 'true' ? 'mc-true':'mc-false'}"
+                                           th:id="${o.option.optionId}" th:name="${o.option.questionId}" th:text="' '+${o.option.optionContent}">
                                 </label>
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="jm,jmStat:${jmQuestion}">
+                        <div class="am-form-group am-cf" th:each="jm,jmStat:${jmQuestion}"
+                             th:style="${jm.question.preQuestionId==null} ? '':'display:none;'">
                             <div class="QNumber" th:text="${jmStat.count} + '、'">3、</div>
                             <div class="topic">
-                                <span class="qTitle" th:text="${jm.question.questionTitle}">判断题</span>
+                                <span class="qTitle" th:text="${jm.question.questionTitle}" th:value="${jm.q == 'true' ? 'true':'false'}">判断题</span>
                                 <span class="qt">（判断）</span>
                                 <span class="qStatus" th:if="${jm.question.questionStatus == 1}">*</span>
                             </div>
                             <div class="radio" th:each="o:${jm.option}">
                                 <label class="radio-mr">
-                                    <input class="input-r" type="radio" th:name="${o.option.questionId}" value="" th:text="' '+${o.option.optionContent}">
+                                    <input onclick="ClickOption(this)" class="input-r" type="radio" th:value="${o.q == 'true' ? 'jm-true':'jm-false'}"
+                                           th:id="${o.option.optionId}" th:name="${o.option.questionId}" th:text="' '+${o.option.optionContent}">
                                 </label>
                             </div>
                         </div>
@@ -110,14 +117,14 @@
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="s,sStat:${sQuestion}">
+                        <div class="am-form-group am-cf" th:each="s,sStat:${sQuestion}" th:style="${s.preQuestionId==null} ? '':'display:none;'">
                             <div class="QNumber" th:text="${sStat.count} + '、'">5、</div>
                             <div class="topic">
                                 <span class="qTitle" th:text="${s.questionTitle}">评分题</span>
                                 <span class="qt">（评分）</span>
                                 <span class="qStatus" th:if="${s.questionStatus == 1}">*</span>
                             </div>
-                            <div class="score" th:id="${s.questionId}"></div>
+                            <div onclick="ClickOption(this)" class="score" th:id="${s.questionId}"></div>
                         </div>
 
                         <div class="am-form-group am-cf">

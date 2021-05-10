@@ -468,7 +468,7 @@ public class QuestionServiceImpl implements IQuestionService {
         QuestionEntity data2;
 
         Map<String, Object> map;
-        boolean flag = false;
+        boolean flag = true;
         do {
             if (data1.getQuestionId() != null) {
                 qId = data1.getQuestionId();
@@ -482,7 +482,6 @@ public class QuestionServiceImpl implements IQuestionService {
                     data.add(map);
                 }
                 data1 = data2;
-                flag = true;
             } else {
                 if (flag) {
                     if (status == 0) {
@@ -543,7 +542,7 @@ public class QuestionServiceImpl implements IQuestionService {
         QuestionEntity data2;
 
         Map<String, Object> map;
-        boolean flag = false;
+        boolean flag = true;
         do {
             if (data1.getQuestionId() != null) {
                 qId = data1.getQuestionId();
@@ -557,7 +556,6 @@ public class QuestionServiceImpl implements IQuestionService {
                     data.add(map);
                 }
                 data1 = data2;
-                flag = true;
             } else {
                 if (flag) {
                     if (status == 0) {
@@ -604,7 +602,10 @@ public class QuestionServiceImpl implements IQuestionService {
 //            flag = questionService.addQuestion(question);
             System.out.println("No: pQId, pOId  " + question);
         } else {
-            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
+            Date date = questionMapper.findQuestionByQId(pQId).getQuestionCreateTime();
+            date.setTime(date.getTime() + 1000);
+            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, date);
+//            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
             flag = questionMapper.insertQuestionS(question);
 //            flag = questionService.addQuestions(question);
             System.out.println("Have: pQId, pOId  " + question);
@@ -650,10 +651,26 @@ public class QuestionServiceImpl implements IQuestionService {
             flag = questionMapper.updateQuestions(question);
             System.out.println("SetNULL: pQId, pOId  " + question);
         } else {
-            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
+            Date date = questionMapper.findQuestionByQId(pQId).getQuestionCreateTime();
+            date.setTime(date.getTime() + 1000);
+            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, date);
+//            question = new QuestionEntity(qId, qTitle, qDescription, Integer.valueOf(qStatus), pQId, pOId, qnId, qtId, StringToDate(qCreateTime));
             flag = questionMapper.updateQuestionByQId(question);
 //            flag = questionService.modifyQuestions(question);
             System.out.println("Set: pQId, pOId  " + question);
+
+            // 循环更新当前问题的连续后置问题的时间
+            boolean rearFlag = true;
+            do {
+                question = questionMapper.findRearQuestionByQId(question.getQuestionId());
+                if (question != null) {
+                    date.setTime(date.getTime() + 1000);
+                    question.setQuestionCreateTime(date);
+                    questionMapper.updateQuestionByQId(question);
+                } else {
+                    rearFlag = false;
+                }
+            } while (rearFlag);// 当前问题无后置问题
         }
 
         JSONResult jsonResult;

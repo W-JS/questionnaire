@@ -221,7 +221,8 @@
     <!-- 如果当前问题有前置问题，则找到当前问题的前置问题 -->
     <!-- QuestionEntity findPrependedQuestionByQId(String qId); -->
     <select id="findPrependedQuestionByQId" resultType="QuestionEntity">
-        SELECT *
+        SELECT
+        <include refid="selectQuestionFields"></include>
         FROM `question` q2
         WHERE q2.question_id IN
         (SELECT q1.pre_question_id
@@ -232,7 +233,8 @@
     <!-- 如果当前问题是被前置问题，则找到当前问题的后置问题 -->
     <!-- QuestionEntity findRearQuestionByQId(String qId); -->
     <select id="findRearQuestionByQId" resultType="QuestionEntity">
-        SELECT *
+        SELECT
+        <include refid="selectQuestionFields"></include>
         FROM `question` q2
         WHERE q2.pre_question_id IN
         (SELECT q1.question_id
@@ -240,16 +242,51 @@
         WHERE q1.question_id = #{qId})
     </select>
 
+    <!-- 查询当前问题的当前选项的后置问题 -->
+    <!-- QuestionEntity findRearQuestionByQIdAndOId(String qId, String oId); -->
+    <select id="findRearQuestionByQIdAndOId" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question` q
+        WHERE q.pre_question_id = #{qId}
+        AND q.pre_option_id = #{oId}
+    </select>
+
     <!-- 获取当前问卷的不同题型的问题信息 -->
     <!-- List<QuestionEntity> findQuestionByQnIdAndQtId(String qnId, String qtId); -->
     <select id="findQuestionByQnIdAndQtId" resultType="QuestionEntity">
         SELECT
         <include refid="selectQuestionFields"></include>
-        FROM `question`
-        WHERE questionnaire_id = #{qnId}
-        AND questiontype_id = #{qtId}
-        AND pre_question_id IS NULL
-        ORDER BY question_create_time ASC
+        FROM `question` q
+        WHERE q.questionnaire_id = #{qnId}
+        AND q.questiontype_id = #{qtId}
+        ORDER BY q.question_create_time ASC
+    </select>
+
+    <!-- 获取当前记录的上一条记录 -->
+    <!-- QuestionEntity findLastQuestionByQId(String qId); -->
+    <select id="findLastQuestionByQId" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question` q2
+        WHERE q2.question_create_time <![CDATA[ < ]]>
+        (SELECT q1.question_create_time
+        FROM `question` q1
+        WHERE q1.question_id = #{qId})
+        ORDER BY q2.question_create_time DESC LIMIT 1
+    </select>
+
+    <!-- 获取当前记录的下一条记录 -->
+    <!-- QuestionEntity findNextQuestionByQId(String qId); -->
+    <select id="findNextQuestionByQId" resultType="QuestionEntity">
+        SELECT
+        <include refid="selectQuestionFields"></include>
+        FROM `question` q2
+        WHERE q2.question_create_time <![CDATA[ > ]]>
+        (SELECT q1.question_create_time
+        FROM `question` q1
+        WHERE q1.question_id = #{qId})
+        ORDER BY q2.question_create_time ASC LIMIT 1
     </select>
 
     <!-- 保存问题信息 -->

@@ -136,10 +136,23 @@ public class IndexServiceImpl implements IIndexService {
                 List<Map<String, Object>> data2 = new ArrayList<>();
                 List<OptionEntity> optionList = optionMapper.findOptionByQId(question.getQuestionId());
                 if (optionList != null) {
+                    boolean flag = false;
                     for (OptionEntity option : optionList) {
                         Map<String, Object> map2 = new HashMap<>();
                         map2.put("option", option);
                         data2.add(map2);
+
+                        QuestionEntity q = questionMapper.findRearQuestionByQIdAndOId(question.getQuestionId(), option.getOptionId());
+                        if (q != null) {
+                            flag = true;
+                            map1.put("q", "true");
+                            map2.put("q", "true");
+                        } else {
+                            map2.put("q", "false");
+                        }
+                    }
+                    if (!flag) {
+                        map1.put("q", "false");
                     }
                     map1.put("option", data2);
                 }
@@ -161,4 +174,45 @@ public class IndexServiceImpl implements IIndexService {
     public List<QuestionEntity> findQuestionByQnIdAndQtId2(String qnId, String qtId) {
         return questionMapper.findQuestionByQnIdAndQtId(qnId, qtId);
     }
+
+    /**
+     * 查询当前问题的当前选项的后置问题
+     *
+     * @param qId 当前问题编号
+     * @param oId 当前选项编号
+     * @return JSON格式数据
+     */
+    @Override
+    public JSONResult findRearQuestionByQIdAndOId(String qId, String oId) {
+        QuestionEntity question = questionMapper.findRearQuestionByQIdAndOId(qId, oId);
+        JSONResult jsonResult;
+        if (question != null) {
+            List<Map<String, Object>> data1 = new ArrayList<>();
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("question", question);
+
+            List<OptionEntity> optionList = optionMapper.findOptionByQId(question.getQuestionId());
+            if (optionList != null) {
+                List<Map<String, Object>> data2 = new ArrayList<>();
+                for (OptionEntity option : optionList) {
+                    Map<String, Object> map2 = new HashMap<>();
+                    map2.put("option", option);
+                    data2.add(map2);
+                }
+                map1.put("optionList", data2);
+            }
+
+            data1.add(map1);
+            jsonResult = JSONResult.build(data1);
+        } else {
+            jsonResult = JSONResult.build("当前问题的当前选项无后置问题");
+        }
+        return jsonResult;
+    }
+
+//    @Override
+//    public JSONResult test(String qId) {
+////        return JSONResult.build(questionMapper.findLastQuestionByQId(qId));
+//        return JSONResult.build(questionMapper.findNextQuestionByQId(qId));
+//    }
 }

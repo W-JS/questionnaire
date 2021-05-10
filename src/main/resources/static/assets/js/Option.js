@@ -3,6 +3,7 @@ let option = new Array();// 保存原始选项信息
 let deleteOption = new Array(); // 保存删除勾选的问题
 let setRowFlag = -1;// 设置当前选项所在行行数
 let cancelFlag = false;// 是否已经保存和修改
+let rows = $("#items").find("tr").length; //获取表格的总行数 tr
 
 $(function () {
     isURL();
@@ -17,6 +18,15 @@ $(function () {
     $("#deleteChoose").click(DeleteChoose);// 删除选择的选项
 
     $('#oContent').bind('keypress', oContentEnter);
+
+    if (($("#qt").val() == "judgment" && rows == 2)) {
+        $("#addOption").attr("disabled", true);
+    }
+    if (($("#qt").val() == "fillBlank") || ($("#qt").val() == "score")) {
+        $("#addOption").attr("disabled", true);
+        $("#deleteChoose").attr("disabled", true);
+        $("#items .am-text-danger").attr("disabled", true);
+    }
 });
 
 // 判断url是否正确
@@ -78,12 +88,15 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
+        let udOId = option[0];
+
         if (setRowFlag != row) {// 选择其他行，设置选项弹出层；选择同一行，不设置选项弹出层
+            if ((($("#qt").val() == "fillBlank") || ($("#qt").val() == "score")) && (udOId != "show" && udOId != "update")) {
+                return false;
+            }
             setRowFlag = row;
             SetOption();// 设置选项弹出层
         }
-
-        let udOId = option[0];
 
         if (udOId == "show") {
             $("#optionOperation").text("查看选项");
@@ -221,9 +234,14 @@ function saveSubmit() {
         success: function (result) {
             if (result.state == 1) {
                 ShowSuccess("选项：" + oContent + " 保存成功！！！");
+                rows++;
                 cancelFlag = true;
                 $("#oContent").val("");
                 $("#oContent").focus();
+
+                if ($("#qt").val() == "judgment" && rows == 2) {
+                    $("#cancel").click();
+                }
             } else {
                 ShowFailure(result.message);
             }

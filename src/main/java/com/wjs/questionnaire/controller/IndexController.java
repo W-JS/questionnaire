@@ -67,4 +67,25 @@ public class IndexController {
 //        return JSONResult.build(indexService.findQuestionByQnIdAndQtId2(qnId, "score"));
 //        return indexService.getQuestionnaireByQnId(qnId);
     }
+
+    /**
+     * 查询当前问题的当前选项的后置问题
+     *
+     * @param qId 当前问题编号
+     * @param oId 当前选项编号
+     * @return JSON格式数据
+     */
+    @GetMapping("/getRearQuestionByQIdAndOId")
+    @ResponseBody
+    public JSONResult getRearQuestionByQIdAndOId(String qId, String oId) {
+        return indexService.findRearQuestionByQIdAndOId(qId, oId);
+    }
+
+
+    @GetMapping("/JSONResultTest")
+    @ResponseBody
+    public JSONResult test(String qnId) {
+        return JSONResult.build(indexService.findQuestionByQnIdAndQtId1(qnId, "judgment"));
+//        return indexService.test(qId);
+    }
 }
