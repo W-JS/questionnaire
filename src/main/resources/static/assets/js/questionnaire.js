@@ -13,6 +13,8 @@ let jmQuestionArray = new Array();// 保存用户选中的 判断题 的选项�
 let fbQuestionArray = new Array();// 保存用户选中的 填空题 的选项信息（key: 选项编号，value: 值）
 let sQuestionArray = new Array();// 保存用户选中的 评分题 的选项信息（key: 选项编号，value: 值）
 
+let showCount = 0;// 保存当前显示的问题的个数
+
 $(function () {
     layui.use('rate', function () {
         let rate = layui.rate;
@@ -47,6 +49,8 @@ $(function () {
     });
 
     $("#save").click(Save);
+
+    ShowCount();
 });
 
 // 鼠标点击触发（单项选择题/多项选择题/判断题）
@@ -54,6 +58,7 @@ function ClickOption(object) {
     if ($($(object).parent("label").parent("div").parent("div").find("div:nth-child(2)").children("span:first")[0]).attr("value") == "true") {// 当前选项所在的问题有后置问题
         if (object.value == "sc-true" || object.value == "jm-true") {// 当前选项有后置问题（单项选择题）
             $(object).parent("label").parent("div").parent("div").next().attr("style", "display:block;color:green;");
+            $($(object).parent("label").parent("div").parent("div").next()[0]).children("div:first-child").addClass("Show");
             let key = object.name;// key: 当前问题的问题编号
             let value = $(object).parent("label").parent("div").parent("div").next().children("div:nth-child(3)").children("label").children("input")[0].name;// value: 下一个问题的问题编号
             rearQuestionArray[key] = value;
@@ -72,8 +77,10 @@ function ClickOption(object) {
                     }
                     if ($(":radio[name=" + value + "]:checked").length == 0) {// 后置问题没有被选中
                         $(":radio[name=" + value + "]").parent("label").parent("div").parent("div").attr("style", "display:none;");
+                        $(":radio[name=" + value + "]").parent("label").parent("div").parent("div").children("div:first-child").removeClass("Show");
                     } else {// 后置问题被选中
                         $(":radio[name=" + value + "]:checked").parent("label").parent("div").parent("div").attr("style", "display:none;");
+                        $(":radio[name=" + value + "]:checked").parent("label").parent("div").parent("div").children("div:first-child").removeClass("Show");
                         $(":radio[name=" + value + "]:checked").prop("checked", false);
                     }
                     key = value;
@@ -85,6 +92,7 @@ function ClickOption(object) {
 
         if (object.value == "mc-true") {// 当前选项有后置问题（多项选择题）
             $(object).parent("label").parent("div").parent("div").next().attr("style", "display:block;color:blue;");
+            $($(object).parent("label").parent("div").parent("div").next()[0]).children("div:first-child").addClass("Show");
             let key = object.name;// key: 当前问题的问题编号
             if (rearQuestionArray[key] == null) {
                 let value = $(object).parent("label").parent("div").parent("div").next().children("div:nth-child(3)").children("label").children("input")[0].name;// value: 下一个问题的问题编号
@@ -103,8 +111,10 @@ function ClickOption(object) {
                         }
                         if ($(":checkbox[name=" + value + "]:checked").length == 0) {// 后置问题没有被选中
                             $(":checkbox[name=" + value + "]").parent("label").parent("div").parent("div").attr("style", "display:none;");
+                            $(":checkbox[name=" + value + "]").parent("label").parent("div").parent("div").children("div:first-child").removeClass("Show");
                         } else {// 后置问题被选中
                             $(":checkbox[name=" + value + "]:checked").parent("label").parent("div").parent("div").attr("style", "display:none;");
+                            $(":checkbox[name=" + value + "]:checked").parent("label").parent("div").parent("div").children("div:first-child").removeClass("Show");
                             $(":checkbox[name=" + value + "]:checked").prop("checked", false);
                         }
                         key = value;
@@ -130,6 +140,7 @@ function ClickOption(object) {
         }
     }
 
+    ShowCount();
     /*$.ajax({
         async: true, // 异步请求
         type: "get",
@@ -296,6 +307,18 @@ function Save() {
             }
         }
     });
+}
+
+// 获取拥有 .Show 的个数
+function ShowCount() {
+    if ($(".Show").length != showCount) {
+        // 循环设置问题题号
+        let i = 0;
+        $(".Show").each(function () {
+            $(this).text((++i) + "、");
+        });
+        showCount = i;
+    }
 }
 
 // 动态生成问题信息和选项信息（单项选择题）
