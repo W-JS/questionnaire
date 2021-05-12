@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.AnswerMapper">
+
+    <!-- 查询 answer 表所有字段 -->
+    <sql id="selectAnswerFields">
+        answer_id, user_id, question_id, questiontype_id, option_id, option_content, answer_create_time
+    </sql>
+
+    <!-- 保存回答信息 -->
+    <!-- int insertAnswer(AnswerEntity a); -->
+    <insert id="insertAnswer" parameterType="AnswerEntity">
+        INSERT INTO `answer`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="answerId != null">
+                answer_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="questionId != null">
+                question_id,
+            </if>
+            <if test="questiontypeId != null">
+                questiontype_id,
+            </if>
+            <if test="optionId != null">
+                option_id,
+            </if>
+            <if test="optionContent != null">
+                option_content,
+            </if>
+            <if test="answerCreateTime != null">
+                answer_create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="answerId != null">
+                #{answerId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="questionId != null">
+                #{questionId},
+            </if>
+            <if test="questiontypeId != null">
+                #{questiontypeId},
+            </if>
+            <if test="optionId != null">
+                #{optionId},
+            </if>
+            <if test="optionContent != null">
+                #{optionContent},
+            </if>
+            <if test="answerCreateTime != null">
+                #{answerCreateTime},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

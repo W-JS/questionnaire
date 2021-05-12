@@ -2,7 +2,6 @@ package com.wjs.questionnaire.controller;
 
 import com.wjs.questionnaire.service.IIndexService;
 import com.wjs.questionnaire.util.JSONResult;
-import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,70 +85,18 @@ public class IndexController {
     /**
      * 保存用户填写的问卷信息
      *
-     * @param JSONsc 单项选择题
-     * @param JSONmc 多项选择题
-     * @param JSONjm 判断题
-     * @param JSONfb 填空题
-     * @param JSONs  评分题
+     * @param userId 用户编号
+     * @param JSONsc     单项选择题
+     * @param JSONmc     多项选择题
+     * @param JSONjm     判断题
+     * @param JSONfb     填空题
+     * @param JSONs      评分题
      * @return 用户填写的问卷信息是否保存成功
      */
     @PostMapping(value = "/saveSubmit")
     @ResponseBody
-    public JSONResult saveSubmit(String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
-        System.out.println("单项选择题");
-        JSONArray sc = JSONArray.fromObject(JSONsc);
-        if (sc.size() > 0) {
-            for (int i = 0; i < sc.size(); i++) {
-                String qId = (String) sc.getJSONObject(i).get("qId");
-                String oId = (String) sc.getJSONObject(i).get("oId");
-                System.out.println("qId: " + qId + "  oId: " + oId);
-            }
-        }
-
-        System.out.println("多项选择题");
-        JSONArray mc = JSONArray.fromObject(JSONmc);
-        if (mc.size() > 0) {
-            for (int i = 0; i < mc.size(); i++) {
-                String oId = (String) mc.getJSONObject(i).get("oId");
-                String qId = (String) mc.getJSONObject(i).get("qId");
-                System.out.println("oId: " + oId + "  qId: " + qId);
-            }
-        }
-
-        System.out.println("判断题");
-        JSONArray jm = JSONArray.fromObject(JSONjm);
-        if (jm.size() > 0) {
-            for (int i = 0; i < jm.size(); i++) {
-                String qId = (String) jm.getJSONObject(i).get("qId");
-                String oId = (String) jm.getJSONObject(i).get("oId");
-                System.out.println("qId: " + qId + "  oId: " + oId);
-            }
-        }
-
-        System.out.println("填空题");
-        JSONArray fb = JSONArray.fromObject(JSONfb);
-        if (fb.size() > 0) {
-            for (int i = 0; i < fb.size(); i++) {
-                String oId = (String) fb.getJSONObject(i).get("oId");
-                String value = (String) fb.getJSONObject(i).get("value");
-                System.out.println("oId: " + oId + "  value: " + value);
-            }
-        }
-
-        System.out.println("评分题");
-        JSONArray s = JSONArray.fromObject(JSONs);
-        if (s.size() > 0) {
-            for (int i = 0; i < s.size(); i++) {
-                String oId = (String) s.getJSONObject(i).get("oId");
-                Double value = Double.parseDouble((String) s.getJSONObject(i).get("value"));
-                System.out.println("oId: " + oId + "  value: " + value);
-            }
-        }
-
-        System.out.println("用户留言: ");
-        System.out.println(userComments);
-
-        return JSONResult.build();
+    public JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
+        return indexService.saveSubmit(userId, JSONsc, JSONmc, JSONjm, JSONfb, JSONs, userComments);
     }
 
 

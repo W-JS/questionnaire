@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import com.wjs.questionnaire.util.JSONResult;
 
@@ -54,6 +53,20 @@ public interface IIndexService {
      * @return JSON格式数据
      */
     JSONResult findRearQuestionByQIdAndOId(String qId, String oId);
+
+    /**
+     * 保存用户填写的问卷信息
+     *
+     * @param userId 用户编号
+     * @param JSONsc     单项选择题
+     * @param JSONmc     多项选择题
+     * @param JSONjm     判断题
+     * @param JSONfb     填空题
+     * @param JSONs      评分题
+     * @return 用户填写的问卷信息是否保存成功
+     */
+    JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments);
+
 
 //    JSONResult test(String qId);
 }

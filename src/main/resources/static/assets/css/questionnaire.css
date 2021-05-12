@@ -227,6 +227,7 @@
 }
 
 .questionnaire .fillBlank {
+    font-size: 15px;
     width: 77%;
     float: left;
     margin: 2px 120px;

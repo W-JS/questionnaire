@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 问题信息数据的实体类
+ * 问题类型信息数据的实体类
  */
 public class QuestionTypeEntity implements Serializable {
 

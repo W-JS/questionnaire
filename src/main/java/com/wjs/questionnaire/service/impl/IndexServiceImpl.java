@@ -1,20 +1,15 @@
 package com.wjs.questionnaire.service.impl;
 
-import com.wjs.questionnaire.entity.OptionEntity;
-import com.wjs.questionnaire.entity.QuestionEntity;
-import com.wjs.questionnaire.entity.QuestionnaireEntity;
-import com.wjs.questionnaire.mapper.OptionMapper;
-import com.wjs.questionnaire.mapper.QuestionMapper;
-import com.wjs.questionnaire.mapper.QuestionnaireMapper;
+import com.wjs.questionnaire.entity.*;
+import com.wjs.questionnaire.mapper.*;
 import com.wjs.questionnaire.service.IIndexService;
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.UUIDGenerator;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class IndexServiceImpl implements IIndexService {
@@ -27,6 +22,12 @@ public class IndexServiceImpl implements IIndexService {
 
     @Autowired
     private OptionMapper optionMapper;
+
+    @Autowired
+    private AnswerMapper answerMapper;
+
+    @Autowired
+    private UserCommentMapper userCommentMapper;
 
     /**
      * 根据 qnId 查询当前问卷（问卷信息 + 问题信息 + 选项信息）
@@ -231,6 +232,79 @@ public class IndexServiceImpl implements IIndexService {
         return jsonResult;
     }
 
+    /**
+     * 保存用户填写的问卷信息
+     *
+     * @param userId 用户编号
+     * @param JSONsc 单项选择题
+     * @param JSONmc 多项选择题
+     * @param JSONjm 判断题
+     * @param JSONfb 填空题
+     * @param JSONs  评分题
+     * @return 用户填写的问卷信息是否保存成功
+     */
+    @Override
+    public JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
+        Date date = new Date();
+
+        // 用户留言
+        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, userComments, date);
+        userCommentMapper.insertUserComment(userComment);
+
+        // 单项选择题
+        JSONArray sc = JSONArray.fromObject(JSONsc);
+        if (sc.size() > 0) {
+            for (int i = 0; i < sc.size(); i++) {
+                date.setTime(date.getTime() + 1000);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) sc.getJSONObject(i).get("qId"), (String) sc.getJSONObject(i).get("qt"), (String) sc.getJSONObject(i).get("oId"), date);
+                answerMapper.insertAnswer(answer);
+            }
+        }
+
+        // 多项选择题
+        JSONArray mc = JSONArray.fromObject(JSONmc);
+        if (mc.size() > 0) {
+            for (int i = 0; i < mc.size(); i++) {
+                date.setTime(date.getTime() + 1000);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) mc.getJSONObject(i).get("qId"), (String) mc.getJSONObject(i).get("qt"), (String) mc.getJSONObject(i).get("oId"), date);
+                answerMapper.insertAnswer(answer);
+            }
+        }
+
+        // 判断题
+        JSONArray jm = JSONArray.fromObject(JSONjm);
+        if (jm.size() > 0) {
+            for (int i = 0; i < jm.size(); i++) {
+                date.setTime(date.getTime() + 1000);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) jm.getJSONObject(i).get("qId"), (String) jm.getJSONObject(i).get("qt"), (String) jm.getJSONObject(i).get("oId"), date);
+                answerMapper.insertAnswer(answer);
+            }
+        }
+
+        // 填空题
+        JSONArray fb = JSONArray.fromObject(JSONfb);
+        if (fb.size() > 0) {
+            for (int i = 0; i < fb.size(); i++) {
+                date.setTime(date.getTime() + 1000);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) fb.getJSONObject(i).get("qId"), (String) fb.getJSONObject(i).get("qt"), (String) fb.getJSONObject(i).get("oId"), (String) fb.getJSONObject(i).get("value"), date);
+                answerMapper.insertAnswer(answer);
+            }
+        }
+
+        // 评分题
+        JSONArray s = JSONArray.fromObject(JSONs);
+        if (s.size() > 0) {
+            for (int i = 0; i < s.size(); i++) {
+                date.setTime(date.getTime() + 1000);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) s.getJSONObject(i).get("qId"), (String) s.getJSONObject(i).get("qt"), (String) s.getJSONObject(i).get("oId"), (String) s.getJSONObject(i).get("value"), date);
+                answerMapper.insertAnswer(answer);
+            }
+        }
+
+        return JSONResult.build();
+
+
+    }
 //    @Override
 //    public JSONResult test(String qId) {
 ////        return JSONResult.build(questionMapper.findLastQuestionByQId(qId));

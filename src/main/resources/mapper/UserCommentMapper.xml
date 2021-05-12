@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjs.questionnaire.mapper.UserCommentMapper">
+
+    <!-- 查询 usercomment 表所有字段 -->
+    <sql id="selectUserCommentFields">
+        usercomment_id, user_id, usercomment_content, usercomment_create_time
+    </sql>
+
+    <!-- 保存用户留言信息 -->
+    <!-- int insertUserComment(UserCommentEntity uc); -->
+    <insert id="insertUserComment" parameterType="UserCommentEntity">
+        INSERT INTO `usercomment`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="usercommentId != null">
+                usercomment_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="usercommentContent != null">
+                usercomment_content,
+            </if>
+            <if test="usercommentCreateTime != null">
+                usercomment_create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="usercommentId != null">
+                #{usercommentId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="usercommentContent != null">
+                #{usercommentContent},
+            </if>
+            <if test="usercommentCreateTime != null">
+                #{usercommentCreateTime},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

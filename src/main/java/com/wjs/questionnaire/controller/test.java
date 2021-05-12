@@ -25,4 +25,14 @@ public class test {
     public String test02() {
         return "/test/test02";
     }
+
+    /**
+     * 访问URL：http://localhost:8080/questionnaire/test03
+     *
+     * @return 弹出层
+     */
+    @GetMapping(value = "/test03")
+    public String test03() {
+        return "/test/test03";
+    }
 }

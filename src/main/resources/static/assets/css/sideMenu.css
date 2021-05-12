@@ -1,0 +1,63 @@
+.question {
+    min-width: 190px;
+    max-width: 190px;
+    height: auto;
+    max-height: 685px;
+    background-color: #afdebf;
+    position: fixed;
+    left: 10px;
+    top: 60px;
+}
+
+.question h3 {
+    height: 32px;
+    width: 190px;
+    line-height: 32px;
+    padding-left: 10px;
+    border-top: 1px solid #000000;
+    background: #c7c7c7;
+    cursor: pointer;
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+    color: #000000;
+    margin: 0px;
+    text-align: center;
+}
+
+.question ul {
+    width: 190px;
+    height: auto;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.question ul .nLi {
+    list-style-type: none;
+}
+
+.question ul .nLi.on .sub {
+    list-style-type: none;
+    display: block;
+}
+
+.question ul .nLi .sub {
+    padding: 8px 0;
+    color: #999;
+    display: none;
+}
+
+.question ul .nLi .sub button {
+    /*display: block;*//*选中*/
+    /*display: none;*//*未选中*/
+    /*pointer-events: none;*//*不可点击*/
+    width: 50px;
+    height: 30px;
+    /*background-color: #85d1e0;*//*选中的颜色*/
+    /*background-color: #d8d8d8;*//*未选中的颜色*/
+    color: black;
+    margin: 5px 0px 0px 7px;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #388BFF;
+}
