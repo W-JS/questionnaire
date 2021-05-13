@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.service;
 
-import com.wjs.questionnaire.entity.QuestionnaireEntity;
 import com.wjs.questionnaire.util.JSONResult;
 
 import java.util.List;
@@ -20,12 +19,12 @@ public interface IIndexService {
     JSONResult getQuestionnaireByQnId(String qnId);
 
     /**
-     * 根据 qnId 查询问卷信息
+     * 判断该问卷是否填写和获取问卷信息
      *
      * @param qnId 问卷编号
-     * @return 问卷信息
+     * @return 回答状态和问卷信息
      */
-    QuestionnaireEntity getQuestionnaire(String qnId);
+    Map<String, Object> getAnswerAndQuestionnaire(String qnId);
 
     /**
      * 获取当前问卷的不同题型的问题信息
@@ -34,7 +33,7 @@ public interface IIndexService {
      * @param qtId 题型
      * @return 问题信息列表
      */
-    List<Map<String, Object>> findQuestionByQnIdAndQtId1(String qnId, String qtId);
+    List<Map<String, Object>> getQuestionByQnIdAndQtId1(String qnId, String qtId);
 
     /**
      * 获取当前问卷的不同题型的问题信息
@@ -43,7 +42,16 @@ public interface IIndexService {
      * @param qtId 题型
      * @return 问题信息列表
      */
-    List<Map<String, Object>> findQuestionByQnIdAndQtId2(String qnId, String qtId);
+    List<Map<String, Object>> getQuestionByQnIdAndQtId2(String qnId, String qtId);
+
+    /**
+     * 获取当前登录用户填写的该问卷的回答信息
+     *
+     * @param userId 用户编号
+     * @param qnId   问卷编号
+     * @return 回答信息列表
+     */
+    JSONResult getAllAnswerByUserIdAndQNId(String userId, String qnId);
 
     /**
      * 查询当前问题的当前选项的后置问题
@@ -52,20 +60,21 @@ public interface IIndexService {
      * @param oId 当前选项编号
      * @return JSON格式数据
      */
-    JSONResult findRearQuestionByQIdAndOId(String qId, String oId);
+    JSONResult getRearQuestionByQIdAndOId(String qId, String oId);
 
     /**
      * 保存用户填写的问卷信息
      *
      * @param userId 用户编号
-     * @param JSONsc     单项选择题
-     * @param JSONmc     多项选择题
-     * @param JSONjm     判断题
-     * @param JSONfb     填空题
-     * @param JSONs      评分题
+     * @param qnId   问卷编号
+     * @param JSONsc 单项选择题
+     * @param JSONmc 多项选择题
+     * @param JSONjm 判断题
+     * @param JSONfb 填空题
+     * @param JSONs  评分题
      * @return 用户填写的问卷信息是否保存成功
      */
-    JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments);
+    JSONResult saveSubmit(String userId, String qnId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments);
 
 
 //    JSONResult test(String qId);

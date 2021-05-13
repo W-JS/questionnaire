@@ -71,7 +71,7 @@ function GenerateQTitle() {
 // 生成在线用户信息
 function GenerateOnlineUser() {
     $.ajax({
-        async: true, // 异步请求
+        async: false, // 同步请求
         type: "get",
         url: CONTEXT_PATH + '/user/getOnlineUser',
         data: {},

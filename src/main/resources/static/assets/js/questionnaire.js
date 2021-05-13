@@ -1,10 +1,3 @@
-let currentSCQuestionId = "";// 当前问题（单项选择题）
-let currentSCQuestion = false;// 默认不是当前问题（单项选择题）
-let currentMCQuestionId = "";// 当前问题（多项选择题）
-let currentMCQuestion = false;// 默认不是当前问题（多项选择题）
-let currentJMQuestionId = "";// 当前问题（判断题）
-let currentJMQuestion = false;// 默认不是当前问题（判断题）
-
 let rearQuestionArray = new Array();// 保存当前问题和后置问题的问题信息（key: 当前问题编号，value: 后置问题编号）
 
 let scQuestionArray = new Array();// 保存用户选中的 单项选择题 的选项信息（key: 问题编号，value: 选项编号）
@@ -18,44 +11,49 @@ let sQuestionArray2 = new Array();// 保存用户选中的 评分题 的选项�
 let showCount = 0;// 保存当前显示的问题的个数
 
 $(function () {
-    layui.use('rate', function () {
-        let rate = layui.rate;
-        // 循环渲染
-        $(".score").each(function () {
-            //渲染
-            let ins1 = rate.render({
-                elem: this,  //绑定元素，指向容器选择器
-                length: 5,// 评分组件中具体星星的个数
-                value: 0,// 评分的初始值
-                theme: "#FFB800",// 主题颜色
-                half: true,// 设定组件是否可以选择半星
-                text: true,// 是否显示评分对应的内容
-                readonly: false// 是否只读，即只用于展示而不可点
-                , setText: function (value) {
-                    let arrs = {
-                        '1': '极差'
-                        , '2': '差'
-                        , '3': '中等'
-                        , '4': '好'
-                        , '5': '极好'
-                    };
-                    this.span.text(arrs[value] || (value + "星"));
-                }
-                , choose: function (value) {
-                    sQuestionArray1[$(this.elem[0]).attr("name")] = this.elem[0].id;
-                    sQuestionArray2[this.elem[0].id] = value.toString();
-                    // console.log("qId: " + $(this.elem[0]).attr("name") + "  oId: " + this.elem[0].id + "  value: " + value);
-                    SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
-                    $(".sub.s").parent("li").children("h3").click();
-                }
-            });
-        })
-    });
-
-    $("#save").click(Save);
+    if ($(".questionnaire").attr("value") == "false") {
+        selectedOptionsAndFillContent();// 用户已填写问卷，动态选中选项和填充文本内容
+    } else {
+        // 生成评分组件
+        layui.use('rate', function () {
+            let rate = layui.rate;
+            // 循环渲染
+            $(".score").each(function () {
+                //渲染
+                let ins1 = rate.render({
+                    elem: this,  //绑定元素，指向容器选择器
+                    length: 5,// 评分组件中具体星星的个数
+                    value: 0,// 评分的初始值
+                    theme: "#FFB800",// 主题颜色
+                    half: true,// 设定组件是否可以选择半星
+                    text: true,// 是否显示评分对应的内容
+                    readonly: false// 是否只读，即只用于展示而不可点
+                    , setText: function (value) {
+                        let arrs = {
+                            '1': '极差'
+                            , '2': '差'
+                            , '3': '中等'
+                            , '4': '好'
+                            , '5': '极好'
+                        };
+                        this.span.text(arrs[value] || (value + "星"));
+                    }
+                    , choose: function (value) {
+                        sQuestionArray1[$(this.elem[0]).attr("name")] = this.elem[0].id;
+                        sQuestionArray2[this.elem[0].id] = value.toString();
+                        // console.log("qId: " + $(this.elem[0]).attr("name") + "  oId: " + this.elem[0].id + "  value: " + value);
+                        SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
+                        $(".sub.s").parent("li").children("h3").click();
+                    }
+                });
+            })
+        });
+    }
 
     GenerateNumber();// 生成每种题型的个数的按钮
     SetShowNumber();// 设置显示的问题的问题序号
+
+    $("#save").click(Save);
 
     // 点击题型，显示该题型的问题序号按钮
     $(".question .nLi h3").click(function () {
@@ -79,45 +77,6 @@ $(function () {
 
 // 鼠标点击触发（单项选择题/多项选择题/判断题）
 function ClickOption(object) {
-    /*let number = $(object).parent("label").parent("div").parent("div").children("div:first-child").text();
-    number = number.replace('、', '');
-    if ($(object).parent("label").parent("div").parent("div").find(".checkbox:first").attr("class") == "checkbox") {
-        let flag = false;
-        $(object).parent("label").parent("div").parent("div").find(".checkbox").each(function () {
-            if ($(this).children("label").children("input")[0].checked == true) {
-                flag = true;
-                return false;
-            }
-        });
-        if (flag) {
-            for (let i in numberArray) {
-                if (number == i) {
-                    numberArray[i] = "true";
-                    console.log("checkbox: " + number + " true");
-                }
-            }
-        } else {
-            for (let i in numberArray) {
-                if (number == i) {
-                    numberArray[i] = "false";
-                    console.log("checkbox: " + number + " false");
-                }
-            }
-        }
-    }*/
-    /*else {
-        number = $(object).parent("label").parent("div").parent("div").children("div:first-child").text();
-        number = number.replace('、', '');
-
-        for (let i in numberArray) {
-            if (number == i){
-                numberArray[i] = "true";
-            }
-        }
-
-        console.log(number);
-    }*/
-
     // 当前选项所在的问题有后置问题
     if ($($(object).parent("label").parent("div").parent("div").find("div:nth-child(2)").children("span:first")[0]).attr("value") == "true") {
         if (object.value == "sc-true" || object.value == "jm-true") {
@@ -214,79 +173,6 @@ function ClickOption(object) {
 
     SetShowNumber();// 设置显示的问题的问题序号
     SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
-    /*$.ajax({
-        async: true, // 异步请求
-        type: "get",
-        url: CONTEXT_PATH + '/getRearQuestionByQIdAndOId',
-        data: {
-            "qId": object.name,
-            "oId": object.id,
-        },
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                // 单项选择题
-                if (object.value == "sc") {
-                    if (currentSCQuestionId != object.name) {// console.log("当前选项: 有后置问题 添加存在的后置问题");
-                        currentSCQuestion = true;
-                        currentSCQuestionId = object.name;
-                    } else {// console.log("当前选项: 有后置问题");
-                        return;
-                    }
-                    GenerateSCQuestionAndOption(object, result);// 动态生成问题信息和选项信息（单项选择题）
-                }
-
-                // 多项选择题
-                if (object.value == "mc") {
-                    if (currentMCQuestionId != object.name) {// console.log("当前选项: 有后置问题 添加存在的后置问题");
-                        currentMCQuestion = true;
-                        currentMCQuestionId = object.name;
-                    } else {
-                        if (currentMCQuestion) {// console.log("当前选项: 有后置问题 删除存在的后置问题");
-                            currentMCQuestionId = "";
-                            currentMCQuestion = false;
-                            $(object).parent("label").parent("div").parent("div").next().remove();
-                        }
-                        return;
-                    }
-                    GenerateMCQuestionAndOption(object, result);// 动态生成问题信息和选项信息（多项选择题）
-                }
-
-                // 判断题
-                if (object.value == "jm") {
-                    if (currentJMQuestionId != object.name) {// console.log("当前选项: 有后置问题 添加存在的后置问题");
-                        currentJMQuestion = true;
-                        currentJMQuestionId = object.name;
-                    } else {// console.log("当前选项: 有后置问题");
-                        return;
-                    }
-                    GenerateSCQuestionAndOption(object, result);// 动态生成问题信息和选项信息（单项选择题）
-                }
-            } else {
-                // 单项选择题
-                if (object.value == "sc") {
-                    if (currentSCQuestionId == object.name) {
-                        if (currentSCQuestion) {// console.log("其它选项: 无后置问题 删除存在的后置问题");
-                            currentSCQuestionId = "";
-                            currentSCQuestion = false;
-                            $(object).parent("label").parent("div").parent("div").next().remove();
-                        }
-                    }
-                }
-
-                // 判断题
-                if (object.value == "jm") {
-                    if (currentJMQuestionId == object.name) {
-                        if (currentJMQuestion) {// console.log("其它选项: 无后置问题 删除存在的后置问题");
-                            currentJMQuestionId = "";
-                            currentJMQuestion = false;
-                            $(object).parent("label").parent("div").parent("div").next().remove();
-                        }
-                    }
-                }
-            }
-        }
-    });*/
 }
 
 // 鼠标移出触发（填空题）
@@ -322,10 +208,14 @@ function Save() {
             let color = $(this).attr("style").toString();
             color = color.substring(color.indexOf('#') + 1, color.indexOf(';'));
             if (color == "d8d8d8") {
-                ShowFailure("您还有问题没有填写！！！");
-                $('html,body').animate({scrollTop: $("#" + $(this).text() + "").offset().top - 50}, 1000);
-                flag = false;
-                return false;
+                let requiredLength = $("#" + value + "").parent("div").children("div:nth-child(2)").children("span:nth-child(3)").length;
+                if (requiredLength != 0) {
+                    ShowFailure("您还有问题没有填写！！！");
+                    $('html,body').animate({scrollTop: $("#" + $(this).text() + "").offset().top - 50}, 1000);
+                    flag = false;
+                    return false;
+                }
+                // console.log();
             }
         }
     });
@@ -402,6 +292,7 @@ function Save() {
         url: CONTEXT_PATH + '/saveSubmit',
         data: {
             'userId': $('#onlineUser').val(),
+            'qnId': $(".questionnaire .QN-Title").attr("value"),
             'JSONsc': JSON.stringify(sc),
             'JSONmc': JSON.stringify(mc),
             'JSONjm': JSON.stringify(jm),
@@ -412,11 +303,10 @@ function Save() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                ShowSuccess("success");
-                // ShowSuccess("删除成功！！！");
-                // setTimeout(function () {
-                //     window.location.href = window.location.pathname + window.location.search;
-                // }, 1000);
+                ShowSuccess("成功提交问卷，感谢您的参与！！！");
+                setTimeout(function () {
+                    window.location.href = window.location.pathname + window.location.search;
+                }, 1000);
             } else {
                 ShowFailure(result.message);
             }
@@ -471,8 +361,7 @@ function SetShowNumber() {
             $(this).text((++i) + "、");
         });
         showCount = i;
-        SetButtonShowAndText();// 设置每种题型的按钮显示和文本
-        // SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
+        // SetButtonShowAndText();// 设置每种题型的按钮显示和文本
     }
 
     // 删除所有问题的id属性（包括显示和隐藏的问题）
@@ -484,6 +373,8 @@ function SetShowNumber() {
     $(".Show").each(function () {
         $(this).attr("id", ++i);
     });
+
+    SetButtonShowAndText();// 设置每种题型的按钮显示和文本
 }
 
 // 设置每种题型的按钮显示和文本
@@ -502,6 +393,7 @@ function SetButtonShowAndText() {
         if (i < scLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
             $(this).show();
             i++;
         }
@@ -514,6 +406,7 @@ function SetButtonShowAndText() {
         if (i < mcLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
             $(this).show();
             i++;
         }
@@ -526,6 +419,7 @@ function SetButtonShowAndText() {
         if (i < jmLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
             $(this).show();
             i++;
         }
@@ -538,6 +432,7 @@ function SetButtonShowAndText() {
         if (i < fbLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
             $(this).show();
             i++;
         }
@@ -550,6 +445,7 @@ function SetButtonShowAndText() {
         if (i < sLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
             $(this).show();
             i++;
         }
@@ -588,6 +484,7 @@ function SetButtonSelected() {
             // console.log("i: " + i);
             $(this).text("");
             $(this).removeAttr("style");
+            $(this).removeAttr("title");
             $(this).hide();
         }
     });
@@ -625,6 +522,7 @@ function SetButtonSelected() {
             // console.log("i: " + i);
             $(this).text("");
             $(this).removeAttr("style");
+            $(this).removeAttr("title");
             $(this).hide();
         }
     });
@@ -660,6 +558,7 @@ function SetButtonSelected() {
             // console.log("i: " + i);
             $(this).text("");
             $(this).removeAttr("style");
+            $(this).removeAttr("title");
             $(this).hide();
         }
     });
@@ -720,68 +619,108 @@ function ShowOnFBh3() {
     $(".sub.fb").parent("li").children("h3").click();
 }
 
-// 动态生成问题信息和选项信息（单项选择题）
-function GenerateSCQuestionAndOption(object, result) {
-    let html = "";
-    html +=
-        "<div class=\"am-form-group am-cf\">\n" +
-        "    <div class=\"QNumber\">1、</div>\n" +
-        "    <div class=\"topic\">\n" +
-        "        <span class=\"qTitle\">" + result.data[0].question.questionTitle + "</span>\n" +
-        "        <span class=\"qt\">（单选）</span>\n";
+// 用户已填写问卷，动态选中选项和填充文本内容
+function selectedOptionsAndFillContent() {
+    // 已填写友情提示
+    layui.use('layer', function () {
+        let layer = layui.layer;
+        layer.open({
+            title: '友情提示'
+            , content: '您已填写过该问卷，目前只能查看该问卷！！！'
+        });
+    });
 
-    if (result.data[0].question.questionStatus == 1) {
-        html +=
-            "        <span class=\"qStatus\">*</span>\n";
-    }
+    let userOperating = $('#userOperating option:selected').val();
+    // let userOperating = $("#userOperating").parent("p").children("div").children("div").children("ul").children("li:first-child").attr("data-value");// 得到用户编号
+    let qnId = $(".questionnaire .QN-Title").attr("value");
 
-    html +=
-        "    </div>\n";
+    $.ajax({
+        async: true, // 异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/getAllAnswerByUserIdAndQNId',
+        data: {
+            'userId': userOperating,
+            'qnId': qnId,
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                for (let i = 0; i < result.data.length; i++) {
+                    if (result.data[i].qt == "singleChoice") {
+                        for (let j = 0; j < result.data[i].singleChoice.length; j++) {
+                            let sc = "#" + result.data[i].singleChoice[j].answer.optionId + "";
+                            $(sc).prop("checked", true);
+                            $(sc).parent("label").parent("div").parent("div").removeAttr("style");
+                            $(sc).parent("label").parent("div").parent("div").children("div:first-child").addClass("Show");
+                        }
+                    } else if (result.data[i].qt == "multipleChoice") {
+                        for (let j = 0; j < result.data[i].multipleChoice.length; j++) {
+                            let mc = "#" + result.data[i].multipleChoice[j].answer.optionId + "";
+                            $(mc).prop("checked", true);
+                            $(mc).parent("label").parent("div").parent("div").removeAttr("style");
+                            $(mc).parent("label").parent("div").parent("div").children("div:first-child").addClass("Show");
+                        }
+                    } else if (result.data[i].qt == "judgment") {
+                        for (let j = 0; j < result.data[i].judgment.length; j++) {
+                            let jm = "#" + result.data[i].judgment[j].answer.optionId + "";
+                            $(jm).prop("checked", true);
+                            $(jm).parent("label").parent("div").parent("div").removeAttr("style");
+                            $(jm).parent("label").parent("div").parent("div").children("div:first-child").addClass("Show");
+                        }
+                    } else if (result.data[i].qt == "fillBlank") {
+                        for (let j = 0; j < result.data[i].fillBlank.length; j++) {
+                            let fb = "#" + result.data[i].fillBlank[j].answer.optionId + "";
+                            $(fb).text(result.data[i].fillBlank[j].answer.optionContent);
+                            $(fb).parent("div").children("span").text($(fb).val().length);
+                        }
+                    } else if (result.data[i].qt == "score") {
+                        for (let j = 0; j < result.data[i].score.length; j++) {
+                            let value = parseFloat(result.data[i].score[j].answer.optionContent);
+                            let oId = result.data[i].score[j].answer.optionId;
+                            sQuestionArray2[oId] = value.toString();
+                        }
 
-    let optionList = result.data[0].optionList;
-    for (let i = 0; i < optionList.length; i++) {
-        html +=
-            "    <div class=\"radio\">\n" +
-            "        <label class=\"radio-mr\">\n" +
-            "            <input onclick=\"ClickOption(this)\" class=\"input-r\" type=\"radio\" " + "id=\" " + optionList[i].option.optionId + " \" " + "name=\" " + optionList[i].option.questionId + " \">" + " " + optionList[i].option.optionContent + "\n" +
-            "        </label>\n" +
-            "    </div>\n";
-    }
+                        // 生成评分组件
+                        layui.use('rate', function () {
+                            let rate = layui.rate;
+                            for (let j = 0; j < result.data[i].score.length; j++) {
+                                let s = "#" + result.data[i].score[j].answer.optionId + "";
+                                let value = parseFloat(result.data[i].score[j].answer.optionContent);
 
-    html +=
-        "</div>";
-    $(html).insertAfter($(object).parent("label").parent("div").parent("div"));
-}
+                                //渲染
+                                let ins1 = rate.render({
+                                    elem: s,  //绑定元素，指向容器选择器
+                                    length: 5,// 评分组件中具体星星的个数
+                                    value: value,// 评分的初始值
+                                    theme: "#FFB800",// 主题颜色
+                                    half: true,// 设定组件是否可以选择半星
+                                    text: true,// 是否显示评分对应的内容
+                                    readonly: false// 是否只读，即只用于展示而不可点
+                                    , setText: function (value) {
+                                        let arrs = {
+                                            '1': '极差'
+                                            , '2': '差'
+                                            , '3': '中等'
+                                            , '4': '好'
+                                            , '5': '极好'
+                                        };
+                                        this.span.text(arrs[value] || (value + "星"));
+                                    }
+                                });
+                            }
+                        });
+                    } else if (result.data[i].qt == "userComment") {
+                        $("#userComments").text(result.data[i].userComment.usercommentContent);
+                        $("#userComments").parent("div").children("span").text($("#userComments").val().length);
+                    }
+                }
 
-// 动态生成问题信息和选项信息（多项选择题）
-function GenerateMCQuestionAndOption(object, result) {
-    let html = "";
-    html +=
-        "<div class=\"am-form-group am-cf\">\n" +
-        "    <div class=\"QNumber\">1、</div>\n" +
-        "    <div class=\"topic\">\n" +
-        "        <span class=\"qTitle\">" + result.data[0].question.questionTitle + "</span>\n" +
-        "        <span class=\"qt\">（单选）</span>\n";
+                SetShowNumber();// 设置显示的问题的问题序号
+                SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
 
-    if (result.data[0].question.questionStatus == 1) {
-        html +=
-            "        <span class=\"qStatus\">*</span>\n";
-    }
-
-    html +=
-        "    </div>\n";
-
-    let optionList = result.data[0].optionList;
-    for (let i = 0; i < optionList.length; i++) {
-        html +=
-            "    <div class=\"checkbox\">\n" +
-            "        <label class=\"checkbox-mr\">\n" +
-            "            <input onclick=\"ClickOption(this)\" class=\"input-cb\" type=\"checkbox\" " + "id=\" " + optionList[i].option.optionId + " \" " + "name=\" " + optionList[i].option.questionId + " \">" + " " + optionList[i].option.optionContent + "\n" +
-            "        </label>\n" +
-            "    </div>\n";
-    }
-
-    html +=
-        "</div>";
-    $(html).insertAfter($(object).parent("label").parent("div").parent("div"));
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
 }

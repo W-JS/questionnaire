@@ -4,8 +4,18 @@
 
     <!-- 查询 usercomment 表所有字段 -->
     <sql id="selectUserCommentFields">
-        usercomment_id, user_id, usercomment_content, usercomment_create_time
+        usercomment_id, user_id, questionnaire_id, usercomment_content, usercomment_create_time
     </sql>
+
+    <!-- 根据 userId 和 qnId 查询用户留言信息 -->
+    <!-- UserCommentEntity findUserCommentByUserIdAndQNId(String userId, String qnId); -->
+    <select id="findUserCommentByUserIdAndQNId" resultType="UserCommentEntity">
+        SELECT
+        <include refid="selectUserCommentFields"></include>
+        FROM `usercomment` uc
+        WHERE uc.user_id = #{userId}
+        AND uc.questionnaire_id = #{qnId};
+    </select>
 
     <!-- 保存用户留言信息 -->
     <!-- int insertUserComment(UserCommentEntity uc); -->
@@ -17,6 +27,9 @@
             </if>
             <if test="userId != null">
                 user_id,
+            </if>
+            <if test="questionnaireId != null">
+                questionnaire_id,
             </if>
             <if test="usercommentContent != null">
                 usercomment_content,
@@ -31,6 +44,9 @@
             </if>
             <if test="userId != null">
                 #{userId},
+            </if>
+            <if test="questionnaireId != null">
+                #{questionnaireId},
             </if>
             <if test="usercommentContent != null">
                 #{usercommentContent},

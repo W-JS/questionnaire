@@ -44,13 +44,13 @@ public class IndexController {
      */
     @GetMapping(value = "/questionnaire")
     public String jumpQuestionnairePage(@RequestParam("qnId") String qnId, Model model) {
-        model.addAttribute("questionnaire", indexService.getQuestionnaire(qnId));
+        model.addAttribute("questionnaire", indexService.getAnswerAndQuestionnaire(qnId));
 
-        model.addAttribute("scQuestion", indexService.findQuestionByQnIdAndQtId1(qnId, "singleChoice"));// 单项选择题
-        model.addAttribute("mcQuestion", indexService.findQuestionByQnIdAndQtId1(qnId, "multipleChoice"));// 多项选择题
-        model.addAttribute("jmQuestion", indexService.findQuestionByQnIdAndQtId1(qnId, "judgment"));// 判断题
-        model.addAttribute("fbQuestion", indexService.findQuestionByQnIdAndQtId2(qnId, "fillBlank"));// 填空题
-        model.addAttribute("sQuestion", indexService.findQuestionByQnIdAndQtId2(qnId, "score"));// 评分题
+        model.addAttribute("scQuestion", indexService.getQuestionByQnIdAndQtId1(qnId, "singleChoice"));// 单项选择题
+        model.addAttribute("mcQuestion", indexService.getQuestionByQnIdAndQtId1(qnId, "multipleChoice"));// 多项选择题
+        model.addAttribute("jmQuestion", indexService.getQuestionByQnIdAndQtId1(qnId, "judgment"));// 判断题
+        model.addAttribute("fbQuestion", indexService.getQuestionByQnIdAndQtId2(qnId, "fillBlank"));// 填空题
+        model.addAttribute("sQuestion", indexService.getQuestionByQnIdAndQtId2(qnId, "score"));// 评分题
 
         return "/site/questionnaire";
     }
@@ -64,7 +64,7 @@ public class IndexController {
     @GetMapping("/getQuestionnaireByQnId")
     @ResponseBody
     public JSONResult getQuestionnaireByQnId(String qnId) {
-        return JSONResult.build(indexService.findQuestionByQnIdAndQtId1(qnId, "singleChoice"));
+        return JSONResult.build(indexService.getQuestionByQnIdAndQtId1(qnId, "singleChoice"));
 //        return JSONResult.build(indexService.findQuestionByQnIdAndQtId2(qnId, "score"));
 //        return indexService.getQuestionnaireByQnId(qnId);
     }
@@ -79,31 +79,45 @@ public class IndexController {
     @GetMapping("/getRearQuestionByQIdAndOId")
     @ResponseBody
     public JSONResult getRearQuestionByQIdAndOId(String qId, String oId) {
-        return indexService.findRearQuestionByQIdAndOId(qId, oId);
+        return indexService.getRearQuestionByQIdAndOId(qId, oId);
     }
 
     /**
      * 保存用户填写的问卷信息
      *
      * @param userId 用户编号
-     * @param JSONsc     单项选择题
-     * @param JSONmc     多项选择题
-     * @param JSONjm     判断题
-     * @param JSONfb     填空题
-     * @param JSONs      评分题
+     * @param qnId   问卷编号
+     * @param JSONsc 单项选择题
+     * @param JSONmc 多项选择题
+     * @param JSONjm 判断题
+     * @param JSONfb 填空题
+     * @param JSONs  评分题
      * @return 用户填写的问卷信息是否保存成功
      */
     @PostMapping(value = "/saveSubmit")
     @ResponseBody
-    public JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
-        return indexService.saveSubmit(userId, JSONsc, JSONmc, JSONjm, JSONfb, JSONs, userComments);
+    public JSONResult saveSubmit(String userId, String qnId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
+        return indexService.saveSubmit(userId, qnId, JSONsc, JSONmc, JSONjm, JSONfb, JSONs, userComments);
+    }
+
+    /**
+     * 获取当前登录用户填写的该问卷的回答信息
+     *
+     * @param userId 用户编号
+     * @param qnId   问卷编号
+     * @return 回答信息列表
+     */
+    @GetMapping("/getAllAnswerByUserIdAndQNId")
+    @ResponseBody
+    public JSONResult getAllAnswerByUserIdAndQNId(String userId, String qnId) {
+        return indexService.getAllAnswerByUserIdAndQNId(userId, qnId);
     }
 
 
     @GetMapping("/JSONResultTest")
     @ResponseBody
-    public JSONResult test(String qnId) {
-        return JSONResult.build(indexService.findQuestionByQnIdAndQtId2(qnId, "fillBlank"));
+    public JSONResult test(String userId, String qnId) {
+        return JSONResult.build(indexService.getQuestionByQnIdAndQtId2(qnId, "fillBlank"));
 //        return indexService.test(qId);
     }
 }

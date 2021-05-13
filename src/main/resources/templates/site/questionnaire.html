@@ -68,18 +68,18 @@
                 </div>
 
                 <!-- 内容正文 -->
-                <div class="questionnaire">
+                <div class="questionnaire" th:style="${questionnaire.answer == 'true'} ? '':'pointer-events: none;'" th:value="${questionnaire.answer}">
                     <div class="am-form">
                         <div class="am-form-group am-cf">
-                            <div class="QN-Title" th:text="${questionnaire.questionnaireTitle}">问卷标题</div>
+                            <div class="QN-Title" th:text="${questionnaire.questionnaire.questionnaireTitle}" th:value="${questionnaire.questionnaire.questionnaireId}">问卷标题</div>
                         </div>
 
                         <div class="am-form-group am-cf">
-                            <div class="QN-FuTitle" th:text="${questionnaire.questionnaireFuTitle}">问卷副标题</div>
+                            <div class="QN-FuTitle" th:text="${questionnaire.questionnaire.questionnaireFuTitle}">问卷副标题</div>
                         </div>
 
                         <div class="am-form-group am-cf">
-                            <div class="QN-Description" th:text="${questionnaire.questionnaireDescription}">问卷描述</div>
+                            <div class="QN-Description" th:text="${questionnaire.questionnaire.questionnaireDescription}">问卷描述</div>
                         </div>
 
                         <div class="am-form-group am-cf" th:each="sc:${scQuestion}" th:style="${sc.question.preQuestionId==null} ? '':'display:none;'">

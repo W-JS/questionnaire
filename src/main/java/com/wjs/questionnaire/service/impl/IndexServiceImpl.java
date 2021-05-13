@@ -7,9 +7,12 @@ import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.UUIDGenerator;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.wjs.questionnaire.util.QuestionnaireConstant.ONLINEUSERID;
 
 @Service
 public class IndexServiceImpl implements IIndexService {
@@ -28,6 +31,9 @@ public class IndexServiceImpl implements IIndexService {
 
     @Autowired
     private UserCommentMapper userCommentMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 根据 qnId 查询当前问卷（问卷信息 + 问题信息 + 选项信息）
@@ -108,14 +114,23 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     /**
-     * 根据 qnId 查询问卷信息
+     * 判断该问卷是否填写和获取问卷信息
      *
      * @param qnId 问卷编号
-     * @return 问卷信息
+     * @return 回答状态和问卷信息
      */
     @Override
-    public QuestionnaireEntity getQuestionnaire(String qnId) {
-        return questionnaireMapper.findQuestionnaireByQnId(qnId);
+    public Map<String, Object> getAnswerAndQuestionnaire(String qnId) {
+        String userId = (String) redisTemplate.opsForValue().get(ONLINEUSERID);
+        Map<String, Object> map = new HashMap<>();
+        AnswerEntity answer = answerMapper.findAnswerByUserIdAndQNId(userId, qnId);
+        if (answer == null) {
+            map.put("answer", "true");// 该用户未填写该问卷，可填写
+        } else {
+            map.put("answer", "false");// 该用户已填写该问卷，不可填写
+        }
+        map.put("questionnaire", questionnaireMapper.findQuestionnaireByQnId(qnId));
+        return map;
     }
 
     /**
@@ -126,7 +141,7 @@ public class IndexServiceImpl implements IIndexService {
      * @return 问题信息列表
      */
     @Override
-    public List<Map<String, Object>> findQuestionByQnIdAndQtId1(String qnId, String qtId) {
+    public List<Map<String, Object>> getQuestionByQnIdAndQtId1(String qnId, String qtId) {
         List<Map<String, Object>> data1 = new ArrayList<>();
         List<QuestionEntity> questionList = questionMapper.findQuestionByQnIdAndQtId(qnId, qtId);
         if (questionList != null) {
@@ -172,7 +187,7 @@ public class IndexServiceImpl implements IIndexService {
      * @return 问题信息列表
      */
     @Override
-    public List<Map<String, Object>> findQuestionByQnIdAndQtId2(String qnId, String qtId) {
+    public List<Map<String, Object>> getQuestionByQnIdAndQtId2(String qnId, String qtId) {
         List<Map<String, Object>> data1 = new ArrayList<>();
         List<QuestionEntity> questionList = questionMapper.findQuestionByQnIdAndQtId(qnId, qtId);
         if (questionList != null) {
@@ -198,6 +213,84 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     /**
+     * 获取当前登录用户填写的该问卷的回答信息
+     *
+     * @param userId 用户编号
+     * @param qnId   问卷编号
+     * @return 回答信息列表
+     */
+    @Override
+    public JSONResult getAllAnswerByUserIdAndQNId(String userId, String qnId) {
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<AnswerEntity> answerList = answerMapper.findAllAnswerByUserIdAndQNId(userId, qnId);
+        if (answerList != null) {
+            Map<String, Object> singleChoiceMap = new HashMap<>();
+            Map<String, Object> multipleChoiceMap = new HashMap<>();
+            Map<String, Object> judgmentMap = new HashMap<>();
+            Map<String, Object> fillBlankMap = new HashMap<>();
+            Map<String, Object> scoreMap = new HashMap<>();
+            Map<String, Object> ucMap = new HashMap<>();
+
+            List<Map<String, Object>> singleChoiceList = new ArrayList<>();
+            List<Map<String, Object>> multipleChoiceList = new ArrayList<>();
+            List<Map<String, Object>> judgmentList = new ArrayList<>();
+            List<Map<String, Object>> fillBlankList = new ArrayList<>();
+            List<Map<String, Object>> scoreList = new ArrayList<>();
+
+            for (AnswerEntity answer : answerList) {
+                if ("singleChoice".equals(answer.getQuestiontypeId())) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("answer", answer);
+                    singleChoiceList.add(map);
+                } else if ("multipleChoice".equals(answer.getQuestiontypeId())) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("answer", answer);
+                    multipleChoiceList.add(map);
+                } else if ("judgment".equals(answer.getQuestiontypeId())) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("answer", answer);
+                    judgmentList.add(map);
+                } else if ("fillBlank".equals(answer.getQuestiontypeId())) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("answer", answer);
+                    fillBlankList.add(map);
+                } else if ("score".equals(answer.getQuestiontypeId())) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("answer", answer);
+                    scoreList.add(map);
+                }
+            }
+
+            singleChoiceMap.put("qt", "singleChoice");
+            singleChoiceMap.put("singleChoice", singleChoiceList);
+            multipleChoiceMap.put("qt", "multipleChoice");
+            multipleChoiceMap.put("multipleChoice", multipleChoiceList);
+            judgmentMap.put("qt", "judgment");
+            judgmentMap.put("judgment", judgmentList);
+            fillBlankMap.put("qt", "fillBlank");
+            fillBlankMap.put("fillBlank", fillBlankList);
+            scoreMap.put("qt", "score");
+            scoreMap.put("score", scoreList);
+            ucMap.put("qt", "userComment");
+            ucMap.put("userComment", userCommentMapper.findUserCommentByUserIdAndQNId(userId, qnId));
+
+            data.add(singleChoiceMap);
+            data.add(multipleChoiceMap);
+            data.add(judgmentMap);
+            data.add(fillBlankMap);
+            data.add(scoreMap);
+            data.add(ucMap);
+        }
+        JSONResult jsonResult;
+        if (data.size() != 0) {
+            jsonResult = JSONResult.build(data);
+        } else {
+            jsonResult = JSONResult.build("您暂未填写的该问卷！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
      * 查询当前问题的当前选项的后置问题
      *
      * @param qId 当前问题编号
@@ -205,7 +298,7 @@ public class IndexServiceImpl implements IIndexService {
      * @return JSON格式数据
      */
     @Override
-    public JSONResult findRearQuestionByQIdAndOId(String qId, String oId) {
+    public JSONResult getRearQuestionByQIdAndOId(String qId, String oId) {
         QuestionEntity question = questionMapper.findRearQuestionByQIdAndOId(qId, oId);
         JSONResult jsonResult;
         if (question != null) {
@@ -236,6 +329,7 @@ public class IndexServiceImpl implements IIndexService {
      * 保存用户填写的问卷信息
      *
      * @param userId 用户编号
+     * @param qnId   问卷编号
      * @param JSONsc 单项选择题
      * @param JSONmc 多项选择题
      * @param JSONjm 判断题
@@ -244,11 +338,11 @@ public class IndexServiceImpl implements IIndexService {
      * @return 用户填写的问卷信息是否保存成功
      */
     @Override
-    public JSONResult saveSubmit(String userId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
+    public JSONResult saveSubmit(String userId, String qnId, String JSONsc, String JSONmc, String JSONjm, String JSONfb, String JSONs, String userComments) {
         Date date = new Date();
 
         // 用户留言
-        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, userComments, date);
+        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, qnId, userComments, date);
         userCommentMapper.insertUserComment(userComment);
 
         // 单项选择题

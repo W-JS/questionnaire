@@ -7,6 +7,36 @@
         answer_id, user_id, question_id, questiontype_id, option_id, option_content, answer_create_time
     </sql>
 
+    <!-- 获取当前登录用户是否已经填写该问卷（有数据：已填写，无数据：未填写） -->
+    <!-- AnswerEntity findAnswerByUserIdAndQNId(String userId, String qnId); -->
+    <select id="findAnswerByUserIdAndQNId" resultType="AnswerEntity">
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        AND a.question_id =
+        (SELECT q.question_id
+        FROM `question` q
+        WHERE q.questionnaire_id = #{qnId}
+        AND q.question_status = 1
+        ORDER BY q.question_create_time ASC
+        LIMIT 1);
+    </select>
+
+    <!-- 获取当前登录用户填写的该问卷的回答信息 -->
+    <!-- List<AnswerEntity> findAllAnswerByUserIdAndQNId(String userId, String qnId); -->
+    <select id="findAllAnswerByUserIdAndQNId" resultType="AnswerEntity">
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        AND a.question_id IN
+        (SELECT q.question_id
+        FROM `question` q
+        WHERE q.questionnaire_id = #{qnId})
+        ORDER BY a.answer_create_time ASC;
+    </select>
+
     <!-- 保存回答信息 -->
     <!-- int insertAnswer(AnswerEntity a); -->
     <insert id="insertAnswer" parameterType="AnswerEntity">
