@@ -71,7 +71,9 @@
                 <div class="questionnaire" th:style="${questionnaire.answer == 'true'} ? '':'pointer-events: none;'" th:value="${questionnaire.answer}">
                     <div class="am-form">
                         <div class="am-form-group am-cf">
-                            <div class="QN-Title" th:text="${questionnaire.questionnaire.questionnaireTitle}" th:value="${questionnaire.questionnaire.questionnaireId}">问卷标题</div>
+                            <div class="QN-Title" th:text="${questionnaire.questionnaire.questionnaireTitle}"
+                                 th:value="${questionnaire.questionnaire.questionnaireId}">问卷标题
+                            </div>
                         </div>
 
                         <div class="am-form-group am-cf">
@@ -82,7 +84,8 @@
                             <div class="QN-Description" th:text="${questionnaire.questionnaire.questionnaireDescription}">问卷描述</div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="sc:${scQuestion}" th:style="${sc.question.preQuestionId==null} ? '':'display:none;'">
+                        <div class="am-form-group am-cf" th:each="sc:${scQuestion}"
+                             th:style="${sc.question.preQuestionId==null} ? '':'display:none;'">
                             <div th:class="${sc.question.preQuestionId==null} ? 'QNumber sc Show':'QNumber sc'">1、</div>
                             <div class="topic">
                                 <span class="qTitle" th:text="${sc.question.questionTitle}" th:value="${sc.q == 'true' ? 'true':'false'}">单项选择题</span>
@@ -97,7 +100,8 @@
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="mc:${mcQuestion}" th:style="${mc.question.preQuestionId==null} ? '':'display:none;'">
+                        <div class="am-form-group am-cf" th:each="mc:${mcQuestion}"
+                             th:style="${mc.question.preQuestionId==null} ? '':'display:none;'">
                             <div th:class="${mc.question.preQuestionId==null} ? 'QNumber mc Show':'QNumber mc'">2、</div>
                             <div class="topic">
                                 <span class="qTitle" th:text="${mc.question.questionTitle}" th:value="${mc.q == 'true' ? 'true':'false'}">多项选择题</span>
@@ -106,13 +110,15 @@
                             </div>
                             <div class="checkbox" th:each="o:${mc.option}">
                                 <label class="checkbox-mr">
-                                    <input onclick="ClickOption(this)" class="input-cb" type="checkbox" th:value="${o.q == 'true' ? 'mc-true':'mc-false'}"
+                                    <input onclick="ClickOption(this)" class="input-cb" type="checkbox"
+                                           th:value="${o.q == 'true' ? 'mc-true':'mc-false'}"
                                            th:id="${o.option.optionId}" th:name="${o.option.questionId}" th:text="' '+${o.option.optionContent}">
                                 </label>
                             </div>
                         </div>
 
-                        <div class="am-form-group am-cf" th:each="jm:${jmQuestion}" th:style="${jm.question.preQuestionId==null} ? '':'display:none;'">
+                        <div class="am-form-group am-cf" th:each="jm:${jmQuestion}"
+                             th:style="${jm.question.preQuestionId==null} ? '':'display:none;'">
                             <div th:class="${jm.question.preQuestionId==null} ? 'QNumber jm Show':'QNumber jm'">3、</div>
                             <div class="topic">
                                 <span class="qTitle" th:text="${jm.question.questionTitle}" th:value="${jm.q == 'true' ? 'true':'false'}">判断题</span>
@@ -135,7 +141,8 @@
                                 <span class="qStatus" th:if="${fb.question.questionStatus == 1}">*</span>
                             </div>
                             <div class="fillBlank" th:each="o:${fb.option}">
-                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption1(this)" onmousedown="ShowOnFBh3()" maxlength="200" th:id="${o.option.optionId}" th:name="${o.option.questionId}" rows="5" placeholder="请输入意见或建议！！！"></textarea>
+                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption1(this)" onmousedown="ShowOnFBh3()" maxlength="200"
+                                          th:id="${o.option.optionId}" th:name="${o.option.questionId}" rows="5" placeholder="请输入意见或建议！！！"></textarea>
                                 已输入：<span>0</span>/200
                             </div>
                         </div>
@@ -153,7 +160,8 @@
                         <div class="am-form-group am-cf">
                             <div class="userComments"><span class="qTitle">用户留言</span><span>（非必填）</span></div>
                             <div class="fillBlank">
-                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption2(this)" maxlength="1000" id="userComments" rows="5" placeholder="请输入留言内容，我们后续会发送邮件回复！！！"></textarea>
+                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption2(this)" maxlength="1000" id="userComments" rows="5"
+                                          placeholder="请输入留言内容，我们后续会发送邮件回复！！！"></textarea>
                                 已输入：<span>0</span>/1000
                             </div>
                         </div>

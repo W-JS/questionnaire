@@ -1,0 +1,81 @@
+.userIndex {
+    width: 1400px;
+    height: auto;
+    text-align: center;
+    margin: auto;
+}
+
+.userIndex .left {
+    float: left;
+    width: 49%;
+    height: 90%;
+    border: 2px solid red;
+    border-radius: 10px;
+}
+
+.userIndex .right {
+    float: right;
+    width: 49%;
+    height: 90%;
+    border: 2px solid blue;
+    border-radius: 10px;
+}
+
+.userIndex .title {
+    font-family: cursive;
+    font-size: 30px;
+    color: black;
+}
+
+.userIndex .left .qn {
+    font-family: cursive;
+    font-size: 20px;
+    margin: 5px 0px 0px 0px;
+    border-top: 1px solid red;
+}
+
+.userIndex .right .qn {
+    font-family: cursive;
+    font-size: 20px;
+    margin: 5px 0px 0px 0px;
+    border-top: 1px solid blue;
+}
+
+.userIndex .left .qn a {
+    color: red;
+    transition: 0.5s;
+    text-decoration: none;
+}
+
+.userIndex .right .qn a {
+    color: blue;
+    transition: 0.5s;
+    text-decoration: none;
+}
+
+.userIndex .qn a:hover {
+    color: black;
+}
+
+.userIndex .right .qn a:last-child {
+    color: red;
+    float: right;
+    margin-right: 10px;
+}
+
+.userIndex .right .qn a:hover {
+    color: black;
+}
+
+.foods {
+    margin-top: 25px;
+    width: 100%;
+    background-color: #5b6e84;
+    height: 43px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    line-height: 43px;
+    color: #fff;
+    overflow: hidden;
+}

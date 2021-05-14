@@ -192,6 +192,46 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
     }
 
     /**
+     * 获取当前登录用户已填写的问卷
+     *
+     * @param userId 用户编号
+     * @return 已填写的问卷列表
+     */
+    @Override
+    public List<Map<String, Object>> getCompleteQuestionnaireByUserId(String userId) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findCompleteQuestionnaireByUserId(userId);
+        if (questionnaireList != null) {
+            for (QuestionnaireEntity questionnaire : questionnaireList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("questionnaire", questionnaire);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取当前登录用户未填写的问卷
+     *
+     * @param userId 用户编号
+     * @return 未填写的问卷列表
+     */
+    @Override
+    public List<Map<String, Object>> getNotCompleteQuestionnaireByUserId(String userId) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findNotCompleteQuestionnaireByUserId(userId);
+        if (questionnaireList != null) {
+            for (QuestionnaireEntity questionnaire : questionnaireList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("questionnaire", questionnaire);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    /**
      * 保存问卷信息
      *
      * @param qnTitle       问卷标题

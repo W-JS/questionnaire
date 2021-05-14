@@ -6,11 +6,6 @@ let cancelFlag = false;// 是否已经保存和修改
 let rows = $("#items").find("tr").length; //获取表格的总行数 tr
 
 $(function () {
-    isURL();
-    HideOption();// 隐藏选项
-
-    // GenerateQNTitle();// 生成
-    // GenerateQTitle();// 生成问题标题
     GenerateQNTitleAndQTitle();// 生成问卷标题和问题标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
@@ -28,42 +23,6 @@ $(function () {
         $("#items .am-text-danger").attr("disabled", true);
     }
 });
-
-// 判断url是否正确
-function isURL() {
-    let index = url.lastIndexOf("/")
-    url = url.substring(index + 1, url.length);
-
-    if (url == "Option" || url == "OptionByQId" || url == "AllOption" || url == "search") {
-        Option();
-    }
-}
-
-// 显示选项
-function Option() {
-    let flag = $("#hideOption").length > 0;
-    if (!flag) {
-        let html =
-            "<li id=\"hideOption-li\">\n" +
-            "    <button type=\"button\" style=\"background-color: #005cbf;\" class=\"am-btn am-btn-default am-radius am-btn-xs\">选项\n" +
-            "        <a id=\"hideOption\" href=\"javascript: void(0)\" class=\"am-close am-close-spin\" data-am-modal-close=\"\">×</a>\n" +
-            "    </button>\n" +
-            "</li>";
-        $(html).appendTo($('#show-hide'));
-    } else {
-        $("#hideOption-li").show();
-    }
-}
-
-// 隐藏选项
-function HideOption() {
-    $("#show-hide").on("mouseenter", "#hideOption", function () {
-        $(this).click(function () {
-            $("#hideOption-li").hide();
-            window.location.href = CONTEXT_PATH + "/question/addQuestion";
-        })
-    });
-}
 
 // 点击td元素选中复选框
 function Checkbox() {
@@ -105,7 +64,6 @@ function Checkbox() {
 
             $("#save").attr("hidden", "hidden");
             $("#update").attr("hidden", "hidden");
-            $("#delete").attr("hidden", "hidden");
             $("#reset").attr("hidden", "hidden");
         } else if (udOId == "update") {
             $("#optionOperation").text("修改选项");
@@ -115,16 +73,8 @@ function Checkbox() {
             $("#update").removeAttr("hidden");
             $("#reset").removeAttr("hidden");
             $("#save").attr("hidden", "hidden");
-            $("#delete").attr("hidden", "hidden");
         } else if (udOId == "delete") {
-            $("#optionOperation").text("删除选项");
-
-            $("#oContent").attr("disabled", "disabled");
-
-            $("#delete").removeAttr("hidden");
-            $("#save").attr("hidden", "hidden");
-            $("#update").attr("hidden", "hidden");
-            $("#reset").attr("hidden", "hidden");
+            DeleteSubmit();
         }
     }
     setChecked(this);

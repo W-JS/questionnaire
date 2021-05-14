@@ -342,7 +342,7 @@ public class IndexServiceImpl implements IIndexService {
         Date date = new Date();
 
         // 用户留言
-        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, qnId, userComments, date);
+        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, qnId, userComments, 0, date);
         userCommentMapper.insertUserComment(userComment);
 
         // 单项选择题
@@ -350,7 +350,7 @@ public class IndexServiceImpl implements IIndexService {
         if (sc.size() > 0) {
             for (int i = 0; i < sc.size(); i++) {
                 date.setTime(date.getTime() + 1000);
-                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) sc.getJSONObject(i).get("qId"), (String) sc.getJSONObject(i).get("qt"), (String) sc.getJSONObject(i).get("oId"), date);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, qnId, (String) sc.getJSONObject(i).get("qId"), (String) sc.getJSONObject(i).get("qt"), (String) sc.getJSONObject(i).get("oId"), date);
                 answerMapper.insertAnswer(answer);
             }
         }
@@ -360,7 +360,7 @@ public class IndexServiceImpl implements IIndexService {
         if (mc.size() > 0) {
             for (int i = 0; i < mc.size(); i++) {
                 date.setTime(date.getTime() + 1000);
-                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) mc.getJSONObject(i).get("qId"), (String) mc.getJSONObject(i).get("qt"), (String) mc.getJSONObject(i).get("oId"), date);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, qnId, (String) mc.getJSONObject(i).get("qId"), (String) mc.getJSONObject(i).get("qt"), (String) mc.getJSONObject(i).get("oId"), date);
                 answerMapper.insertAnswer(answer);
             }
         }
@@ -370,7 +370,7 @@ public class IndexServiceImpl implements IIndexService {
         if (jm.size() > 0) {
             for (int i = 0; i < jm.size(); i++) {
                 date.setTime(date.getTime() + 1000);
-                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) jm.getJSONObject(i).get("qId"), (String) jm.getJSONObject(i).get("qt"), (String) jm.getJSONObject(i).get("oId"), date);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, qnId, (String) jm.getJSONObject(i).get("qId"), (String) jm.getJSONObject(i).get("qt"), (String) jm.getJSONObject(i).get("oId"), date);
                 answerMapper.insertAnswer(answer);
             }
         }
@@ -380,7 +380,7 @@ public class IndexServiceImpl implements IIndexService {
         if (fb.size() > 0) {
             for (int i = 0; i < fb.size(); i++) {
                 date.setTime(date.getTime() + 1000);
-                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) fb.getJSONObject(i).get("qId"), (String) fb.getJSONObject(i).get("qt"), (String) fb.getJSONObject(i).get("oId"), (String) fb.getJSONObject(i).get("value"), date);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, qnId, (String) fb.getJSONObject(i).get("qId"), (String) fb.getJSONObject(i).get("qt"), (String) fb.getJSONObject(i).get("oId"), (String) fb.getJSONObject(i).get("value"), date);
                 answerMapper.insertAnswer(answer);
             }
         }
@@ -390,7 +390,7 @@ public class IndexServiceImpl implements IIndexService {
         if (s.size() > 0) {
             for (int i = 0; i < s.size(); i++) {
                 date.setTime(date.getTime() + 1000);
-                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, (String) s.getJSONObject(i).get("qId"), (String) s.getJSONObject(i).get("qt"), (String) s.getJSONObject(i).get("oId"), (String) s.getJSONObject(i).get("value"), date);
+                AnswerEntity answer = new AnswerEntity(UUIDGenerator.get16UUID(), userId, qnId, (String) s.getJSONObject(i).get("qId"), (String) s.getJSONObject(i).get("qt"), (String) s.getJSONObject(i).get("oId"), (String) s.getJSONObject(i).get("value"), date);
                 answerMapper.insertAnswer(answer);
             }
         }

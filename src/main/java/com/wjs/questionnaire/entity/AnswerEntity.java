@@ -10,6 +10,7 @@ public class AnswerEntity implements Serializable {
 
     private String answerId;        // 回答编号
     private String userId;          // 用户编号
+    private String questionnaireId; // 问卷编号
     private String questionId;      // 问题编号
     private String questiontypeId;  // 题型编号
     private String optionId;        // 选项编号
@@ -19,18 +20,20 @@ public class AnswerEntity implements Serializable {
     public AnswerEntity() {
     }
 
-    public AnswerEntity(String answerId, String userId, String questionId, String questiontypeId, String optionId, Date answerCreateTime) {
+    public AnswerEntity(String answerId, String userId, String questionnaireId, String questionId, String questiontypeId, String optionId, Date answerCreateTime) {
         this.answerId = answerId;
         this.userId = userId;
+        this.questionnaireId = questionnaireId;
         this.questionId = questionId;
         this.questiontypeId = questiontypeId;
         this.optionId = optionId;
         this.answerCreateTime = answerCreateTime;
     }
 
-    public AnswerEntity(String answerId, String userId, String questionId, String questiontypeId, String optionId, String optionContent, Date answerCreateTime) {
+    public AnswerEntity(String answerId, String userId, String questionnaireId, String questionId, String questiontypeId, String optionId, String optionContent, Date answerCreateTime) {
         this.answerId = answerId;
         this.userId = userId;
+        this.questionnaireId = questionnaireId;
         this.questionId = questionId;
         this.questiontypeId = questiontypeId;
         this.optionId = optionId;
@@ -52,6 +55,14 @@ public class AnswerEntity implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public void setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
     }
 
     public String getQuestionId() {
@@ -99,6 +110,7 @@ public class AnswerEntity implements Serializable {
         return "AnswerEntity{" +
                 "answerId='" + answerId + '\'' +
                 ", userId='" + userId + '\'' +
+                ", questionnaireId='" + questionnaireId + '\'' +
                 ", questionId='" + questionId + '\'' +
                 ", questiontypeId='" + questiontypeId + '\'' +
                 ", optionId='" + optionId + '\'' +

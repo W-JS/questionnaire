@@ -20,22 +20,22 @@
             <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
                 <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
 
-                    <!--<li class="am-dropdown notice" data-am-dropdown>
+                    <li class="am-dropdown notice" data-am-dropdown style="margin-right: 10px;">
                         <button class="am-btn am-btn-primary am-dropdown-toggle am-btn-xs am-radius am-icon-bell-o"
-                                data-am-dropdown-toggle> 消息管理<span class="am-badge am-badge-danger am-round">6</span>
+                                data-am-dropdown-toggle> 消息管理&nbsp;&nbsp;<span class="am-badge am-badge-danger am-round"
+                                                                               id="messageManagement"></span>
                         </button>
                         <ul class="am-dropdown-content">
                             <li class="am-dropdown-header">所有消息都在这里</li>
-                            <li><a href="#">未激活会员 <span class="am-badge am-badge-danger am-round">99+</span></a></li>
-                            <li><a href="#">信息反馈</a></li>
+                            <li><a href="#">待处理用户留言信息 <span class="am-badge am-badge-danger am-round" id="pendingUserMessage"></span></a></li>
                         </ul>
-                    </li>-->
+                    </li>
 
                     <!--<li class="topMenu">
                         <a href="#" th:utext="${map.user.userName}">在线用户</a>
                     </li>-->
 
-                    <li class="topFunction">
+                    <li class="topFunction" style="min-width: 304px;">
                         <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎系统管理员:</p>
                         <p>
                             <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
@@ -83,33 +83,20 @@
                     </ul>
                     <h3 class="am-icon-user"><a href="#">用户管理</a></h3>
                     <ul>
-                        <li>订单列表</li>
-                        <li>合并订单</li>
-                        <li>订单打印</li>
-                        <li>添加订单</li>
-                        <li>发货单列表</li>
-                        <li>换货单列表</li>
+                        <li>用户</li>
                     </ul>
-                    <h3 class="am-icon-tree"><a href="#">分类统计与汇总</a></h3>
-                    <ul>
-                        <li>会员列表</li>
-                        <li>未激活会员</li>
-                        <li>团队系谱图</li>
-                        <li>会员推荐图</li>
-                        <li>推荐列表</li>
-                    </ul>
-                    <h3 class="am-icon-volume-up"><a href="#">信息通知</a></h3>
+                    <!--<h3 class="am-icon-volume-up"><a href="#">信息通知</a></h3>
                     <ul>
                         <li>用户回复</li>
                         <li>短信</li>
                         <li>邮件</li>
                         <li>客服</li>
-                    </ul>
-                    <h3 class="am-icon-gears"><a href="#">系统设置</a></h3>
+                    </ul>-->
+                    <!--<h3 class="am-icon-gears"><a href="#">系统设置</a></h3>
                     <ul>
                         <li>权限</li>
                         <li>网站设置</li>
-                    </ul>
+                    </ul>-->
                 </div>
 
                 <script type="text/javascript">
@@ -174,8 +161,6 @@
                                     <p>
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="save" onclick="Save()" value="保存">
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="update" onclick="Update()" value="修改">
-                                        <input type="button" class="am-btn am-btn-danger am-radius Btn" id="delete" onclick="DeleteSubmit()"
-                                               value="删除">
                                         <input type="button" class="am-btn am-btn-success am-radius Btn" id="reset" onclick="Reset()" value="重置">
                                         <input type="button" class="am-btn am-btn-default am-radius" id="cancel" onclick="Cancel()"
                                                data-am-modal-close value="取消">
@@ -257,14 +242,13 @@
                                     <td class="operating">
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
-                                                <!--<button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                        data-am-modal="{target: '#questionnairePopups'}" onclick="ShowQuestionnaire()"
-                                                        title="查看问卷">
-                                                    <span class="am-icon-eye"></span>
-                                                </button>-->
                                                 <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                   th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}" target="_blank">
+                                                   th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}" target="_blank" title="查看问卷">
                                                     <span class="am-icon-eye"></span>
+                                                </a>
+                                                <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                   th:href="@{/dataAnalysis(qnId=${map.questionnaire.questionnaireId})}" target="_blank" title="分析问卷">
+                                                    <span class="am-icon-pie-chart"></span>
                                                 </a>
                                                 <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
                                                         data-am-modal="{target: '#questionnairePopups'}" onclick="UpdateQuestionnaire()"
@@ -272,7 +256,7 @@
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
                                                 <button class="test2 am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#questionnairePopups'}" onclick="DeleteQuestionnaire()"
+                                                        onclick="DeleteQuestionnaire()"
                                                         title="删除问卷">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>
@@ -354,11 +338,15 @@
         <!--        <script src="assets/js/polyfill/respond.min.js"></script>-->
         <!--        <script src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.legacy.js"></script>-->
         <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
+<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/amcharts.js}"></script>-->
+<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/pie.js}"></script>-->
+<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>-->
         <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
         <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
+<!--        <script type="text/javascript" th:src="@{/assets/js/analysis.js}"></script>-->
     </body>
 </html>

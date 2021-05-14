@@ -33,4 +33,13 @@ public interface AnswerMapper {
      * @return 回答是否保存成功
      */
     int insertAnswer(AnswerEntity a);
+
+    /**
+     * 根据 userId 和 qnId 删除回答信息
+     *
+     * @param userId 用户编号
+     * @param qnId   问卷编号
+     * @return 回答信息是否删除成功
+     */
+    int deleteAnswerByUserIdAndQNId(String userId, String qnId);
 }

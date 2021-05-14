@@ -220,8 +220,8 @@ tbody .qnDescription {
 }
 
 tbody .operating {
-    min-width: 150px;
-    max-width: 150px;
+    min-width: 165px;
+    max-width: 165px;
     display: flex;
     justify-content: center;
 }
@@ -321,10 +321,32 @@ tbody .operating {
         -ms-transform: translateY(1024px);
         transform: translateY(1024px)
     }
+
+    .analysis {
+        /*width: 1288px;*/
+        width: 1030px;
+        height: 630px;
+        left: 50%;
+        top: 50%;
+        /*margin-left: -666px;*/
+        margin-left: -520px;
+        /*margin-top: -373px;*/
+        margin-top: -325px;
+        -webkit-transform: translateY(1024px);
+        -ms-transform: translateY(1024px);
+        transform: translateY(1024px)
+    }
 }
 
 .admin-content .am-popup {
     max-height: 320px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.admin-content .analysis {
+    /*max-height: 744px;*/
+    max-height: 650px;
     border-radius: 4px;
     overflow: hidden;
 }

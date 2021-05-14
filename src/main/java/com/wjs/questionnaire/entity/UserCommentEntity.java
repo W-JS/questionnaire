@@ -9,16 +9,18 @@ public class UserCommentEntity implements Serializable {
     private String userId;              // 用户编号
     private String questionnaireId;     // 问卷编号
     private String usercommentContent;  // 用户留言内容
+    private Integer usercommentStatus;   // 用户留言状态：0-未处理; 1-已处理
     private Date usercommentCreateTime; // 用户留言创建时间
 
     public UserCommentEntity() {
     }
 
-    public UserCommentEntity(String usercommentId, String userId, String questionnaireId, String usercommentContent, Date usercommentCreateTime) {
+    public UserCommentEntity(String usercommentId, String userId, String questionnaireId, String usercommentContent, Integer usercommentStatus, Date usercommentCreateTime) {
         this.usercommentId = usercommentId;
         this.userId = userId;
         this.questionnaireId = questionnaireId;
         this.usercommentContent = usercommentContent;
+        this.usercommentStatus = usercommentStatus;
         this.usercommentCreateTime = usercommentCreateTime;
     }
 
@@ -54,6 +56,14 @@ public class UserCommentEntity implements Serializable {
         this.usercommentContent = usercommentContent;
     }
 
+    public Integer getUsercommentStatus() {
+        return usercommentStatus;
+    }
+
+    public void setUsercommentStatus(Integer usercommentStatus) {
+        this.usercommentStatus = usercommentStatus;
+    }
+
     public Date getUsercommentCreateTime() {
         return usercommentCreateTime;
     }
@@ -69,6 +79,7 @@ public class UserCommentEntity implements Serializable {
                 ", userId='" + userId + '\'' +
                 ", questionnaireId='" + questionnaireId + '\'' +
                 ", usercommentContent='" + usercommentContent + '\'' +
+                ", usercommentStatus=" + usercommentStatus +
                 ", usercommentCreateTime=" + usercommentCreateTime +
                 '}';
     }

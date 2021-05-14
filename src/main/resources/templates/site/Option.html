@@ -46,8 +46,6 @@
                                     <p>
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="save" onclick="Save()" value="保存">
                                         <input type="button" class="am-btn am-btn-primary am-radius Btn" id="update" onclick="Update()" value="修改">
-                                        <input type="button" class="am-btn am-btn-danger am-radius Btn" id="delete" onclick="DeleteSubmit()"
-                                               value="删除">
                                         <input type="button" class="am-btn am-btn-success am-radius Btn" id="reset" onclick="Reset()" value="重置">
                                         <input type="button" class="am-btn am-btn-default am-radius" id="cancel" onclick="Cancel()"
                                                data-am-modal-close value="取消">
@@ -126,7 +124,7 @@
                                         <input type="checkbox" name="cb[]" th:value="${map.option.optionId}" onclick="setChecked(this)"/>
                                     </td>
                                     <td class="oContent">
-                                    <a th:text="${map.option.optionContent}" th:title="${map.option.optionContent}">选项内容</a>
+                                        <a th:text="${map.option.optionContent}" th:title="${map.option.optionContent}">选项内容</a>
                                     </td>
 
                                     <td class="operating">
@@ -143,7 +141,7 @@
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
                                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#optionPopups'}" onclick="DeleteOption()"
+                                                        onclick="DeleteOption()"
                                                         title="删除选项">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>
@@ -204,5 +202,4 @@
         <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Option.js}"></script>
     </body>
-</html>
 </html>

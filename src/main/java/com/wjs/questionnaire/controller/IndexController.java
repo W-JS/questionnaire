@@ -26,18 +26,10 @@ public class IndexController {
      */
     @GetMapping(value = "/")
     public String root() {
-//        return "forward:/user/login";// 转发：不修改URL地址，进入login页面无法加载静态资源
-//        return "redirect:/user/login";// 重定向：修改URL地址，进入login页面可以加载静态资源
+//        return "forward:/user/login";// 转发：不修改URL地址
+//        return "redirect:/user/login";// 重定向：修改URL地址
         return "forward:/questionnaire/index";
     }
-
-    /**
-     * @return 进入 问卷
-     */
-    /*@GetMapping(value = "/questionnaire")
-    public String jumpQuestionnairePage(Model model) {
-        return "/site/questionnaire";
-    }*/
 
     /**
      * @return 进入 问卷
@@ -53,6 +45,15 @@ public class IndexController {
         model.addAttribute("sQuestion", indexService.getQuestionByQnIdAndQtId2(qnId, "score"));// 评分题
 
         return "/site/questionnaire";
+    }
+
+    /**
+     * @return 进入 数据分析页面
+     */
+    @GetMapping(value = "/dataAnalysis")
+    public String dataAnalysis(@RequestParam("qnId") String qnId, Model model) {
+        model.addAttribute("questionnaireId", qnId);
+        return "/site/dataAnalysis";
     }
 
     /**
@@ -85,13 +86,14 @@ public class IndexController {
     /**
      * 保存用户填写的问卷信息
      *
-     * @param userId 用户编号
-     * @param qnId   问卷编号
-     * @param JSONsc 单项选择题
-     * @param JSONmc 多项选择题
-     * @param JSONjm 判断题
-     * @param JSONfb 填空题
-     * @param JSONs  评分题
+     * @param userId       用户编号
+     * @param qnId         问卷编号
+     * @param JSONsc       单项选择题
+     * @param JSONmc       多项选择题
+     * @param JSONjm       判断题
+     * @param JSONfb       填空题
+     * @param JSONs        评分题
+     * @param userComments 用户留言
      * @return 用户填写的问卷信息是否保存成功
      */
     @PostMapping(value = "/saveSubmit")

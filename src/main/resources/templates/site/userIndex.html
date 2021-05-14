@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/userIndex.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <!--        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/layui/css/layui.css}"/>-->
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/userIndex.css}">
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/sideMenu.css}">-->
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/rocketTop.css}">-->
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <!--                <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>-->
+        <title>首页</title>
+    </head>
+    i
+    <body>
+        <!-- 头部 -->
+        <header class="am-topbar admin-header" style="margin-bottom: 20px;">
+            <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+                <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
+
+                    <li class="topFunction" style="margin-right: 640px;">
+                        <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎用户:</p>
+                        <p>
+                            <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
+                                <option id="onlineUser" value="">在线用户名</option>
+                                <option value="personalCenter">个人中心</option>
+                                <option value="exit">退出</option>
+                            </select>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- 确认删除问卷模态窗口 -->
+        <div class="am-modal am-modal-confirm" tabindex="-1" id="questionnaireModal">
+            <div class="am-modal-dialog" style="background-color: #a8a8a8;">
+                <div class="am-modal-hd" style="color: red;">删除提示</div>
+                <div class="am-modal-bd">
+                    您确定要删除已填写的该问卷记录吗？
+                </div>
+                <div class="am-modal-footer">
+                    <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                    <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中部 -->
+        <div class="userIndex">
+            <div class="left">
+                <div class="title">
+                    <div>未填写的问卷</div>
+                </div>
+                <div class="qn" th:each="map:${notCompleteQuestionnaires}">
+                    <a th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
+                       th:text="${map.questionnaire.questionnaireTitle}"
+                       th:title="${map.questionnaire.questionnaireTitle}" target="_blank">未填写的问卷</a>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="title">
+                    <div>已填写的问卷</div>
+                </div>
+                <div class="qn" th:each="map:${completeQuestionnaires}">
+                    <a th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
+                       th:text="${map.questionnaire.questionnaireTitle}"
+                       th:title="${map.questionnaire.questionnaireTitle}" target="_blank">已填写的问卷</a>
+
+                    <a th:id="${map.questionnaire.questionnaireId}" onclick="DeleteQuestionnaire(this)"><span class="am-icon-trash-o"></span></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 尾部 -->
+        <footer>
+            <div class="foods">
+                <ul>版权所有@2021</ul>
+            </div>
+        </footer>
+
+
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>-->
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <!--        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>-->
+        <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/userIndex.js}"></script>
+    </body>
+</html>

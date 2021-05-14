@@ -69,6 +69,34 @@
         WHERE questionnaire_id = #{questionnaireId}
     </select>
 
+    <!-- 获取当前登录用户已填写的问卷 -->
+    <!-- List<QuestionnaireEntity> findCompleteQuestionnaireByUserId(String userId); -->
+    <select id="findCompleteQuestionnaireByUserId" resultType="QuestionnaireEntity">
+        SELECT
+        <include refid="selectQuestionnaireFields"></include>
+        FROM `questionnaire` qn
+        WHERE qn.questionnaire_id IN
+        (SELECT a.questionnaire_id
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        GROUP BY a.questionnaire_id)
+        ORDER BY qn.questionnaire_create_time DESC;
+    </select>
+
+    <!-- 获取当前登录用户未填写的问卷 -->
+    <!-- List<QuestionnaireEntity> findNotCompleteQuestionnaireByUserId(String userId); -->
+    <select id="findNotCompleteQuestionnaireByUserId" resultType="QuestionnaireEntity">
+        SELECT
+        <include refid="selectQuestionnaireFields"></include>
+        FROM `questionnaire` qn
+        WHERE qn.questionnaire_id NOT IN
+        (SELECT a.questionnaire_id
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        GROUP BY a.questionnaire_id)
+        ORDER BY qn.questionnaire_create_time DESC;
+    </select>
+
     <!-- 保存问卷信息 -->
     <!-- int insertQuestionnaire(QuestionnaireEntity qn); -->
     <insert id="insertQuestionnaire" parameterType="QuestionnaireEntity">
@@ -119,8 +147,8 @@
     <!-- 删除问卷信息 -->
     <!-- int deleteQuestionnaireByQNId(String qnId); -->
     <delete id="deleteQuestionnaireByQNId" parameterType="QuestionnaireEntity">
-    DELETE FROM `questionnaire`
-    WHERE questionnaire_id = #{qnId}
+        DELETE FROM `questionnaire`
+        WHERE questionnaire_id = #{qnId}
     </delete>
 
 </mapper>

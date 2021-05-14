@@ -4,13 +4,13 @@
 
     <!-- 查询 answer 表所有字段 -->
     <sql id="selectAnswerFields">
-        answer_id, user_id, question_id, questiontype_id, option_id, option_content, answer_create_time
+        answer_id, user_id, questionnaire_id, question_id, questiontype_id, option_id, option_content, answer_create_time
     </sql>
 
     <!-- 获取当前登录用户是否已经填写该问卷（有数据：已填写，无数据：未填写） -->
     <!-- AnswerEntity findAnswerByUserIdAndQNId(String userId, String qnId); -->
     <select id="findAnswerByUserIdAndQNId" resultType="AnswerEntity">
-        SELECT
+        <!--SELECT
         <include refid="selectAnswerFields"></include>
         FROM `answer` a
         WHERE a.user_id = #{userId}
@@ -20,13 +20,20 @@
         WHERE q.questionnaire_id = #{qnId}
         AND q.question_status = 1
         ORDER BY q.question_create_time ASC
-        LIMIT 1);
+        LIMIT 1);-->
+
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        AND a.questionnaire_id = #{qnId}
+        GROUP BY a.questionnaire_id;
     </select>
 
     <!-- 获取当前登录用户填写的该问卷的回答信息 -->
     <!-- List<AnswerEntity> findAllAnswerByUserIdAndQNId(String userId, String qnId); -->
     <select id="findAllAnswerByUserIdAndQNId" resultType="AnswerEntity">
-        SELECT
+        <!--SELECT
         <include refid="selectAnswerFields"></include>
         FROM `answer` a
         WHERE a.user_id = #{userId}
@@ -34,6 +41,13 @@
         (SELECT q.question_id
         FROM `question` q
         WHERE q.questionnaire_id = #{qnId})
+        ORDER BY a.answer_create_time ASC;-->
+
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.user_id = #{userId}
+        AND a.questionnaire_id = #{qnId}
         ORDER BY a.answer_create_time ASC;
     </select>
 
@@ -47,6 +61,9 @@
             </if>
             <if test="userId != null">
                 user_id,
+            </if>
+            <if test="questionnaireId != null">
+                questionnaire_id,
             </if>
             <if test="questionId != null">
                 question_id,
@@ -71,6 +88,9 @@
             <if test="userId != null">
                 #{userId},
             </if>
+            <if test="questionnaireId != null">
+                #{questionnaireId},
+            </if>
             <if test="questionId != null">
                 #{questionId},
             </if>
@@ -88,5 +108,13 @@
             </if>
         </trim>
     </insert>
+
+    <!-- 根据 userId 和 qnId 删除回答信息 -->
+    <!-- int deleteAnswerByUserIdAndQNId(String userId, String qnId); -->
+    <delete id="deleteAnswerByUserIdAndQNId" parameterType="AnswerEntity">
+        DELETE FROM `answer` a
+        WHERE a.user_id = #{userId}
+        AND a.questionnaire_id = #{qnId}
+    </delete>
 
 </mapper>

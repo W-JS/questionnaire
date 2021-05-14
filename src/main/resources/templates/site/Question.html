@@ -114,7 +114,7 @@
                     </div>
                 </div>
 
-                <!-- 问题弹出层2（显示和删除） -->
+                <!-- 问题弹出层2（显示） -->
                 <div class="am-popup am-popup-inner" id="questionPopups2">
                     <div class="am-popup-hd">
                         <h4 class="am-popup-title" id="questionOperation2">查看/删除问题</h4>
@@ -162,8 +162,6 @@
                             <div class="am-form-group am-cf">
                                 <div class="popup-right">
                                     <p>
-                                        <input type="button" class="am-btn am-btn-danger am-radius Btn" id="delete" onclick="DeleteSubmit()"
-                                               value="删除">
                                         <input type="button" class="am-btn am-btn-default am-radius" id="cancel2" onclick="Cancel()"
                                                data-am-modal-close value="取消">
                                     </p>
@@ -248,7 +246,7 @@
                                                     <span class="am-icon-pencil-square-o"></span>
                                                 </button>
                                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                                        data-am-modal="{target: '#questionPopups2'}" onclick="DeleteQuestion()"
+                                                        onclick="DeleteQuestion()"
                                                         title="删除问题">
                                                     <span class="am-icon-trash-o"></span>
                                                 </button>

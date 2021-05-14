@@ -1,56 +1,12 @@
 let questionnaire = new Array();// 保存原始问卷信息
 let deleteQuestionnaire = new Array(); // 保存删除勾选的问题
-let setRowFlag = -1;// 设置当前选项所在行行数
 let cancelFlag = false;// 是否已经保存和修改
 
 $(function () {
-    isURL();
-    HideQuestionnaire();// 隐藏问卷
-
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
 
     $("#deleteChoose").click(DeleteChoose);// 删除选择的问卷
 });
-
-// 判断url是否正确
-function isURL() {
-    let url = window.location.pathname;
-    let index = url.lastIndexOf("/")
-    url = url.substring(index + 1, url.length);
-
-    if (url == "index") {
-        Questionnaire();
-    }
-}
-
-// 显示问卷
-function Questionnaire() {
-    let flag = $("#hideQuestionnaire-li").length > 0;
-    if (!flag) {
-        let html =
-            "<li id=\"hideQuestionnaire-li\">\n" +
-            "    <button type=\"button\" style=\"background-color: #005cbf;\" class=\"am-btn am-btn-default am-radius am-btn-xs\">问卷\n" +
-            "        <a id=\"hideQuestionnaire\" href=\"javascript: void(0)\" class=\"am-close am-close-spin\" data-am-modal-close=\"\">×</a>\n" +
-            "    </button>\n" +
-            "</li>";
-        // $(html).appendTo($('.daohang ul li').last());// ok
-        // $(html).appendTo($('.daohang ul').last());// ok
-        // $(html).appendTo($('#show-hide').last());// ok
-        $(html).appendTo($('#show-hide'));// ok
-    } else {
-        $("#hideQuestionnaire-li").show();
-    }
-}
-
-// 隐藏问卷
-function HideQuestionnaire() {
-    $("#show-hide").on("mouseenter", "#hideQuestionnaire", function () {
-        $(this).click(function () {// "#hideQuestionnaire" 可替换为 this
-            $("#hideQuestionnaire-li").hide();
-            window.location.href = CONTEXT_PATH + "/";
-        })
-    });
-}
 
 // 点击td元素选中复选框
 function Checkbox() {
@@ -75,11 +31,7 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
-        if (setRowFlag != row) {// 选择其他行，设置选项弹出层；选择同一行，不设置选项弹出层
-            setRowFlag = row;
-            SetQuestionnaire();// 设置选项弹出层
-        }
-
+        SetQuestionnaire();// 设置选项弹出层
         let udQNId = questionnaire[0];
 
         if (udQNId == "show") {
@@ -91,7 +43,6 @@ function Checkbox() {
 
             $("#save").attr("hidden", "hidden");
             $("#update").attr("hidden", "hidden");
-            $("#delete").attr("hidden", "hidden");
             $("#reset").attr("hidden", "hidden");
         }
         if (udQNId == "update") {
@@ -104,19 +55,9 @@ function Checkbox() {
             $("#update").removeAttr("hidden");
             $("#reset").removeAttr("hidden");
             $("#save").attr("hidden", "hidden");
-            $("#delete").attr("hidden", "hidden");
         }
         if (udQNId == "delete") {
-            $("#questionnaireOperation").text("删除问卷");
-
-            $("#qnTitle").attr("disabled", "disabled");
-            $("#qnFuTitle").attr("disabled", "disabled");
-            $("#qnDescription").attr("disabled", "disabled");
-
-            $("#delete").removeAttr("hidden");
-            $("#save").attr("hidden", "hidden");
-            $("#update").attr("hidden", "hidden");
-            $("#reset").attr("hidden", "hidden");
+            DeleteSubmit();
         }
     }
     setChecked(this);
@@ -173,8 +114,6 @@ function SetQuestionnaire() {
                 $("#qnTitle").val(qnTitle);// 填充问卷标题
                 $("#qnFuTitle").val(qnFuTitle);// 填充问卷副标题
                 $("#qnDescription").val(qnDescription);// 填充问卷描述
-            } else {
-                ShowFailure(result.message);
             }
         }
     });
@@ -461,7 +400,6 @@ function Reset() {
         $("#qnTitle").focus();
         ShowSuccess("新建问卷信息重置成功！！！");
     } else if (udQNId == "update") {
-        setRowFlag = -1;
         $("#qnTitle").val(questionnaire[2]);// 填充问卷标题
         $("#qnFuTitle").val(questionnaire[3]);// 填充问卷副标题
         $("#qnDescription").val(questionnaire[4]);// 填充问卷描述
@@ -484,8 +422,6 @@ function AddQuestionnaire() {
     questionnaire.length = 0;//将原始问卷信息清空
     questionnaire.push("add");// 0 向数组存问卷操作
 
-    setRowFlag = -1;
-
     $("#qnTitle").val("");// 重置 问卷标题
     $("#qnFuTitle").val("");// 重置 问卷副标题
     $("#qnDescription").val("");// 重置 问卷描述
@@ -499,13 +435,6 @@ function AddQuestionnaire() {
     $("#save").removeAttr("hidden");
     $("#reset").removeAttr("hidden");
     $("#update").attr("hidden", "hidden");
-    $("#delete").attr("hidden", "hidden");
-}
-
-// 点击显示问卷按钮
-function ShowQuestionnaire() {
-    questionnaire.length = 0;//将原始问卷信息清空
-    questionnaire.push("show");// 0 向数组存问卷操作
 }
 
 // 点击修改问卷按钮

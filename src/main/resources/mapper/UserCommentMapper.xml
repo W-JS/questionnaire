@@ -4,7 +4,7 @@
 
     <!-- 查询 usercomment 表所有字段 -->
     <sql id="selectUserCommentFields">
-        usercomment_id, user_id, questionnaire_id, usercomment_content, usercomment_create_time
+        usercomment_id, user_id, questionnaire_id, usercomment_content, usercomment_status, usercomment_create_time
     </sql>
 
     <!-- 根据 userId 和 qnId 查询用户留言信息 -->
@@ -15,6 +15,23 @@
         FROM `usercomment` uc
         WHERE uc.user_id = #{userId}
         AND uc.questionnaire_id = #{qnId};
+    </select>
+
+    <!-- 获取所有的未处理的用户留言信息的行数 -->
+    <!-- int findAllUntreatedUserCommentRows(); -->
+    <select id="findAllUntreatedUserCommentRows" resultType="int">
+        SELECT COUNT(uc.usercomment_id)
+        FROM `usercomment` uc
+        WHERE uc.usercomment_status = 0;
+    </select>
+
+    <!-- 获取所有的未处理的用户留言信息列表 -->
+    <!-- List<UserCommentEntity> findAllUntreatedUserCommentLists(); -->
+    <select id="findAllUntreatedUserCommentLists" resultType="UserCommentEntity">
+        SELECT
+        <include refid="selectUserCommentFields"></include>
+        FROM `usercomment` uc
+        WHERE uc.usercomment_status = 0;
     </select>
 
     <!-- 保存用户留言信息 -->
@@ -34,6 +51,9 @@
             <if test="usercommentContent != null">
                 usercomment_content,
             </if>
+            <if test="usercommentStatus != null">
+                usercomment_status,
+            </if>
             <if test="usercommentCreateTime != null">
                 usercomment_create_time,
             </if>
@@ -51,10 +71,21 @@
             <if test="usercommentContent != null">
                 #{usercommentContent},
             </if>
+            <if test="usercommentStatus != null">
+                #{usercommentStatus},
+            </if>
             <if test="usercommentCreateTime != null">
                 #{usercommentCreateTime},
             </if>
         </trim>
     </insert>
+
+    <!-- 根据 userId 和 qnId 删除用户留言信息 -->
+    <!-- int deleteUserCommentByUserIdAndQNId(String userId, String qnId); -->
+    <delete id="deleteUserCommentByUserIdAndQNId" parameterType="UserCommentEntity">
+        DELETE FROM `usercomment` uc
+        WHERE uc.user_id = #{userId}
+        AND uc.questionnaire_id = #{qnId}
+    </delete>
 
 </mapper>

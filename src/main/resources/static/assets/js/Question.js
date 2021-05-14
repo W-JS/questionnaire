@@ -3,15 +3,10 @@ let pOId = "null";// 前置选项Id
 let question = new Array();// 保存原始问题信息
 let deleteQuestion = new Array(); // 保存删除勾选的问题
 let flag = false; // 默认不改变前置问题和前置选项
-let setRowFlag1 = -1;// 设置当前选项所在行行数
-let setRowFlag2 = -1;// 设置当前选项所在行行数
 let cancelFlag = false;// 是否已经保存和修改
 
 // 当文档结构完全加载完毕再去执行函数中的代码
 $(function () {
-    isURL();
-    HideQuestion();// 隐藏问题
-
     GenerateQNTitle();// 生成问卷标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
@@ -30,47 +25,6 @@ $(function () {
     $("#reset").click(Reset);
     $("#deleteChoose").click(DeleteChoose);// 删除选择的问题
 });
-
-// 判断url是否正确
-function isURL() {
-    // http://localhost:8080/questionnaire/question/Question?current=7
-    // console.log(window.location.protocol);// http:
-    // console.log(window.location.host);// localhost:8080
-    // console.log(window.location.port);// 8080
-    // console.log(window.location.pathname);// /questionnaire/question/Question
-    // console.log(window.location.search);// ?current=7
-    let index = url.lastIndexOf("/");
-    url = url.substring(index + 1, url.length);
-    if (url == "Question" || url == "QuestionByQNId" || url == "AllQuestion" || url == "search") {
-        Question();
-    }
-}
-
-// 显示问题
-function Question() {
-    let flag = $("#hideQuestion").length > 0;
-    if (!flag) {
-        let html =
-            "<li id=\"hideQuestion-li\">\n" +
-            "    <button type=\"button\" style=\"background-color: #005cbf;\" class=\"am-btn am-btn-default am-radius am-btn-xs\">问题\n" +
-            "        <a id=\"hideQuestion\" href=\"javascript: void(0)\" class=\"am-close am-close-spin\" data-am-modal-close=\"\">×</a>\n" +
-            "    </button>\n" +
-            "</li>";
-        $(html).appendTo($('#show-hide'));
-    } else {
-        $("#hideQuestion-li").show();
-    }
-}
-
-// 隐藏问题
-function HideQuestion() {
-    $("#show-hide").on("mouseenter", "#hideQuestion", function () {
-        $(this).click(function () {
-            $("#hideQuestion-li").hide();
-            window.location.href = CONTEXT_PATH + "/questionnaire/addQuestionnaire";
-        })
-    });
-}
 
 // 动态生成前置问题的页数
 function GeneratePQP() {
@@ -366,15 +320,8 @@ function Checkbox() {
         }
         cbs[row + 1].checked = true;
 
-        if (setRowFlag1 != row) {// 选择其他行，设置问题弹出层1；选择同一行，不设置问题弹出层1
-            setRowFlag1 = row;
-            SetQuestion1();// 设置问题弹出层1
-        }
-
-        if (setRowFlag2 != row) {// 选择其他行，设置问题弹出层2；选择同一行，不设置问题弹出层2
-            setRowFlag2 = row;
-            SetQuestion2();// 设置问题弹出层2
-        }
+        SetQuestion1();// 设置问题弹出层1
+        SetQuestion2();// 设置问题弹出层2
 
         let udQId = question[0];
 
@@ -390,9 +337,7 @@ function Checkbox() {
             $("#save").attr("hidden", "hidden");
         }
         if (udQId == "delete") {
-            $("#questionOperation2").text("删除问题");
-
-            $("#delete").removeAttr("hidden");
+            DeleteSubmit();
         }
     }
     setChecked(this);
@@ -812,6 +757,7 @@ function UpdateSubmit() {
 // 删除问题信息
 function DeleteSubmit() {
     let qId = question[1];// 问题编号
+    console.log(qId);
 
     $('#questionModal').modal({
         relatedTarget: this,
@@ -902,7 +848,6 @@ function Reset() {
         GenerateQT();// 动态生成问题类型
         ShowSuccess("新建问题信息重置成功！！！");
     } else if (udQId == "update") {
-        setRowFlag = -1;
 
         $("#qTitle").val(question[2]);// 填充问题标题
         $("#qDescription").val(question[3]);// 填充问题描述
@@ -928,9 +873,6 @@ function Cancel() {
 function AddQuestion() {
     question.length = 0;//将原始选项信息清空
     question.push("add");// 0 向数组存选项操作
-
-    setRowFlag1 = -1;
-    setRowFlag2 = -1;
 
     GeneratePQP();// 动态生成前置问题的页数
     GenerateQT();// 动态生成问题类型
@@ -971,6 +913,4 @@ function UpdateQuestion() {
 function DeleteQuestion() {
     question.length = 0;//将原始问题信息清空
     question.push("delete");// 0 向数组存问题操作
-    $("#pQDelete").val("");// 填充问题描述
-    $("#pODelete").val("");// 填充问题描述
 }

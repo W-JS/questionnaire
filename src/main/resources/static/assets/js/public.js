@@ -1,4 +1,5 @@
 $(function () {
+    GenerateMessageManagement();// 生成消息管理数量
     GenerateOnlineUser();// 生成在线用户信息
 
     $("#search").click(Search);// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
@@ -16,7 +17,7 @@ function GenerateQNTitle() {
         dataType: 'json',
         success: function (result) {
             if (result.state == 1) {
-                $('#qnTitle').attr("href",CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data.questionnaireId);
+                $('#qnTitle').attr("href", CONTEXT_PATH + "/question/QuestionByQNId?qnId=" + result.data.questionnaireId);
                 $('#qnTitle').text(result.data.questionnaireTitle);
             } else {
                 ShowFailure(result.message);
@@ -68,6 +69,27 @@ function GenerateQTitle() {
     });
 }*/
 
+// 生成消息管理数量
+function GenerateMessageManagement() {
+    $.ajax({
+        async: true, //异步请求
+        type: "get",
+        url: CONTEXT_PATH + '/usercomment/getAllUntreatedUserCommentRows',
+        data: {},
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                if (result.data != 0) {
+                    $('#messageManagement').text(result.data);// 设置值
+                    $('#pendingUserMessage').text(result.data);// 设置文本
+                }
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
 // 生成在线用户信息
 function GenerateOnlineUser() {
     $.ajax({
@@ -109,7 +131,6 @@ function Search() {
 
 
 }
-
 
 // 用户操作
 function UserOperating() {
