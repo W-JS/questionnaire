@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/userIndex.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/jedate-6.0.2/skin/jedate.css}">
+        <!--        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/layui/css/layui.css}"/>-->
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/personalCenter.css}">
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/sideMenu.css}">-->
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/rocketTop.css}">-->
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <!--                <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>-->
+        <title>个人中心</title>
+    </head>
+    <body>
+        <!-- 头部 -->
+        <header class="am-topbar admin-header" style="margin-bottom: 20px;">
+            <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+                <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
+
+                    <li class="topFunction" style="margin-right: 640px;">
+                        <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎用户:</p>
+                        <p>
+                            <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
+                                <option id="onlineUser" value="">在线用户名</option>
+                                <option value="personalCenter">个人中心</option>
+                                <option value="exit">退出</option>
+                            </select>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- 中部 -->
+        <div class="am-tabs am-margin" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active">
+                    <a href="#tab1">个人信息</a>
+                </li>
+                <li>
+                    <a href="#tab2">修改密码</a>
+                </li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                    <form class="am-form">
+                        <input type="hidden" id="userId" th:value="${user.userId}">
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">用户名：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" id="userName" th:value="${user.userName}">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">手机号：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" id="userPhone" th:value="${user.userPhone}">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">电子邮箱：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" id="userEmail" th:value="${user.userEmail}">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">性别：</div>
+                            <!-- <div class="am-u-md-4 am-u-end">
+                                 <input type="text" checked="checked">
+                             </div>-->
+
+                            <div class="am-u-md-4 am-u-end" style="text-align: center;">
+                                <label for="boy" class="radio-inline" style="margin-right: 25px;">
+                                    <input type="radio" class="am-input-sm" name="sex" id="boy" value="男" th:checked="${user.userSex} == '男'"> 男
+                                </label>
+                                <label for="girl" class="radio-inline">
+                                    <input type="radio" class="am-input-sm" name="sex" id="girl" value="女" th:checked="${user.userSex} == '女'"> 女
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">生日：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" id="birthday"
+                                       th:value="${#dates.format(user.userBirthday,'yyyy-MM-dd HH:mm:ss')}" readonly="readonly"/>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">注册时间：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" th:value="${#dates.format(user.userCreateTime,'yyyy-MM-dd HH:mm:ss')}"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">个人信息更新时间：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" th:value="${#dates.format(user.userUpdateTime,'yyyy-MM-dd HH:mm:ss')}"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">最后一次登录时间：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="text" class="am-input-sm" th:value="${#dates.format(user.userLastLoginTime,'yyyy-MM-dd HH:mm:ss')}"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top BtnS">
+                            <input type="button" class="am-btn am-btn-primary am-radius Btn" onclick="Update1()" value="修改">
+                            <input type="button" class="am-btn am-btn-success am-radius Btn" onclick="Reset1()" value="重置">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="am-tab-panel am-fade" id="tab2">
+                    <form class="am-form">
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">原密码</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="password" class="am-input-sm" id="oldPassword" value="">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">新密码</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="password" class="am-input-sm" id="newPassword" value="">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">确认密码</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="password" class="am-input-sm" id="confirmPassword" value="">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top BtnS">
+                            <input type="button" class="am-btn am-btn-primary am-radius Btn" onclick="Update2()" value="修改">
+                            <input type="button" class="am-btn am-btn-success am-radius Btn" onclick="Reset2()" value="重置">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 尾部 -->
+        <footer>
+            <div class="foods">
+                <ul>版权所有@2021</ul>
+            </div>
+        </footer>
+
+        <script type="text/javascript" th:src="@{/assets/plugins/jedate-6.0.2/jquery.jedate.js}"></script>
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>-->
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/personalCenter.js}"></script>
+    </body>
+</html>

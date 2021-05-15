@@ -134,6 +134,11 @@ function Search() {
 
 // 用户操作
 function UserOperating() {
+    let url = window.location.pathname;
+    url = url.substring(url.lastIndexOf("/") + 1);
+    if (url == "personalCenter") {
+        $('#userOperating').parent("p").children("div").children("div").children("ul").children("li:first-child").attr("onclick", "Choose()")
+    }
     let userOperating = $.trim($('#userOperating option:selected').val());
     if (userOperating == "personalCenter") {
         PersonalCenter();
@@ -144,7 +149,7 @@ function UserOperating() {
 
 // 个人中心
 function PersonalCenter() {
-    console.log("personalCenter personalCenter personalCenter personalCenter personalCenter");
+    window.location.href = CONTEXT_PATH + "/userIndex/personalCenter";
 }
 
 // 退出登录
@@ -153,3 +158,9 @@ function Exit() {
     window.location.href = CONTEXT_PATH + "/user/logout";
     // window.location.href = CONTEXT_PATH + "/user/logout" + "?userId=" + $.trim($('#onlineUser').val());
 }
+
+// 当前页面为个人中心时，选择用户名，跳转到用户首页
+function Choose() {
+    window.location.href = CONTEXT_PATH + "/";
+}
+

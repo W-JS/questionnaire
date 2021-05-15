@@ -81,4 +81,49 @@
         UPDATE `user` SET user_last_login_time = #{userLastLoginTime} WHERE user_id = #{userId}
     </update>
 
+    <!-- 根据 userId 修改用户信息 -->
+    <!-- int updateUserByUserId(UserEntity u); -->
+    <update id="updateUserByUserId" parameterType="UserEntity">
+        UPDATE `user`
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword},
+            </if>
+            <if test="userSex != null">
+                user_sex = #{userSex},
+            </if>
+            <if test="userBirthday != null">
+                user_birthday = #{userBirthday},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType},
+            </if>
+            <if test="userCreateTime != null">
+                user_create_time = #{userCreateTime},
+            </if>
+            <if test="userUpdateTime != null">
+                user_update_time = #{userUpdateTime},
+            </if>
+            <if test="userDeleteTime != null">
+                user_delete_time = #{userDeleteTime},
+            </if>
+            <if test="userLastLoginTime != null">
+                user_last_login_time = #{userLastLoginTime},
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>

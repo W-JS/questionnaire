@@ -1,0 +1,20 @@
+.BtnS{
+    margin: 25px 0px 0px 260px;
+}
+
+.BtnS .Btn{
+    margin-right: 15px;
+}
+
+.foods {
+    margin-top: 25px;
+    width: 100%;
+    background-color: #5b6e84;
+    height: 43px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    line-height: 43px;
+    color: #fff;
+    overflow: hidden;
+}

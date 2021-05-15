@@ -119,7 +119,9 @@ public class UserServiceImpl implements IUserService {
         Date userLastLoginTime = StringToDate(userLastLoginTimeLog);
 
         UserEntity user = userMapper.findUserByUserId(userId);
-        int flag = userMapper.updateUserLastLoginTime(userLastLoginTime, userId);
+        ;
+//        int flag = userMapper.updateUserLastLoginTime(userLastLoginTime, userId);
+        int flag = userMapper.updateUserByUserId(new UserEntity(userId, userLastLoginTime));
 
         JSONResult jsonResult;
         if (user.getUserStatus() == USERSTATUS_ACTIVATED) {
@@ -205,6 +207,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 判断密码是否正确
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 密码是否正确
+     */
+    @Override
+    public JSONResult getPasswordExists(String userId, String password) {
+        UserEntity user = userMapper.findUserByUserId(userId);
+        boolean flag = isNotEmpty(user);
+        JSONResult jsonResult;
+        if (flag) {
+            if (user.getUserPassword().equals(md5AndSha(password))) {
+                jsonResult = JSONResult.build();
+            } else {
+                jsonResult = JSONResult.build("密码不正确，请重新输入！！！");
+            }
+        } else {
+            jsonResult = JSONResult.build("该用户不存在！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
      * 用户注册
      *
      * @param userId        用户编号
@@ -221,9 +247,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
-        Date userBirthday = StringToDate(birthdayReg);
-        Date userCreateTime = StringToDate(createTimeReg);
-        UserEntity user = new UserEntity(userId, usernameReg, phoneReg, emailReg, md5AndSha(passwordReg), sexReg, userBirthday, statusReg, typeReg, userCreateTime);
+        UserEntity user = new UserEntity(userId, usernameReg, phoneReg, emailReg, md5AndSha(passwordReg), sexReg, StringToDate(birthdayReg), statusReg, typeReg, StringToDate(createTimeReg));
         JSONResult jsonResult;
         String url = "http://localhost:8080/questionnaire/user/activate/" + user.getUserId();
         if (sendActivateHtml(user.getUserEmail(), user.getUserName(), url)) {
@@ -235,6 +259,49 @@ public class UserServiceImpl implements IUserService {
             }
         } else {
             jsonResult = JSONResult.build("该邮箱不存在！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param userId         用户编号
+     * @param userName       用户名
+     * @param userPhone      手机号
+     * @param userEmail      电子邮箱
+     * @param sex            性别
+     * @param birthday       生日
+     * @param userUpdateTime 个人信息修改时间
+     * @return 用户信息是否修改成功
+     */
+    @Override
+    public JSONResult getUpdateSubmit1(String userId, String userName, String userPhone, String userEmail, String sex, String birthday, String userUpdateTime) {
+        JSONResult jsonResult;
+        int flag = userMapper.updateUserByUserId(new UserEntity(userId, userName, userPhone, userEmail, sex, StringToDate(birthday), StringToDate(userUpdateTime)));
+        if (flag == 1) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("个人信息修改失败！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 用户密码是否修改成功
+     */
+    @Override
+    public JSONResult getUpdateSubmit2(String userId, String password) {
+        JSONResult jsonResult;
+        int flag = userMapper.updateUserByUserId(new UserEntity(userId, md5AndSha(password)));
+        if (flag == 1) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("密码修改失败！！！");
         }
         return jsonResult;
     }
@@ -268,7 +335,8 @@ public class UserServiceImpl implements IUserService {
             if (user.getUserStatus() == USERSTATUS_ACTIVATED) {
                 return "userActivated";
             }
-            int count = userMapper.updateUserStatus(USERSTATUS_ACTIVATED, user.getUserId());
+//            int count = userMapper.updateUserStatus(USERSTATUS_ACTIVATED, user.getUserId());
+            int count = userMapper.updateUserByUserId(new UserEntity(user.getUserId(), USERSTATUS_ACTIVATED));
             if (count == 1) {
                 return "userActivateSucceed";
             } else {

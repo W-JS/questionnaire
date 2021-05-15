@@ -192,6 +192,7 @@ function BlurOption1(object) {
 // 鼠标移出触发（用户留言）
 function BlurOption2(object) {
     $(object).parent("div").children("span").text($(object).val().length);
+    SetButtonSelected();// 设置显示的每种题型的按钮是否被选中
 }
 
 // 键盘松开触发（填空题/用户留言）
@@ -350,6 +351,13 @@ function GenerateNumber() {
         html += "                                <button></button>";
     }
     $(html).appendTo($(".sub.s"));
+
+    html = "";
+    // 生成用户留言的个数的按钮
+    for (let i = 0; i < $(".questionnaire .uc").length; i++) {
+        html += "                                <button></button>";
+    }
+    $(html).appendTo($(".sub.uc"));
 }
 
 // 设置显示的问题的问题序号
@@ -384,6 +392,7 @@ function SetButtonShowAndText() {
     let jmLength = $(".questionnaire .jm.Show").length;// 显示的判断题的个数
     let fbLength = $(".questionnaire .fb.Show").length;// 显示的填空题的个数
     let sLength = $(".questionnaire .s.Show").length;// 显示的评分题的个数
+    let ucLength = $(".questionnaire .uc.Show").length;// 显示的用户留言的个数
     let length = 0;// 显示的问题按钮的序号
 
     let i = 0;
@@ -443,6 +452,19 @@ function SetButtonShowAndText() {
     $(".sub.s button").each(function () {
         $(this).hide();
         if (i < sLength) {
+            $(this).text(++length);
+            $(this).attr("style", "background-color: #d8d8d8;");
+            $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
+            $(this).show();
+            i++;
+        }
+    });
+
+    i = 0;
+    // 生成显示的用户留言按钮的序号文本
+    $(".sub.uc button").each(function () {
+        $(this).hide();
+        if (i < ucLength) {
             $(this).text(++length);
             $(this).attr("style", "background-color: #d8d8d8;");
             $(this).attr("title", $("#" + length + "").parent("div").children("div:nth-child(2)").children("span:first-child").text());
@@ -612,11 +634,45 @@ function SetButtonSelected() {
             }
         }
     });
+
+
+    // 点击用户留言，获取已选中的问题序号
+    let ucArray = new Array();
+    $(".uc.Show").each(function () {
+        $(this).parent("div").find(".fillBlank").each(function () {
+            // let value = ucQuestionArray[this.id];
+            // if (value != 0 && value != null && value != "") {
+            //     ucArray.push($(this).parent("div").children("div:first-child").text().replace('、', ''));
+            // }
+            let value = $(this).children("textarea").val();
+            if (value != null && value != "") {
+                ucArray.push($(this).parent("div").children("div:first-child").text().replace('、', ''));
+            }
+        });
+    });
+    // console.log(ucArray);
+    // 根据选中的问题序号，设置对应序号按钮的颜色
+    i = 0;
+    $(".sub.uc button").each(function () {
+        if ($(this).text() != null && $(this).text() != "") {
+            if ($(this).text() == ucArray[i]) {
+                i++;
+                $(this).attr("style", "background-color: #85d1e0;");
+            } else {
+                $(this).attr("style", "background-color: #d8d8d8;");
+            }
+        }
+    });
 }
 
 // 鼠标按下填空题，展开导航侧边栏
 function ShowOnFBh3() {
     $(".sub.fb").parent("li").children("h3").click();
+}
+
+// 鼠标按下填空题，展开导航侧边栏
+function ShowOnUCh3() {
+    $(".sub.uc").parent("li").children("h3").click();
 }
 
 // 用户已填写问卷，动态选中选项和填充文本内容

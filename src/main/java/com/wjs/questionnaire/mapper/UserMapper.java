@@ -72,4 +72,12 @@ public interface UserMapper {
      * @return 用户最后一次登录时间是否修改成功
      */
     int updateUserLastLoginTime(Date userLastLoginTime, String userId);
+
+    /**
+     * 根据 userId 修改用户信息
+     *
+     * @param u 用户信息
+     * @return 用户信息是否修改成功
+     */
+    int updateUserByUserId(UserEntity u);
 }

@@ -64,11 +64,16 @@
                             <h3>评分题</h3>
                             <ul class="sub s"></ul>
                         </li>
+                        <li class="nLi">
+                            <h3>用户留言</h3>
+                            <ul class="sub uc"></ul>
+                        </li>
                     </ul>
                 </div>
 
                 <!-- 内容正文 -->
-                <div class="questionnaire" th:style="${questionnaire.answer == 'true'} ? '':'pointer-events: none;'" th:value="${questionnaire.answer}">
+                <div class="questionnaire" th:style="${questionnaire.answer == 'true'} ? '':'pointer-events: none;'"
+                     th:value="${questionnaire.answer}">
                     <div class="am-form">
                         <div class="am-form-group am-cf">
                             <div class="QN-Title" th:text="${questionnaire.questionnaire.questionnaireTitle}"
@@ -158,9 +163,13 @@
                         </div>
 
                         <div class="am-form-group am-cf">
-                            <div class="userComments"><span class="qTitle">用户留言</span><span>（非必填）</span></div>
+                            <div class="QNumber uc Show">6、</div>
+                            <div class="userComments">
+                                <span class="qTitle">用户留言</span>
+                                <span class="qt">（非必填）</span>
+                            </div>
                             <div class="fillBlank">
-                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption2(this)" maxlength="1000" id="userComments" rows="5"
+                                <textarea onkeyup="KeyUpOption(this)" onblur="BlurOption2(this)" onmousedown="ShowOnUCh3()" maxlength="1000" id="userComments" rows="5"
                                           placeholder="请输入留言内容，我们后续会发送邮件回复！！！"></textarea>
                                 已输入：<span>0</span>/1000
                             </div>

@@ -174,6 +174,19 @@ public class UserController {
     }
 
     /**
+     * 判断密码是否正确
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 密码是否正确
+     */
+    @GetMapping(value = "/passwordExists")
+    @ResponseBody
+    public JSONResult getPasswordExists(String userId, String password) {
+        return userService.getPasswordExists(userId, password);
+    }
+
+    /**
      * 用户注册
      *
      * @param userId        用户编号
@@ -190,9 +203,39 @@ public class UserController {
      */
     @PostMapping(value = "/registerSubmit")
     @ResponseBody
-    public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg,
-                                        String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
+    public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
         return userService.getRegisterSubmit(userId, usernameReg, phoneReg, emailReg, md5AndSha(passwordReg), sexReg, birthdayReg, statusReg, typeReg, createTimeReg);
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param userId         用户编号
+     * @param userName       用户名
+     * @param userPhone      手机号
+     * @param userEmail      电子邮箱
+     * @param sex            性别
+     * @param birthday       生日
+     * @param userUpdateTime 个人信息修改时间
+     * @return 用户信息是否修改成功
+     */
+    @PostMapping(value = "/updateSubmit1")
+    @ResponseBody
+    public JSONResult getUpdateSubmit1(String userId, String userName, String userPhone, String userEmail, String sex, String birthday, String userUpdateTime) {
+        return userService.getUpdateSubmit1(userId, userName, userPhone, userEmail, sex, birthday, userUpdateTime);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 用户密码是否修改成功
+     */
+    @PostMapping(value = "/updateSubmit2")
+    @ResponseBody
+    public JSONResult getUpdateSubmit2(String userId, String password) {
+        return userService.getUpdateSubmit2(userId, password);
     }
 
     /**

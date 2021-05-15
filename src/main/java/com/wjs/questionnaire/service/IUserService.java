@@ -1,8 +1,6 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.util.JSONResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 处理用户信息数据的业务层接口
@@ -73,6 +71,15 @@ public interface IUserService {
     JSONResult getEmailRegExists(String emailReg);
 
     /**
+     * 判断密码是否正确
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 密码是否正确
+     */
+    JSONResult getPasswordExists(String userId, String password);
+
+    /**
      * 用户注册
      *
      * @param userId        用户编号
@@ -88,6 +95,29 @@ public interface IUserService {
      * @return 用户是否注册成功
      */
     JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg);
+
+    /**
+     * 修改用户信息
+     *
+     * @param userId         用户编号
+     * @param userName       用户名
+     * @param userPhone      手机号
+     * @param userEmail      电子邮箱
+     * @param sex            性别
+     * @param birthday       生日
+     * @param userUpdateTime 个人信息修改时间
+     * @return 用户信息是否修改成功
+     */
+    JSONResult getUpdateSubmit1(String userId, String userName, String userPhone, String userEmail, String sex, String birthday, String userUpdateTime);
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId   用户编号
+     * @param password 密码
+     * @return 用户密码是否修改成功
+     */
+    JSONResult getUpdateSubmit2(String userId, String password);
 
     /**
      * 激活账号
@@ -120,6 +150,6 @@ public interface IUserService {
      *
      * @return 在线用户信息
      */
-     JSONResult getOnlineUser();
+    JSONResult getOnlineUser();
 
 }
