@@ -1,6 +1,7 @@
 let userMessageArray = new Array();// 保存原始用户信息
 
 $(function () {
+    GenerateOnlineUser();// 生成在线用户信息
     UserMessage();// 保存原始个人信息
 
     $("#birthday").jeDate({
@@ -15,133 +16,6 @@ $(function () {
     $("#newPassword").blur(NewPassword);
     $("#confirmPassword").blur(ConfirmPassword);
 });
-
-// 动态生成前置问题的页数
-/*
-function GeneratePQP() {
-    $.ajax({
-        async: true, // 异步请求
-        type: "get",
-        url: CONTEXT_PATH + '/question/getNoPrependedQuestionRowsByQnId',
-        data: {},
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                $('#pQP option').remove();
-                let html = "";
-                html += "<option value=\"null\" selected>&nbsp;</option>";
-                for (let i = 1; i <= result.data.total; i++) {
-                    html += "<option value=\"" + i + "\">第&nbsp;" + i + "&nbsp;页</option>";
-                }
-                $(html).appendTo($('#pQP'));
-            } else {
-                ShowFailure(result.message);
-            }
-        }
-    });
-}*/
-
-// 提交问题信息
-/*function saveSubmit() {
-    let qTitle = $.trim($("#qTitle").val());
-    let qDescription = $.trim($("#qDescription").val());
-    let qStatus = $.trim($("input[name='qStatus']:checked").val());
-    let pQVal = $.trim($('#pQ option:selected').val());
-    let pOVal = $.trim($('#pO option:selected').val());
-    let qt = $.trim($('#qt option:selected').val());
-    let oContent = "";
-    let flag = true;// 是否直接生成选项，默认是
-
-    if (qt == "singleChoice" || qt == "multipleChoice" || qt == "judgment") {
-        // 单项选择题、多项选择题和判断题，跳转到新建选项页面
-        flag = false;
-    } else if (qt == "fillBlank") {
-        // 填空题 不跳转，重置问题信息
-        oContent = "填空题";
-    } else if (qt == "score") {
-        // 评分题 不跳转，重置问题信息
-        oContent = "评分题";
-    }
-
-    $.ajax({
-        async: true, // 异步请求
-        type: "post",
-        url: CONTEXT_PATH + '/question/questionSubmit',
-        data: {
-            'qTitle': qTitle,
-            'qDescription': qDescription,
-            'qStatus': qStatus,
-            'pQId': pQVal,
-            'pOId': pOVal,
-            'qtId': qt,
-            'qCreateTime': getNowFormatDate()
-        },
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                if (flag) {
-                    $.ajax({
-                        async: true, // 异步请求
-                        type: "post",
-                        url: CONTEXT_PATH + '/option/optionSubmit',
-                        data: {
-                            'oContent': oContent,
-                            'oCreateTime': getNowFormatDate()
-                        },
-                        dataType: 'json',
-                        success: function (result) {
-                            if (result.state == 1) {
-                                ShowSuccess("问题：" + qTitle + " 保存成功！！！");
-                                setTimeout(function () {
-                                    window.location.href = window.location.pathname + window.location.search;
-                                }, 1000);
-                            } else {
-                                ShowFailure(result.message);
-                            }
-                        }
-                    });
-                } else {
-                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
-                    setTimeout(function () {
-                        window.location.href = window.location.pathname + window.location.search;
-                    }, 1000);
-                }
-            } else {
-                ShowFailure(result.message);
-            }
-        }
-    });
-
-    /!*$.ajax({
-        async: true, // 异步请求
-        type: "post",
-        url: CONTEXT_PATH + '/question/questionSubmit',
-        data: {
-            'qTitle': qTitle,
-            'qDescription': qDescription,
-            'qStatus': qStatus,
-            'pQId': pQVal,
-            'pOId': pOVal,
-            'qtId': qt,
-            'qCreateTime': getNowFormatDate()
-        },
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                if (qt == "singleChoice" || qt == "multipleChoice") {
-                    window.location.href = CONTEXT_PATH + "/option/addOption";
-                } else {
-                    ShowSuccess("问题：" + qTitle + " 保存成功！！！");
-                    setTimeout(function () {
-                        window.location.href = CONTEXT_PATH + "/question/addQuestion";
-                    }, 1000);
-                }
-            } else {
-                ShowFailure(result.message);
-            }
-        }
-    });*!/
-}*/
 
 // 保存原始个人信息
 function UserMessage() {

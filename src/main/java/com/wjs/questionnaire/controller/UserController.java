@@ -204,7 +204,7 @@ public class UserController {
     @PostMapping(value = "/registerSubmit")
     @ResponseBody
     public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
-        return userService.getRegisterSubmit(userId, usernameReg, phoneReg, emailReg, md5AndSha(passwordReg), sexReg, birthdayReg, statusReg, typeReg, createTimeReg);
+        return userService.getRegisterSubmit(userId, usernameReg, phoneReg, emailReg, passwordReg, sexReg, birthdayReg, statusReg, typeReg, createTimeReg);
     }
 
     /**
@@ -272,5 +272,12 @@ public class UserController {
     @ResponseBody
     public JSONResult getOnlineUser() {
         return userService.getOnlineUser();
+    }
+
+
+    @GetMapping(value = "/test")
+    @ResponseBody
+    public JSONResult test() {
+        return JSONResult.build(md5AndSha("wjs123"));
     }
 }

@@ -3,6 +3,9 @@ let deleteQuestionnaire = new Array(); // 保存删除勾选的问题
 let cancelFlag = false;// 是否已经保存和修改
 
 $(function () {
+    GenerateMessageManagement();// 生成消息管理数量
+    GenerateOnlineUser();// 生成在线用户信息
+
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框
 
     $("#deleteChoose").click(DeleteChoose);// 删除选择的问卷

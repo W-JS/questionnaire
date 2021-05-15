@@ -11,6 +11,8 @@ let sQuestionArray2 = new Array();// 保存用户选中的 评分题 的选项�
 let showCount = 0;// 保存当前显示的问题的个数
 
 $(function () {
+    GenerateOnlineUser();// 生成在线用户信息
+
     if ($(".questionnaire").attr("value") == "false") {
         selectedOptionsAndFillContent();// 用户已填写问卷，动态选中选项和填充文本内容
     } else {
@@ -290,7 +292,7 @@ function Save() {
     $.ajax({
         async: true, // 异步请求
         type: "post",
-        url: CONTEXT_PATH + '/saveSubmit',
+        url: CONTEXT_PATH + '/userIndex/saveSubmit',
         data: {
             'userId': $('#onlineUser').val(),
             'qnId': $(".questionnaire .QN-Title").attr("value"),
@@ -693,7 +695,7 @@ function selectedOptionsAndFillContent() {
     $.ajax({
         async: true, // 异步请求
         type: "get",
-        url: CONTEXT_PATH + '/getAllAnswerByUserIdAndQNId',
+        url: CONTEXT_PATH + '/userIndex/getAllAnswerByUserIdAndQNId',
         data: {
             'userId': userOperating,
             'qnId': qnId,

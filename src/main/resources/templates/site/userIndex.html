@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/userIndex.ico}">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
         <!--        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/layui/css/layui.css}"/>-->
         <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
@@ -55,7 +55,7 @@
                     <div>未填写的问卷</div>
                 </div>
                 <div class="qn" th:each="map:${notCompleteQuestionnaires}">
-                    <a th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
+                    <a th:href="@{/userIndex/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
                        th:text="${map.questionnaire.questionnaireTitle}"
                        th:title="${map.questionnaire.questionnaireTitle}" target="_blank">未填写的问卷</a>
                 </div>
@@ -66,7 +66,7 @@
                     <div>已填写的问卷</div>
                 </div>
                 <div class="qn" th:each="map:${completeQuestionnaires}">
-                    <a th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
+                    <a th:href="@{/userIndex/questionnaire(qnId=${map.questionnaire.questionnaireId})}"
                        th:text="${map.questionnaire.questionnaireTitle}"
                        th:title="${map.questionnaire.questionnaireTitle}" target="_blank">已填写的问卷</a>
 

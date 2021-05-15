@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/css/analysis.css}">
+        <title>问卷数据分析</title>
+    </head>
+    <body>
+        <div class="analysis">
+            <div id="analysis" style="width: 750px;height: 500px;float: left;"></div>
+            <div id="analysis2" style="width: 750px;height: 500px;float: right;"></div>
+        </div>
+        <div>
+            <div style="width: 750px;height: 50px;float: left;text-align: center;">问卷填写情况</div>
+            <div style="width: 750px;height: 50px;float: right;text-align: center;">已填问卷满意情况</div>
+        </div>
+
+        <div class="windowClose">
+            <button type="button" class="btn btn-secondary" onclick="windowClose();">关闭</button>
+        </div>
+
+        <!-- 尾部 -->
+        <div class="foods">
+            <ul>版权所有@2021</ul>
+        </div>
+
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/amcharts.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/pie.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/analysis.js}"></script>
+    </body>
+</html>

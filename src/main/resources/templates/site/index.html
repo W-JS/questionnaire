@@ -243,11 +243,13 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                   th:href="@{/questionnaire(qnId=${map.questionnaire.questionnaireId})}" target="_blank" title="查看问卷">
+                                                   th:href="@{/userIndex/questionnaire(qnId=${map.questionnaire.questionnaireId})}" target="_blank"
+                                                   title="查看问卷">
                                                     <span class="am-icon-eye"></span>
                                                 </a>
                                                 <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                   th:href="@{/dataAnalysis(qnId=${map.questionnaire.questionnaireId})}" target="_blank" title="分析问卷">
+                                                   th:href="@{/dataAnalysis/dataAnalysisQN(qnId=${map.questionnaire.questionnaireId})}" target="_blank"
+                                                   title="分析问卷">
                                                     <span class="am-icon-pie-chart"></span>
                                                 </a>
                                                 <button class="test1 am-btn am-btn-default am-btn-xs am-text-secondary am-round"
@@ -338,15 +340,15 @@
         <!--        <script src="assets/js/polyfill/respond.min.js"></script>-->
         <!--        <script src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.legacy.js"></script>-->
         <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
-<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/amcharts.js}"></script>-->
-<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/pie.js}"></script>-->
-<!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/amcharts.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/pie.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>-->
         <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
         <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
-<!--        <script type="text/javascript" th:src="@{/assets/js/analysis.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/js/analysis.js}"></script>-->
     </body>
 </html>

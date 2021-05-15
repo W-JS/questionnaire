@@ -1,6 +1,5 @@
 package com.wjs.questionnaire.controller;
 
-import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.service.IQuestionnaireService;
 import com.wjs.questionnaire.service.IUserService;
 import com.wjs.questionnaire.util.JSONResult;
@@ -14,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-import static com.wjs.questionnaire.util.QuestionnaireConstant.*;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQID;
+import static com.wjs.questionnaire.util.QuestionnaireConstant.OnlineQNID;
 
 /**
  * 处理问卷相关请求的控制器类
@@ -45,23 +45,11 @@ public class QuestionnaireController {
      */
     @GetMapping(value = "/index")
     public String jumpIndexPage(Model model, PageUtil pageUtil) {
-        System.out.println();
-        UserEntity user = (UserEntity) userService.getOnlineUser().getData();
-        if (user.getUserType() == 0) {
-            // 普通用户
-            String OnlineUserID = (String) redisTemplate.opsForValue().get(ONLINEUSERID);
-            List<Map<String, Object>> completeQuestionnaires = questionnaireService.getCompleteQuestionnaireByUserId(OnlineUserID);
-            List<Map<String, Object>> notCompleteQuestionnaires = questionnaireService.getNotCompleteQuestionnaireByUserId(OnlineUserID);
-            model.addAttribute("completeQuestionnaires", completeQuestionnaires);
-            model.addAttribute("notCompleteQuestionnaires", notCompleteQuestionnaires);
-            return "/site/userIndex";
-        } else {
-            // 管理员
-            PageUtil page = questionnaireService.setQuestionnaireListPage(pageUtil);
-            List<Map<String, Object>> questionnaires = questionnaireService.getQuestionnaireList(page.getOffset(), page.getLimit());
-            model.addAttribute("questionnaires", questionnaires);
-            return "/site/index";
-        }
+        // 管理员
+        PageUtil page = questionnaireService.setQuestionnaireListPage(pageUtil);
+        List<Map<String, Object>> questionnaires = questionnaireService.getQuestionnaireList(page.getOffset(), page.getLimit());
+        model.addAttribute("questionnaires", questionnaires);
+        return "/site/index";
     }
 
     /**

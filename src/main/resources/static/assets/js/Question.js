@@ -7,6 +7,8 @@ let cancelFlag = false;// 是否已经保存和修改
 
 // 当文档结构完全加载完毕再去执行函数中的代码
 $(function () {
+    GenerateMessageManagement();// 生成消息管理数量
+    GenerateOnlineUser();// 生成在线用户信息
     GenerateQNTitle();// 生成问卷标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框

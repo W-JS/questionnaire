@@ -75,22 +75,6 @@ public interface IQuestionnaireService {
     JSONResult getQuestionnaireAndQuestionByQnIdAndQId(String qnId, String qId);
 
     /**
-     * 获取当前登录用户已填写的问卷
-     *
-     * @param userId 用户编号
-     * @return 已填写的问卷列表
-     */
-    List<Map<String, Object>> getCompleteQuestionnaireByUserId(String userId);
-
-    /**
-     * 获取当前登录用户未填写的问卷
-     *
-     * @param userId 用户编号
-     * @return 未填写的问卷列表
-     */
-    List<Map<String, Object>> getNotCompleteQuestionnaireByUserId(String userId);
-
-    /**
      * 保存问卷信息
      *
      * @param qnTitle       问卷标题

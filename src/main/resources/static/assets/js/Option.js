@@ -6,6 +6,8 @@ let cancelFlag = false;// 是否已经保存和修改
 let rows = $("#items").find("tr").length; //获取表格的总行数 tr
 
 $(function () {
+    GenerateMessageManagement();// 生成消息管理数量
+    GenerateOnlineUser();// 生成在线用户信息
     GenerateQNTitleAndQTitle();// 生成问卷标题和问题标题
 
     $("#items tr td").click(Checkbox);// 点击td元素选中复选框

@@ -1,3 +1,7 @@
+$(function () {
+    GenerateOnlineUser();// 生成在线用户信息
+});
+
 // 点击删除问卷按钮
 function DeleteQuestionnaire(object) {
     $('#questionnaireModal').modal({

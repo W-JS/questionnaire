@@ -51,6 +51,16 @@
         ORDER BY a.answer_create_time ASC;
     </select>
 
+    <!-- 获取填写该问卷的人数 -->
+    <!-- List<AnswerEntity> findWriteQuestionnaireNumberByQNId(String qnId); -->
+    <select id="findWriteQuestionnaireNumberByQNId" resultType="AnswerEntity">
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.questionnaire_id = #{qnId}
+        GROUP BY a.user_id;
+    </select>
+
     <!-- 保存回答信息 -->
     <!-- int insertAnswer(AnswerEntity a); -->
     <insert id="insertAnswer" parameterType="AnswerEntity">

@@ -89,7 +89,6 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public JSONResult getPasswordLogExists(String userId, String passwordLog) {
-
         UserEntity user = userMapper.findUserByUserId(userId);
         boolean flag = isNotEmpty(user);
         JSONResult jsonResult;
@@ -103,7 +102,6 @@ public class UserServiceImpl implements IUserService {
             jsonResult = JSONResult.build("当前注册用户不存在！！！");
         }
         return jsonResult;
-
     }
 
     /**

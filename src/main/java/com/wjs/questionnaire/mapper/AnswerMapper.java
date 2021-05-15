@@ -27,6 +27,14 @@ public interface AnswerMapper {
     List<AnswerEntity> findAllAnswerByUserIdAndQNId(String userId, String qnId);
 
     /**
+     * 获取填写该问卷的用户列表
+     *
+     * @param qnId 问卷编号
+     * @return 填写该问卷的用户列表
+     */
+    List<AnswerEntity> findWriteQuestionnaireNumberByQNId(String qnId);
+
+    /**
      * 保存回答信息
      *
      * @param a 回答信息

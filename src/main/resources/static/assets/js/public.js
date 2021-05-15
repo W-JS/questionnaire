@@ -1,7 +1,4 @@
 $(function () {
-    GenerateMessageManagement();// 生成消息管理数量
-    GenerateOnlineUser();// 生成在线用户信息
-
     $("#search").click(Search);// 根据不同的搜索方式搜索不同的内容，问卷/问题/选项
 
     $("#userOperating").change(UserOperating);// 用户操作
@@ -48,26 +45,6 @@ function GenerateQNTitleAndQTitle() {
         }
     });
 }
-
-/*
-// 生成问题标题
-function GenerateQTitle() {
-    $.ajax({
-        async: true, // 异步请求
-        type: "get",
-        url: CONTEXT_PATH + '/question/getQuestion',
-        data: {},
-        dataType: 'json',
-        success: function (result) {
-            if (result.state == 1) {
-                let html = "<a href=\"" + CONTEXT_PATH + "/option/OptionByQId?qId=" + result.data[0].question.questionId + "\" style=\"text-decoration: none;\">" + result.data[0].question.questionTitle + "</a>";
-                $(html).appendTo($('#top .qTitle'));
-            } else {
-                ShowFailure(result.message);
-            }
-        }
-    });
-}*/
 
 // 生成消息管理数量
 function GenerateMessageManagement() {
@@ -161,6 +138,18 @@ function Exit() {
 
 // 当前页面为个人中心时，选择用户名，跳转到用户首页
 function Choose() {
-    window.location.href = CONTEXT_PATH + "/";
+    window.location.href = CONTEXT_PATH + "/userIndex/userIndex";
+}
+
+// 根据url中的参数名获取url中的参数值
+function GetQueryString(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+    let context = "";
+    if (r != null)
+        context = r[2];
+    reg = null;
+    r = null;
+    return context == null || context == "" || context == "undefined" ? "" : context;
 }
 
