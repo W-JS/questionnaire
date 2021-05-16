@@ -27,7 +27,8 @@
                         </button>
                         <ul class="am-dropdown-content">
                             <li class="am-dropdown-header">所有消息都在这里</li>
-                            <li><a href="#">待处理用户留言信息 <span class="am-badge am-badge-danger am-round" id="pendingUserMessage"></span></a></li>
+                            <li><a th:href="@{/usercomment/index}">待处理用户留言信息 <span class="am-badge am-badge-danger am-round"
+                                                                                   id="pendingUserMessage"></span></a></li>
                         </ul>
                     </li>
 
@@ -248,7 +249,8 @@
                                                     <span class="am-icon-eye"></span>
                                                 </a>
                                                 <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                                   th:href="@{/dataAnalysis/dataAnalysisQN(qnId=${map.questionnaire.questionnaireId})}" target="_blank"
+                                                   th:href="@{/dataAnalysis/dataAnalysisQN(qnId=${map.questionnaire.questionnaireId})}"
+                                                   target="_blank"
                                                    title="分析问卷">
                                                     <span class="am-icon-pie-chart"></span>
                                                 </a>

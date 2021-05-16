@@ -36,7 +36,6 @@ public class UserIndexServiceImpl implements IUserIndexService {
     private RedisTemplate redisTemplate;
 
 
-
     /**
      * 获取当前登录用户已填写的问卷
      *

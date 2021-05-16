@@ -15,6 +15,7 @@ $(function () {
 
     if ($(".questionnaire").attr("value") == "false") {
         selectedOptionsAndFillContent();// 用户已填写问卷，动态选中选项和填充文本内容
+        $("#save").attr("disabled","disabled");
     } else {
         // 生成评分组件
         layui.use('rate', function () {
@@ -56,6 +57,7 @@ $(function () {
     SetShowNumber();// 设置显示的问题的问题序号
 
     $("#save").click(Save);
+    $("#close").click(windowClose);
 
     // 点击题型，显示该题型的问题序号按钮
     $(".question .nLi h3").click(function () {
@@ -781,4 +783,10 @@ function selectedOptionsAndFillContent() {
             }
         }
     });
+}
+
+// 关闭当前页面
+function windowClose() {
+    window.close();
+    window.location.href = CONTEXT_PATH + "/userIndex/userIndex";
 }

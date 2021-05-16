@@ -40,7 +40,7 @@ public class OptionController {
         List<Map<String, Object>> options = optionService.getOptionListByQId(page.getOffset(), page.getLimit());
 
         model.addAttribute("options", options);
-        return "/site/Option";
+        return "/site/option";
     }
 
     /**
@@ -55,7 +55,7 @@ public class OptionController {
         List<Map<String, Object>> options = optionService.getOptionListByQId(page.getOffset(), page.getLimit());
 
         model.addAttribute("options", options);
-        return "/site/Option";
+        return "/site/option";
     }
 
     /**
@@ -69,7 +69,7 @@ public class OptionController {
         List<Map<String, Object>> options = optionService.getAllOptionList(page.getOffset(), page.getLimit());
 
         model.addAttribute("options", options);
-        return "/site/Option";
+        return "/site/option";
     }
 
     /**
@@ -84,7 +84,7 @@ public class OptionController {
         PageUtil page = optionService.setLikeOptionListPage(pageUtil, searchWay, searchContent);
         List<Map<String, Object>> options = optionService.getLikeOptionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
         model.addAttribute("options", options);
-        return "/site/Option";
+        return "/site/option";
     }
 
     /**

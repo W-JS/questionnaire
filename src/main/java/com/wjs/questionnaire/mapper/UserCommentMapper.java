@@ -9,6 +9,14 @@ import java.util.List;
 public interface UserCommentMapper {
 
     /**
+     * 根据 ucId 查询留言信息
+     *
+     * @param ucId 用户编号
+     * @return 用户留言信息
+     */
+    UserCommentEntity findUserCommentByUCId(String ucId);
+
+    /**
      * 根据 userId 和 qnId 查询用户留言信息
      *
      * @param userId 用户编号
@@ -16,6 +24,14 @@ public interface UserCommentMapper {
      * @return 用户留言信息
      */
     UserCommentEntity findUserCommentByUserIdAndQNId(String userId, String qnId);
+
+    /**
+     * 获取当前管理员用户已处理的用户留言信息列表
+     *
+     * @param userId 用户编号
+     * @return 已处理的用户留言信息列表
+     */
+    List<UserCommentEntity> findTreatedUserCommentLists(String userId);
 
     /**
      * 获取所有的未处理的用户留言信息的行数
@@ -47,4 +63,12 @@ public interface UserCommentMapper {
      * @return 用户留言信息是否删除成功
      */
     int deleteUserCommentByUserIdAndQNId(String userId, String qnId);
+
+    /**
+     * 根据 ucId 修改用户留言信息
+     *
+     * @param uc 用户留言信息
+     * @return 用户信息是否修改成功
+     */
+    int updateUserCommentByUCId(UserCommentEntity uc);
 }

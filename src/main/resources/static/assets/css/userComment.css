@@ -1,11 +1,11 @@
-.userIndex {
+.userComment {
     width: 1400px;
     height: auto;
     text-align: center;
     margin: auto;
 }
 
-.userIndex .left {
+.userComment .left {
     float: left;
     width: 49%;
     height: 90%;
@@ -13,7 +13,7 @@
     border-radius: 10px;
 }
 
-.userIndex .right {
+.userComment .right {
     float: right;
     width: 49%;
     height: 90%;
@@ -21,13 +21,13 @@
     border-radius: 10px;
 }
 
-.userIndex .title {
+.userComment .title {
     font-family: cursive;
     font-size: 30px;
     color: black;
 }
 
-.userIndex .left .qn {
+.userComment .left .uc {
     font-family: cursive;
     font-size: 20px;
     margin: 5px 0px 0px 0px;
@@ -37,7 +37,7 @@
     white-space: nowrap;
 }
 
-.userIndex .right .qn {
+.userComment .right .uc {
     font-family: cursive;
     font-size: 20px;
     margin: 5px 0px 0px 0px;
@@ -47,30 +47,32 @@
     white-space: nowrap;
 }
 
-.userIndex .left .qn a {
+.userComment .left .uc a {
     color: red;
     transition: 0.5s;
     text-decoration: none;
 }
 
-.userIndex .right .qn a {
+.userComment .right .uc a {
     color: blue;
     transition: 0.5s;
     text-decoration: none;
 }
 
-.userIndex .qn a:hover {
+.userComment .uc a:hover {
     color: black;
 }
 
-.userIndex .right .qn a:last-child {
-    color: red;
-    float: right;
-    margin-right: 10px;
+.windowClose {
+    width: 1545px;
+    height: auto;
+    text-align: center;
+    margin: 25px 0px 0px 0px;
+    float: left;
 }
 
-.userIndex .right .qn a:hover {
-    color: black;
+.windowClose button {
+    font-size: 15px;
 }
 
 .foods {

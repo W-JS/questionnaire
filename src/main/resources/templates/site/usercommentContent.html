@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+                <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/layui/css/layui.css}"/>
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/usercommentContent.css}">
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/sideMenu.css}">-->
+        <!--        <link rel="stylesheet" th:href="@{/assets/css/rocketTop.css}">-->
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <!--                <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>-->
+        <title>用户留言内容</title>
+    </head>
+    <body>
+        <!-- 头部 -->
+        <header class="am-topbar admin-header" style="margin-bottom: 20px;">
+            <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+                <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
+
+                    <li class="topFunction" style="margin-right: 640px;">
+                        <p class="am-icon-dashboard" style="color:#0071ff;margin-top: -2px;font-size: 20px;margin-right: 10px;">欢迎系统管理员:</p>
+                        <p>
+                            <select id="userOperating" data-am-selected="{btnWidth: 130, btnSize: 'sm', btnStyle: 'default'}">
+                                <option id="onlineUser" value="">在线用户名</option>
+                                <option value="personalCenter">个人中心</option>
+                                <option value="exit">退出</option>
+                            </select>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- 中部 -->
+        <div class="usercommentContent">
+            <div class="title">用户留言内容</div>
+            <div class="content">
+                <textarea id="ucId" class="form-control" th:value="${userComment.usercommentId}" th:text="${userComment.usercommentContent}"
+                          disabled></textarea>
+            </div>
+
+            <div class="title" style="margin-top: 20px;">回复</div>
+            <div class="content">
+                <textarea id="answer" class="form-control" rows="2" placeholder="请输入回复"
+                          th:value="${userComment.usercommentStatus == 0 ? 'true':'false'}"
+                          th:text="${userComment.usercommentStatus == 0 ? '':userComment.answerContent}"></textarea>
+            </div>
+        </div>
+
+        <div class="windowClose">
+            <button type="button" class="btn btn-primary" id="answerBtn" onclick="Answer();" style="margin-right: 20px;">回复</button>
+            <button type="button" class="btn btn-secondary" onclick="windowClose();">关闭</button>
+        </div>
+
+        <!-- 尾部 -->
+        <footer>
+            <div class="foods">
+                <ul>版权所有@2021</ul>
+            </div>
+        </footer>
+
+
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+                <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/usercommentContent.js}"></script>
+    </body>
+</html>

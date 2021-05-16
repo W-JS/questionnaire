@@ -41,7 +41,7 @@ public class QuestionController {
         List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
 
         model.addAttribute("questions", questions);
-        return "/site/Question";
+        return "/site/question";
     }
 
     /**
@@ -55,7 +55,7 @@ public class QuestionController {
         List<Map<String, Object>> questions = questionService.getQuestionListByQNId(page.getOffset(), page.getLimit());
 
         model.addAttribute("questions", questions);
-        return "/site/Question";
+        return "/site/question";
     }
 
     /**
@@ -69,7 +69,7 @@ public class QuestionController {
         List<Map<String, Object>> questions = questionService.getAllQuestionList(page.getOffset(), page.getLimit());
 
         model.addAttribute("questions", questions);
-        return "/site/Question";
+        return "/site/question";
     }
 
     /**
@@ -84,7 +84,7 @@ public class QuestionController {
         PageUtil page = questionService.setLikeQuestionListPage(pageUtil, searchWay, searchContent);
         List<Map<String, Object>> questions = questionService.getLikeQuestionList(page.getOffset(), page.getLimit(), searchWay, searchContent);
         model.addAttribute("questions", questions);
-        return "/site/Question";
+        return "/site/question";
     }
 
     /**
