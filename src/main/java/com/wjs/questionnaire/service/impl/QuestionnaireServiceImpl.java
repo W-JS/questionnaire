@@ -83,9 +83,7 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
     @Override
     public List<Map<String, Object>> getQuestionnaireList(int offset, int limit) {
         List<Map<String, Object>> list = new ArrayList<>();
-
         List<QuestionnaireEntity> questionnaireList = questionnaireMapper.findAllQuestionnairePage(offset, limit);
-
         if (questionnaireList != null) {
             for (QuestionnaireEntity questionnaire : questionnaireList) {
                 Map<String, Object> map = new HashMap<>();

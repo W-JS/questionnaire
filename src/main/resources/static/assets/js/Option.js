@@ -245,12 +245,10 @@ function UpdateSubmit() {
 
 // 提交选项信息
 function DeleteSubmit() {
-    let oId = option[1];// 信息编号
-
     $('#optionModal').modal({
         relatedTarget: this,
         onConfirm: function (options) {
-            console.log(oId);
+            let oId = option[1];// 信息编号
             $.ajax({
                 async: true, // 异步请求
                 type: "post",
@@ -279,6 +277,7 @@ function DeleteSubmit() {
 
 // 删除选择的选项
 function DeleteChoose() {
+    deleteOption.length = 0;
     let cbs = $("input[name='cb[]']");//获取所有复选框对象
     for (let i = 1; i < cbs.length; i++) {
         if (cbs[i].checked) {

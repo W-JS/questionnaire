@@ -27,14 +27,16 @@ public class IndexController {
     @GetMapping(value = "/")
     public String root() {
         UserEntity user = (UserEntity) userService.getOnlineUser().getData();
-        if (user.getUserType() == 0) {
-            // 普通用户
-            return "forward:/userIndex/userIndex";
+        if (user == null) {
+            return "redirect:/user/login";// 重定向：修改URL地址
         } else {
-            // 管理员
-//        return "forward:/user/login";// 转发：不修改URL地址
-//        return "redirect:/user/login";// 重定向：修改URL地址
-            return "forward:/questionnaire/index";
+            if (user.getUserType() == 0) {
+                // 普通用户
+                return "forward:/userIndex/userIndex";
+            } else {
+                // 管理员
+                return "forward:/questionnaire/index";// 转发：不修改URL地址
+            }
         }
     }
 }

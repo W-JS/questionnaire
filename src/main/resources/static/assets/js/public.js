@@ -153,3 +153,12 @@ function GetQueryString(name) {
     return context == null || context == "" || context == "undefined" ? "" : context;
 }
 
+// 后台new Date();传到前台：2021-05-16T06:55:30.000+00:00，转化后为：YYYY-MM-DD hh:mm:ss
+function renderTime(d) {
+    if (d == null) {
+        return "";
+    }
+    let date = new Date(d).toJSON();
+    return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+}
+

@@ -758,12 +758,10 @@ function UpdateSubmit() {
 
 // 删除问题信息
 function DeleteSubmit() {
-    let qId = question[1];// 问题编号
-    console.log(qId);
-
     $('#questionModal').modal({
         relatedTarget: this,
         onConfirm: function (options) {
+            let qId = question[1];// 问题编号
             $.ajax({
                 async: true, // 异步请求
                 type: "post",
@@ -793,6 +791,7 @@ function DeleteSubmit() {
 
 // 删除选择的问题
 function DeleteChoose() {
+    deleteQuestion.length = 0;
     let cbs = $("input[name='cb[]']");//获取所有复选框对象
     for (let i = 1; i < cbs.length; i++) {
         if (cbs[i].checked) {

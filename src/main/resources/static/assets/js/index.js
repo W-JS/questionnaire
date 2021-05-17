@@ -316,11 +316,10 @@ function UpdateSubmit() {
 
 // 提交问卷信息
 function DeleteSubmit() {
-    let qnId = questionnaire[1];// 问卷编号
-
     $('#questionnaireModal').modal({
         relatedTarget: this,
         onConfirm: function (options) {
+            let qnId = questionnaire[1];// 问卷编号
             $.ajax({
                 async: true, // 异步请求
                 type: "post",
@@ -349,6 +348,7 @@ function DeleteSubmit() {
 
 // 删除选择的问题
 function DeleteChoose() {
+    deleteQuestionnaire.length = 0;
     let cbs = $("input[name='cb[]']");//获取所有复选框对象
     for (let i = 1; i < cbs.length; i++) {
         if (cbs[i].checked) {

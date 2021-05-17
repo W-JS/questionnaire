@@ -76,15 +76,15 @@
             <sidebar class="nav-navicon admin-main admin-sidebar" th:fragment="sidebar">
                 <!--                <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> 欢迎系统管理员：清风抚雪</div>-->
                 <div class="sideMenu">
-                    <h3 class="am-icon-book on"><a href="#">调查问卷管理</a></h3>
+                    <h3 class="am-icon-book on"><a href="#"> 调查问卷管理</a></h3>
                     <ul>
                         <li><a th:href="@{/questionnaire/index}">问卷</a></li>
                         <li><a th:href="@{/question/AllQuestion}">问题</a></li>
                         <li><a th:href="@{/option/AllOption}">选项</a></li>
                     </ul>
-                    <h3 class="am-icon-user"><a href="#">用户管理</a></h3>
+                    <h3 class="am-icon-user"><a href="#"> 用户管理</a></h3>
                     <ul>
-                        <li>用户</li>
+                        <li><a th:href="@{/user/AllUser}">用户</a></li>
                     </ul>
                     <!--<h3 class="am-icon-volume-up"><a href="#">信息通知</a></h3>
                     <ul>
@@ -108,7 +108,7 @@
                         delayTime: 300, //效果时间
                         triggerTime: 150, //鼠标延迟触发时间（默认150）
                         defaultPlay: true, //默认是否执行效果（默认true）
-                        returnDefault: true //鼠标从.sideMen移走后返回默认状态（默认false）
+                        // returnDefault: true //鼠标从.sideMen移走后返回默认状态（默认false）
                     });
                 </script>
 

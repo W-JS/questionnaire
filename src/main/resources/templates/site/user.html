@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/jedate-6.0.2/skin/jedate.css}">
+        <link rel="stylesheet" href="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/css/amazeui.min.css"/>
+        <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/user.css}">
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/app.js}"></script>
+        <title>调查用户后台管理-用户</title>
+    </head>
+    <body>
+        <!-- 头部 -->
+        <header th:replace="/site/index::header"></header>
+
+        <!-- 中部 -->
+        <div class="am-cf admin-main">
+            <!-- 左侧边栏 -->
+            <sidebar th:replace="/site/index::sidebar"></sidebar>
+            <script type="text/javascript">
+                $(".sideMenu .am-icon-book").removeClass("on");
+                $(".sideMenu .am-icon-book").next().attr("style", "display: none;");
+                $(".sideMenu .am-icon-user").addClass("on");
+                $(".sideMenu .am-icon-user").next().attr("style", "display: block;");
+            </script>
+
+            <!-- 内容 -->
+            <div class="admin-content">
+                <!-- 内容头部 -->
+                <contentHeader th:replace="/site/index::contentHeader"></contentHeader>
+
+                <!-- 用户弹出层 -->
+                <div class="am-popup am-popup-inner" id="userPopups">
+                    <div class="am-popup-hd">
+                        <h4 class="am-popup-title" id="userOperation">修改用户</h4>
+                        <span data-am-modal-close class="am-close">&times;</span>
+                    </div>
+                    <div class="am-popup-bd">
+                        <div class="am-form User">
+                            <div class="am-form-group am-cf">
+                                <div class="left">用户名：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="userName" value="">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">手机号：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="userPhone" value="">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">电子邮箱：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="userEmail" value="">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">性别：</div>
+                                <div class="right" style="text-align: center;">
+                                    <label for="boy" class="radio-inline" style="font-weight: normal;margin-right: 25px;">
+                                        <input type="radio" class="am-input-sm radio" name="sex" id="boy" value="男"> 男
+                                    </label>
+                                    <label for="girl" class="radio-inline" style="font-weight: normal;">
+                                        <input type="radio" class="am-input-sm radio" name="sex" id="girl" value="女"> 女
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">生日：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="birthday" value=""  readonly="readonly"/>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">状态：</div>
+                                <div class="right" style="text-align: center;">
+                                    <label for="activated" class="radio-inline" style="font-weight: normal;margin-right: 25px;">
+                                        <input type="radio" class="am-input-sm radio" name="status" id="activated" value="1"> 已激活
+                                    </label>
+                                    <label for="inactivated" class="radio-inline" style="font-weight: normal;margin-right: 25px;">
+                                        <input type="radio" class="am-input-sm radio" name="status" id="inactivated" value="0"> 未激活
+                                    </label>
+                                    <label for="loggedOut" class="radio-inline" style="font-weight: normal;">
+                                        <input type="radio" class="am-input-sm radio" name="status" id="loggedOut" value="-1"> 已注销
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">注册时间：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="createTime" value=""  readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">更新时间：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="updateTime" value=""  readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">注销时间：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="deleteTime" value=""  readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="am-form-group am-cf">
+                                <div class="left">最后一次登录时间：</div>
+                                <div class="right">
+                                    <input type="text" class="am-input-sm" id="lastLoginTime" value=""  readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="am-form-group am-cf" style="margin-top: 10px;">
+                                <div class="popup-right">
+                                    <p>
+                                        <input type="button" class="am-btn am-btn-primary am-radius Btn" id="update" onclick="Update()" value="修改">
+                                        <input type="button" class="am-btn am-btn-success am-radius Btn" id="reset" onclick="Reset('true')" value="重置">
+                                        <input type="button" class="am-btn am-btn-default am-radius" id="cancel"
+                                               data-am-modal-close value="取消">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 确认删除用户模态窗口 -->
+                <div class="am-modal am-modal-confirm" tabindex="-1" id="userModal">
+                    <div class="am-modal-dialog" style="background-color: #a8a8a8;">
+                        <div class="am-modal-hd" style="color: red;">删除提示</div>
+                        <div class="am-modal-bd">
+                            您确定要删除用户记录吗？
+                        </div>
+                        <div class="am-modal-footer">
+                            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内容中部 -->
+                <div class="tableList">
+                    <!-- 内容顶部 -->
+                    <div id="top" class="moduleTitle am-cf">
+                        <ul class="am-icon-user on"> 用户管理</ul>
+                        <dl class="am-icon-home" style="float: right;">当前位置： <a th:href="@{/}">首页</a> >
+                            <a th:href="@{/user/AllUser}">用户</a>
+                        </dl>
+                    </div>
+
+                    <!-- 内容正文 -->
+                    <div class="am-form am-g">
+                        <!-- 表格 -->
+                        <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover"
+                               style="table-larightt: fixed;">
+                            <thead>
+                                <tr class="am-success">
+                                    <th class="table-check"><input type="checkbox" name="cb[]" id="all" value="all" onclick="setChecked(this)"/></th>
+                                    <th class="userName">用户名</th>
+                                    <th class="userPhone">手机号</th>
+                                    <th class="userEmail">电子邮箱</th>
+                                    <th class="userSex">性别</th>
+                                    <th class="userBirthday">生日</th>
+                                    <th class="userStatus">状态</th>
+                                    <th class="userCreateTime">注册时间</th>
+                                    <th class="userUpdateTime">更新时间</th>
+                                    <th class="userDeleteTime">注销时间</th>
+                                    <th class="userLastLoginTime">最后一次登录时间</th>
+
+                                    <th class="operating">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                                <tr th:each="map:${users}">
+                                    <td>
+                                        <input type="checkbox" name="cb[]" th:value="${map.user.userId}" onclick="setChecked(this)"/>
+                                    </td>
+                                    <td class="userName">
+                                        <a th:text="${map.user.userName}" th:title="${map.user.userName}">用户名</a>
+                                    </td>
+                                    <td class="userPhone">
+                                        <a th:text="${map.user.userPhone}">手机号</a>
+                                    </td>
+                                    <td class="userEmail">
+                                        <a th:text="${map.user.userEmail}" th:title="${map.user.userEmail}">电子邮箱</a>
+                                    </td>
+                                    <td class="userSex">
+                                        <a th:text="${map.user.userSex}">性别</a>
+                                    </td>
+                                    <td class="userBirthday">
+                                        <a th:text="${#dates.format(map.user.userBirthday,'yyyy-MM-dd HH:mm:ss')}">生日</a>
+                                    </td>
+                                    <td class="userStatus">
+                                        <a th:style="${map.user.userStatus == 1 ? 'display: block;':'display: none;'}">已激活</a>
+                                        <a th:style="${map.user.userStatus == 0 ? 'display: block;':'display: none;'}">未激活</a>
+                                        <a th:style="${map.user.userStatus == -1 ? 'display: block;':'display: none;'}">已注销</a>
+                                    </td>
+                                    <td class="userCreateTime">
+                                        <a th:text="${#dates.format(map.user.userCreateTime,'yyyy-MM-dd HH:mm:ss')}">注册时间</a>
+                                    </td>
+                                    <td class="userUpdateTime">
+                                        <a th:text="${#dates.format(map.user.userUpdateTime,'yyyy-MM-dd HH:mm:ss')}">更新时间</a>
+                                    </td>
+                                    <td class="userDeleteTime">
+                                        <a th:text="${#dates.format(map.user.userDeleteTime,'yyyy-MM-dd HH:mm:ss')}">注销时间</a>
+                                    </td>
+                                    <td class="userLastLoginTime">
+                                        <a th:text="${#dates.format(map.user.userLastLoginTime,'yyyy-MM-dd HH:mm:ss')}">最后一次登录时间</a>
+                                    </td>
+
+                                    <td class="operating">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                        data-am-modal="{target: '#userPopups'}" onclick="UpdateUser()"
+                                                        title="修改用户">
+                                                    <span class="am-icon-pencil-square-o"></span>
+                                                </button>
+                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                                        onclick="DeleteUser()" title="删除用户">
+                                                    <span class="am-icon-trash-o"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 多个操作按钮 -->
+                        <div class="am-btn-group am-btn-group-xs">
+                            <button type="button" class="am-btn am-btn-default" id="deleteChoose">
+                                <span class="am-icon-trash-o"></span> 删除用户
+                            </button>
+                        </div>
+
+                        <!-- 分页 -->
+                        <nav class="mt-5" th:if="${pageUtil.rows>0}" th:fragment="pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=1)}">首页</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==1?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current-1})}">上一页</a>
+                                </li>
+                                <li th:class="|page-item page ${i==pageUtil.current?'active':''}|"
+                                    th:each="i:${#numbers.sequence(pageUtil.from,pageUtil.to)}">
+                                    <a class="page-link" th:href="@{${pageUtil.path}(current=${i})}"
+                                       th:text="${i}">1</a>
+                                </li>
+                                <li th:class="|page-item page ${pageUtil.current==pageUtil.total?'disabled':''}|">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.current+1})}">下一页</a>
+                                </li>
+                                <li class="page-item page">
+                                    <a class="page-link"
+                                       th:href="@{${pageUtil.path}(current=${pageUtil.getTotal()})}">末页</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- 尾部 -->
+                    <footer th:replace="/site/index::footer"></footer>
+                </div>
+            </div>
+
+        </div>
+
+        <!--        <script th:src="@{/assets/js/questionnaire.js}"></script>-->
+        <!--        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+        <!--        <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>-->
+        <!--        <script src="assets/js/polyfill/rem.min.js"></script>-->
+        <!--        <script src="assets/js/polyfill/respond.min.js"></script>-->
+        <!--        <script src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.legacy.js"></script>-->
+        <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/plugins/jedate-6.0.2/jquery.jedate.js}"></script>
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/amcharts.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/pie.js}"></script>-->
+        <!--        <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>-->
+        <script type="text/javascript" src="https://s0.pstatp.com/cdn/expire-1-M/amazeui/2.3.0/js/amazeui.min.js"></script>
+        <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/Util.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/user.js}"></script>
+        <!--        <script type="text/javascript" th:src="@{/assets/js/analysis.js}"></script>-->
+    </body>
+</html>

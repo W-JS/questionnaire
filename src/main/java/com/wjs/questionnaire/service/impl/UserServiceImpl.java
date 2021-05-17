@@ -3,18 +3,15 @@ package com.wjs.questionnaire.service.impl;
 import com.wjs.questionnaire.entity.UserEntity;
 import com.wjs.questionnaire.mapper.UserMapper;
 import com.wjs.questionnaire.service.IUserService;
-import com.wjs.questionnaire.util.JSONResult;
-import com.wjs.questionnaire.util.MailClient;
-import com.wjs.questionnaire.util.StringUtil;
-import com.wjs.questionnaire.util.UUIDGenerator;
+import com.wjs.questionnaire.util.*;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.wjs.questionnaire.util.DateUtil.StringToDate;
@@ -36,6 +33,40 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    /**
+     * 设置分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    @Override
+    public PageUtil setUserListPage(PageUtil page) {
+        page.setRows(userMapper.findAllUserRows());
+        page.setPath("/user/AllUser");
+        return page;
+    }
+
+    /**
+     * 获取所有普通用户信息列表
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 普通用户信息列表
+     */
+    @Override
+    public List<Map<String, Object>> getUserList(int offset, int limit) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<UserEntity> userList = userMapper.findAllUserPage(offset, limit);
+        if (userList != null) {
+            for (UserEntity user : userList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("user", user);
+                list.add(map);
+            }
+        }
+        return list;
+    }
 
     @Override
     public JSONResult getAllUserList() {
@@ -305,6 +336,34 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 修改用户信息
+     *
+     * @param userId            用户编号
+     * @param userName          用户名
+     * @param userPhone         手机号
+     * @param userEmail         电子邮箱
+     * @param userSex           性别
+     * @param userBirthday      生日
+     * @param userStatus        状态
+     * @param userCreateTime    注册时间
+     * @param userUpdateTime    更新时间
+     * @param userDeleteTime    注销时间
+     * @param userLastLoginTime 最后一次登录时间
+     * @return 用户信息是否修改成功
+     */
+    @Override
+    public JSONResult getUpdateSubmit3(String userId, String userName, String userPhone, String userEmail, String userSex, String userBirthday, String userStatus, String userCreateTime, String userUpdateTime, String userDeleteTime, String userLastLoginTime) {
+        JSONResult jsonResult;
+        int flag = userMapper.updateUserByUserId(new UserEntity(userId, userName, userPhone, userEmail, userSex, StringToDate(userBirthday), Integer.parseInt(userStatus), StringToDate(userCreateTime), StringToDate(userUpdateTime), StringToDate(userDeleteTime), StringToDate(userLastLoginTime)));
+        if (flag == 1) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("用户信息修改失败！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
      * 注册后，发送激活邮件
      *
      * @param email    邮件接收者
@@ -379,6 +438,74 @@ public class UserServiceImpl implements IUserService {
         return jsonResult;
     }
 
+    /**
+     * 根据 userId 删除用户信息
+     *
+     * @param userId 用户编号
+     * @return 用户信息是否删除成功
+     */
+    @Override
+    public JSONResult getDeleteSubmit1(String userId) {
+        JSONResult jsonResult;
+        if (userMapper.deleteUserByUserId(userId) != 0) {
+            jsonResult = JSONResult.build();
+        } else {
+            jsonResult = JSONResult.build("用户信息删除失败！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 根据 userId 删除多个用户信息
+     *
+     * @param user JSON格式的字符串，包含多个用户编号
+     * @return 用户信息是否删除成功
+     */
+    @Override
+    public JSONResult getDeleteSubmit2(String user) {
+        JSONArray json = JSONArray.fromObject(user);
+        JSONResult jsonResult1;
+        boolean flag = true;
+        if (json.size() > 0) {
+            for (int i = 0; i < json.size(); i++) {
+                String userId = (String) json.get(i);
+                String userName = userMapper.findUserByUserId(userId).getUserName();
+                jsonResult1 = getDeleteSubmit1(userId);
+                if (jsonResult1.getState() != 1) {
+                    flag = false;
+                    System.out.println("删除用户 失败：" + userName);
+                    break;
+                } else {
+                    System.out.println("删除用户 成功：" + userName);
+                }
+
+            }
+        }
+        JSONResult jsonResult2;
+        if (flag) {
+            jsonResult2 = JSONResult.build();
+        } else {
+            jsonResult2 = JSONResult.build("问卷信息删除失败！！！");
+        }
+        return jsonResult2;
+    }
+
+    /**
+     * 根据 userId 得到用户信息
+     *
+     * @return 用户信息
+     */
+    @Override
+    public JSONResult getUserByUserId(String userId) {
+        UserEntity user = userMapper.findUserByUserId(userId);
+        JSONResult jsonResult;
+        if (user != null) {
+            jsonResult = JSONResult.build(user);
+        } else {
+            jsonResult = JSONResult.build("用户信息不存在！！！");
+        }
+        return jsonResult;
+    }
 
     /**
      * 获取在线用户信息

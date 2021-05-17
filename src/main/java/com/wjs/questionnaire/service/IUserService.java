@@ -1,11 +1,33 @@
 package com.wjs.questionnaire.service;
 
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.PageUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理用户信息数据的业务层接口
  */
 public interface IUserService {
+
+
+    /**
+     * 设置分页参数
+     *
+     * @param page 分页对象参数
+     * @return 分页结果
+     */
+    PageUtil setUserListPage(PageUtil page);
+
+    /**
+     * 获取所有普通用户信息列表
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 普通用户信息列表
+     */
+    List<Map<String, Object>> getUserList(int offset, int limit);
 
     /**
      * @return JSON格式数据：所有用户信息
@@ -120,6 +142,24 @@ public interface IUserService {
     JSONResult getUpdateSubmit2(String userId, String password);
 
     /**
+     * 修改用户信息
+     *
+     * @param userId            用户编号
+     * @param userName          用户名
+     * @param userPhone         手机号
+     * @param userEmail         电子邮箱
+     * @param userSex           性别
+     * @param userBirthday      生日
+     * @param userStatus        状态
+     * @param userCreateTime    注册时间
+     * @param userUpdateTime    更新时间
+     * @param userDeleteTime    注销时间
+     * @param userLastLoginTime 最后一次登录时间
+     * @return 用户信息是否修改成功
+     */
+    JSONResult getUpdateSubmit3(String userId, String userName, String userPhone, String userEmail, String userSex, String userBirthday, String userStatus, String userCreateTime, String userUpdateTime, String userDeleteTime, String userLastLoginTime);
+
+    /**
      * 激活账号
      *
      * @param userId 用户ID
@@ -143,6 +183,29 @@ public interface IUserService {
      * @return 验证码是否正确
      */
     JSONResult getCodeExists(String userId, String code);
+
+    /**
+     * 根据 userId 删除用户信息
+     *
+     * @param userId 用户编号
+     * @return 用户信息是否删除成功
+     */
+    JSONResult getDeleteSubmit1(String userId);
+
+    /**
+     * 根据 userId 删除多个用户信息
+     *
+     * @param user JSON格式的字符串，包含多个用户编号
+     * @return 用户信息是否删除成功
+     */
+    JSONResult getDeleteSubmit2(String user);
+
+    /**
+     * 根据 userId 得到用户信息
+     *
+     * @return 用户信息
+     */
+    JSONResult getUserByUserId(String userId);
 
 
     /**

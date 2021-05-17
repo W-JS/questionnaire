@@ -17,6 +17,25 @@
         user_birthday, user_status, user_type, user_create_time
     </sql>
 
+    <!-- 获取所有普通用户信息列表的行数 -->
+    <!-- int findAllUserRows(); -->
+    <select id="findAllUserRows" resultType="int">
+        SELECT COUNT(user_id)
+        FROM `user` u
+        WHERE u.user_type = 0
+    </select>
+
+    <!-- 获取所有普通用户信息列表 -->
+    <!-- List<UserEntity> findAllUserPage(int offset, int limit); -->
+    <select id="findAllUserPage" resultType="UserEntity">
+        SELECT
+        <include refid="selectUserFields"></include>
+        FROM `user` u
+        WHERE u.user_type = 0
+        ORDER BY u.user_last_login_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <!-- 获取所有用户信息列表 -->
     <!-- List<UserEntity> findAllUserList(); -->
     <select id="findAllUserList" resultType="UserEntity">
@@ -125,5 +144,12 @@
         </set>
         WHERE user_id = #{userId}
     </update>
+
+    <!-- 根据 userId 删除用户信息 -->
+    <!-- int deleteUserByUserId(String userId); -->
+    <delete id="deleteUserByUserId" parameterType="UserEntity">
+        DELETE FROM `user` u
+        WHERE u.user_id = #{userId}
+    </delete>
 
 </mapper>

@@ -64,6 +64,20 @@ public class UserEntity implements Serializable {
         this.userCreateTime = userCreateTime;
     }
 
+    public UserEntity(String userId, String userName, String userPhone, String userEmail, String userSex, Date userBirthday, Integer userStatus, Date userCreateTime, Date userUpdateTime, Date userDeleteTime, Date userLastLoginTime) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.userEmail = userEmail;
+        this.userSex = userSex;
+        this.userBirthday = userBirthday;
+        this.userStatus = userStatus;
+        this.userCreateTime = userCreateTime;
+        this.userUpdateTime = userUpdateTime;
+        this.userDeleteTime = userDeleteTime;
+        this.userLastLoginTime = userLastLoginTime;
+    }
+
     public String getUserId() {
         return userId;
     }

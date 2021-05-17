@@ -2,10 +2,15 @@ package com.wjs.questionnaire.controller;
 
 import com.wjs.questionnaire.service.IUserService;
 import com.wjs.questionnaire.util.JSONResult;
+import com.wjs.questionnaire.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 import static com.wjs.questionnaire.util.EncryptUtil.md5AndSha;
 import static com.wjs.questionnaire.util.QuestionnaireConstant.ONLINEUSERID;
@@ -22,6 +27,17 @@ public class UserController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    /**
+     * @return 进入 调查问卷后台管理-用户
+     */
+    @GetMapping(value = "/AllUser")
+    public String jumpAllUserPage(Model model, PageUtil pageUtil) {
+        PageUtil page = userService.setUserListPage(pageUtil);
+        List<Map<String, Object>> users = userService.getUserList(page.getOffset(), page.getLimit());
+        model.addAttribute("users", users);
+        return "/site/user";
+    }
 
     /**
      * 访问URL：http://localhost:8080/questionnaire/user/login
@@ -239,6 +255,28 @@ public class UserController {
     }
 
     /**
+     * 修改用户信息
+     *
+     * @param userId            用户编号
+     * @param userName          用户名
+     * @param userPhone         手机号
+     * @param userEmail         电子邮箱
+     * @param userSex           性别
+     * @param userBirthday      生日
+     * @param userStatus        状态
+     * @param userCreateTime    注册时间
+     * @param userUpdateTime    更新时间
+     * @param userDeleteTime    注销时间
+     * @param userLastLoginTime 最后一次登录时间
+     * @return 用户信息是否修改成功
+     */
+    @PostMapping(value = "/updateSubmit3")
+    @ResponseBody
+    public JSONResult getUpdateSubmit3(String userId, String userName, String userPhone, String userEmail, String userSex, String userBirthday, String userStatus, String userCreateTime, String userUpdateTime, String userDeleteTime, String userLastLoginTime) {
+        return userService.getUpdateSubmit3(userId, userName, userPhone, userEmail, userSex, userBirthday, userStatus, userCreateTime, userUpdateTime, userDeleteTime, userLastLoginTime);
+    }
+
+    /**
      * 生成验证码，存入Redis
      *
      * @param codeLength 验证码长度
@@ -260,6 +298,41 @@ public class UserController {
     @ResponseBody
     public JSONResult getCodeExists(String userId, String code) {
         return userService.getCodeExists(userId, code);
+    }
+
+    /**
+     * 根据 userId 删除用户信息
+     *
+     * @param userId 用户编号
+     * @return 用户信息是否删除成功
+     */
+    @PostMapping(value = "/deleteSubmit1")
+    @ResponseBody
+    public JSONResult getDeleteSubmit1(String userId) {
+        return userService.getDeleteSubmit1(userId);
+    }
+
+    /**
+     * 根据 userId 删除多个用户信息
+     *
+     * @param user JSON格式的字符串，包含多个用户编号
+     * @return 用户信息是否删除成功
+     */
+    @PostMapping(value = "/deleteSubmit2")
+    @ResponseBody
+    public JSONResult getDeleteSubmit2(String user) {
+        return userService.getDeleteSubmit2(user);
+    }
+
+    /**
+     * 根据 userId 得到用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping(value = "/getUserByUserId")
+    @ResponseBody
+    public JSONResult getUserByUserId(String userId) {
+        return userService.getUserByUserId(userId);
     }
 
 

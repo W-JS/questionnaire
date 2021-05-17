@@ -13,6 +13,22 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     * 获取所有普通用户信息列表的行数
+     *
+     * @return 普通用户信息列表的行数
+     */
+    int findAllUserRows();
+
+    /**
+     * 获取所有普通用户信息列表（分页）
+     *
+     * @param offset 从第几条数据查询
+     * @param limit  需要查询的记录条数
+     * @return 普通用户信息列表
+     */
+    List<UserEntity> findAllUserPage(int offset, int limit);
+
+    /**
      * 获取所有用户信息列表
      *
      * @return 用户信息列表
@@ -80,4 +96,12 @@ public interface UserMapper {
      * @return 用户信息是否修改成功
      */
     int updateUserByUserId(UserEntity u);
+
+    /**
+     * 根据 userId 删除用户信息
+     *
+     * @param userId 用户编号
+     * @return 用户信息是否删除成功
+     */
+    int deleteUserByUserId(String userId);
 }

@@ -549,7 +549,6 @@ function GenerateAuthCode(codeBtn) {
                     codeBtn.attr('disabled', false).html('重新获取');
                     clearInterval(countInterval);
                 }
-                ;
             }, 1000);
         }
     });
