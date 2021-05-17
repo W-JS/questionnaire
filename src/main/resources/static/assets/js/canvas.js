@@ -1,24 +1,30 @@
 layui.use('jquery', function () {
-    var canvas = document.getElementById('canvas-banner');
-    canvas.width = window.document.body.clientWidth;
-    canvas.height = window.innerHeight * 1.6;
+    let canvas = document.getElementById('canvas-banner');
+
+    // canvas.width = window.screen.width;
+    // canvas.width = window.document.body.clientWidth;
+
+    // canvas.height = window.screen.height * 1.2;
+    // canvas.height = window.innerHeight * 1.4;
 
     //画canvas
-    DrawCanvas();
+    // DrawCanvas();
 });
 
 function DrawCanvas() {
-    var $ = layui.jquery;
-    var canvas = document.getElementById('canvas-banner');
-    canvas.width = window.document.body.clientWidth;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
-    var ctx = canvas.getContext('2d');
+    let $ = layui.jquery;
+    let canvas = document.getElementById('canvas-banner');
+    canvas.width = window.screen.width;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
+    canvas.height = window.screen.height * 1.2;
+    // canvas.width = window.document.body.clientWidth;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
+    let ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = (new Color(150)).style;
 
-    var dotCount = 20; //圆点数量
-    var dotRadius = 70; //产生连线的范围
-    var dotDistance = 70;   //产生连线的最小距离
-    var screenWidth = screen.width;
+    let dotCount = 20; //圆点数量
+    let dotRadius = 70; //产生连线的范围
+    let dotDistance = 70;   //产生连线的最小距离
+    let screenWidth = screen.width;
     if (screenWidth >= 768 && screenWidth < 992) {
         dotCount = 130;
         dotRadius = 100;
@@ -37,12 +43,12 @@ function DrawCanvas() {
         dotDistance = 80;
     }
     //默认鼠标位置 canvas 中间
-    var mousePosition = {
+    let mousePosition = {
         x: 50 * canvas.width / 100,
         y: 50 * canvas.height / 100
     };
     //小圆点
-    var dots = {
+    let dots = {
         count: dotCount,
         distance: dotDistance,
         d_radius: dotRadius,
@@ -62,10 +68,10 @@ function DrawCanvas() {
     }
 
     function averageColorStyles(dot1, dot2) {
-        var color1 = dot1.color,
+        let color1 = dot1.color,
             color2 = dot2.color;
 
-        var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
+        let r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
             g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
             b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
         return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
@@ -109,7 +115,7 @@ function DrawCanvas() {
     function moveDots() {
         for (i = 0; i < dots.count; i++) {
 
-            var dot = dots.array[i];
+            let dot = dots.array[i];
 
             if (dot.y < 0 || dot.y > canvas.height) {
                 dot.vx = dot.vx;
@@ -125,7 +131,7 @@ function DrawCanvas() {
     }
 
     function connectDots1() {
-        var pointx = mousePosition.x;
+        let pointx = mousePosition.x;
         for (i = 0; i < dots.count; i++) {
             for (j = 0; j < dots.count; j++) {
                 i_dot = dots.array[i];
@@ -147,7 +153,7 @@ function DrawCanvas() {
 
     function drawDots() {
         for (i = 0; i < dots.count; i++) {
-            var dot = dots.array[i];
+            let dot = dots.array[i];
             dot.draw();
         }
     }
@@ -182,7 +188,7 @@ window.addEventListener("resize", resizeCanvas, false);
 
 //窗口大小改变时改变canvas宽度
 function resizeCanvas() {
-    var canvas = document.getElementById('canvas-banner');
+    let canvas = document.getElementById('canvas-banner');
     canvas.width = window.document.body.clientWidth;
     canvas.height = window.innerHeight * 1 / 3;
 }

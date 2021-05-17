@@ -4,11 +4,15 @@ $(function () {
     });
 
     // 登录
-    $("#userLog").blur(UserLog);
-    $("#codeLogBtn").click(CodeLogBtn);
-    $("#codeLog").blur(CodeLog);
+    $("input[name='userLog']").blur(function () {
+        UserLog(this);
+    });
+    // $("#userLog1").blur(UserLog1);
+    // $("#userLog2").blur(UserLog2);
+    // $("#codeLogBtn").click(CodeLogBtn);
     $("#passwordLog").blur(PasswordLog);
-    $("#login").click(Login);
+    $("#codeLog").blur(CodeLog);
+    // $("#login").click(Login);
 
     // 注册
     $("#usernameReg").blur(UsernameReg);
@@ -16,18 +20,18 @@ $(function () {
     $("#emailReg").blur(EmailReg);
     $("#passwordReg").blur(PasswordReg);
     $("#confirmPasswordReg").blur(ConfirmPasswordReg);
-    $("#register").click(Register);
+    // $("#register").click(Register);
 
     // 页面切换
-    $("#switchReg").click(SwitchReg);
-    $("#switchLog").click(SwitchLog);
+    // $("#switchReg").click(SwitchReg);
+    // $("#switchLog").click(SwitchLog);
 });
 
 // 登录
 // 验证用户名/手机号码/电子邮箱是否正确
-function UserLog() {
+function UserLog(object) {
     let flag = false;
-    let userLog = $.trim($("#userLog").val());
+    let userLog = $.trim($(object).val());
     let usernameValidate = /^[\u4e00-\u9fa5a-zA-Z0-9_-]{3,16}$/;
     let phoneValidate = /^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/;
     let emailValidate = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
@@ -44,13 +48,13 @@ function UserLog() {
 }
 
 // 验证用户名/手机号码/电子邮箱是否存在
-function UserLogExists() {
+function UserLogExists(object) {
     let flag = false;
-    if (!UserLog()) {
-        $("#userLog").focus();
+    if (!UserLog(object)) {
+        $(object).focus();
     } else {
         let loginMethod = 'username';
-        let userLog = $.trim($("#userLog").val());
+        let userLog = $.trim($(object).val());
         let usernameValidate = /^[\u4e00-\u9fa5a-zA-Z0-9_-]{3,16}$/;
         let phoneValidate = /^((\d{3}-\d{8}|\d{4}-\d{7,8})|(1[3|5|7|8][0-9]{9}))$/;
         let emailValidate = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
@@ -77,7 +81,7 @@ function UserLogExists() {
                     $("#userId").val(result.message);
                     flag = true;
                 } else {
-                    $("#userLog").focus();
+                    $(object).focus();
                     ShowFailure(result.message);
                 }
             }
@@ -87,11 +91,15 @@ function UserLogExists() {
 }
 
 // 点击获取验证码
-function CodeLogBtn() {
-    if (UserLogExists()) {
-        let codeBtn = $("#codeLogBtn");
-        GenerateAuthCode(codeBtn);
+function CodeLogBtn(object) {
+    if (UserLogExists($("#userLog2"))) {
+        // let codeBtn = $("#codeLogBtn");
+        GenerateAuthCode(object);
     }
+    /*if (UserLogExists2()) {
+        // let codeBtn = $("#codeLogBtn");
+        GenerateAuthCode(object);
+    }*/
 }
 
 // 验证验证码是否正确
@@ -174,24 +182,23 @@ function PasswordLogExists() {
 }
 
 // 登录前表单验证
-function Login() {
-    if (!UserLogExists()) {
+function Login1() {
+    if (!UserLogExists($("#userLog1"))) {
         return false;
     }
-
-    if (!CodeLogExists()) {
+    /*if (!UserLogExists1()) {
         return false;
-    }
+    }*/
 
     if (!PasswordLogExists()) {
         return false;
     }
 
-    loginSubmit();
+    LoginSubmit1();
 }
 
 // 提交用户登录信息
-function loginSubmit() {
+function LoginSubmit1() {
     let userId = $.trim($("#userId").val());
     $.ajax({
         async: true, // 异步请求
@@ -210,6 +217,23 @@ function loginSubmit() {
             }
         }
     });
+}
+
+// 登录前表单验证
+function Login2() {
+    if (!UserLogExists($("#userLog2"))) {
+        return false;
+    }
+
+    // if (!UserLogExists2()) {
+    //     return false;
+    // }
+
+    if (!CodeLogExists()) {
+        return false;
+    }
+
+    LoginSubmit1();
 }
 
 // 注册
@@ -447,7 +471,7 @@ function registerSubmit() {
     let sexReg = $('input[name="sexReg"]:checked').val();
     let birthdayReg = $.trim($("#birthdayReg").val());
     $.ajax({
-        async: true, // 异步请求
+        async: false, // 同步请求
         type: "post",
         url: CONTEXT_PATH + '/user/registerSubmit',
         data: {
@@ -490,12 +514,12 @@ function GenerateAuthCode(object) {
             if (result.data != null) {
                 // console.log('发送本地验证码：' + result.data);
                 let countDown = 60;
-                object.attr('disabled', true).html(countDown + 's');
+                $(object).attr('disabled', true).html(countDown + 's');
                 let countInterval = setInterval(function () {
                     countDown--;
-                    object.html(countDown + 's');
+                    $(object).html(countDown + 's');
                     if (countDown == 0) {
-                        object.attr('disabled', false).html('重新获取');
+                        $(object).attr('disabled', false).html('重新获取');
                         clearInterval(countInterval);
                     }
                 }, 1000);
@@ -535,16 +559,29 @@ function CodeExists(code) {
 function SwitchReg() {
     GeneratorUserID();
     $('#divReg').removeClass('hide');
-    $('#divLog').addClass('hide');
-    var valOfScroll = $("#divLog").offset().top;
+    $('#divLog1').addClass('hide');
+    $('#divLog2').addClass('hide');
+    var valOfScroll = $("#divLog1").offset().top;
     $("html,body").animate({
         scrollTop: valOfScroll
     }, 600);
 }
 
-// 切换到登录
-function SwitchLog() {
-    $('#divLog').removeClass('hide');
+// 切换到密码登录
+function SwitchLog1() {
+    $('#divLog1').removeClass('hide');
+    $('#divLog2').addClass('hide');
+    $('#divReg').addClass('hide');
+    var valOfScroll = $("#divReg").offset().top;
+    $("html,body").animate({
+        scrollTop: valOfScroll
+    }, 600);
+}
+
+// 切换到验证码登录
+function SwitchLog2() {
+    $('#divLog2').removeClass('hide');
+    $('#divLog1').addClass('hide');
     $('#divReg').addClass('hide');
     var valOfScroll = $("#divReg").offset().top;
     $("html,body").animate({

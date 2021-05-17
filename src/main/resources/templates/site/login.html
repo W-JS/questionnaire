@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
+        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/canvas.js}"></script>
         <!--<link type="text/css" rel="styleSheet" href="../questionnaire/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css"/>-->
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/jedate-6.0.2/skin/jedate.css}">
@@ -16,12 +18,18 @@
 
     <body>
         <canvas id="canvas-banner" class="canvas-style"></canvas>
+        <script type="text/javascript">
+            let canvas = document.getElementById('canvas-banner');
+            canvas.width = window.screen.width;
+            canvas.height = window.screen.height * 1.2;
+            //画canvas
+            DrawCanvas();
+        </script>
 
         <input type="hidden" id="userId" name="userId" value="">
 
-        <!--登录-->
-        <!--<form class="form-login from-style" id="divLog" action="/User/Login/loginSubmit" method="post">-->
-        <div class="form-login from-style" id="divLog">
+        <!-- 密码登录 -->
+        <div class="form-login from-style" id="divLog1">
             <p class="font">登录</p>
 
             <div class="myStyle transparency">
@@ -30,20 +38,7 @@
                         <use xlink:href="#iconphone"></use>
                     </svg>
                 </div>
-                <input type="text" value="" placeholder="请输入用户名/手机号码/电子邮箱" id="userLog" name="userLog" class="input-style01 myStyle02"/>
-                <div>
-                    <button type="button" class="button-style" id="codeLogBtn">发送验证码</button>
-                </div>
-            </div>
-
-            <div class="myStyle transparency div-style01">
-                <div>
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#iconcode"></use>
-                    </svg>
-                </div>
-                <input type="text" value="" placeholder="请输入6位数验证码" maxlength="6" id="codeLog" name="codeLog"
-                       class="myStyle02"/>
+                <input type="text" value="" placeholder="请输入用户名/手机号码/电子邮箱" id="userLog1" name="userLog" class="myStyle02"/>
             </div>
 
             <div class="myStyle transparency div-style01">
@@ -57,14 +52,48 @@
             </div>
 
             <div class="btn-area clearfix">
-                <button type="button" class="switch fr" id="switchReg">还没有账号？立即注册</button>
+                <button type="button" class="switch fl" onclick="SwitchLog2()">不记得密码？用验证码登录</button>
+                <button type="button" class="switch fr" onclick="SwitchReg()">还没有账号？立即注册</button>
             </div>
-            <!--<button type="submit" class="login" id="login">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>-->
-            <button type="button" class="login" id="login">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+
+            <button type="button" class="login" onclick="Login1()">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
         </div>
 
-        <!--注册-->
-        <!--<form class="form-register from-style hide" id="divReg" action="/questionnaire/user/registerSubmit" method="post">-->
+        <!-- 验证码登录 -->
+        <div class="form-login from-style hide" id="divLog2">
+            <p class="font">登录</p>
+
+            <div class="myStyle transparency">
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#iconphone"></use>
+                    </svg>
+                </div>
+                <input type="text" value="" placeholder="请输入用户名/手机号码/电子邮箱" id="userLog2" name="userLog" class="input-style01 myStyle02"/>
+                <div>
+                    <button type="button" class="button-style" onclick="CodeLogBtn(this)">发送验证码</button>
+                </div>
+            </div>
+
+            <div class="myStyle transparency div-style01">
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#iconcode"></use>
+                    </svg>
+                </div>
+                <input type="text" value="" placeholder="请输入6位数验证码" maxlength="6" id="codeLog" name="codeLog"
+                       class="myStyle02"/>
+            </div>
+
+            <div class="btn-area clearfix">
+                <button type="button" class="switch fl" onclick="SwitchLog1()">不想用验证码？用密码登录</button>
+                <button type="button" class="switch fr" onclick="SwitchReg()">还没有账号？立即注册</button>
+            </div>
+
+            <button type="button" class="login" onclick="Login2()">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+        </div>
+
+        <!-- 注册 -->
         <div class="form-register from-style hide" id="divReg">
             <p class="font">注册</p>
 
@@ -121,7 +150,6 @@
                         <use xlink:href="#iconsex"></use>
                     </svg>
                 </div>
-                <!--<div class="div-style03">-->
                 <div style="position: absolute;width: 150px;margin-left: 145px;display: flex;text-align: center;justify-content: center;">
                     <label for="boy" class="radio-inline label-style01 div-style02">
                         <input type="radio" name="sexReg" id="boy" value="男" class="input-style02" checked="checked">男
@@ -138,25 +166,21 @@
                         <use xlink:href="#iconbirthday"></use>
                     </svg>
                 </div>
-                <!--<input type="text" value="" id="birthdayReg1" name="birthdayReg1" value="" placeholder="YYYY-MM-DD hh:mm:ss" onClick="return Calendar('birthdayReg');" class="myStyle02" readonly="readonly"/>-->
                 <input type="text" value="" id="birthdayReg" name="birthdayReg"
                        placeholder="YYYY-MM-DD hh:mm:ss" class="myStyle02" readonly="readonly"/>
             </div>
 
             <div class="btn-area clearfix">
-                <button type="button" class="switch fr" id="switchLog">已有账号？立即登录</button>
+                <button type="button" class="switch fr" onclick="SwitchLog1()">已有账号？立即登录</button>
             </div>
-            <!--<button type="submit" class="register" id="register">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>-->
-            <button type="button" class="register" id="register">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>
+
+            <button type="button" class="register" onclick="Register()">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>
         </div>
 
     </body>
     <!--<script type="text/javascript" src="../questionnaire/assets/js/jquery-3.6.0.min.js"></script>-->
-    <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
     <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
     <script type="text/javascript" th:src="@{/assets/plugins/jedate-6.0.2/jquery.jedate.js}"></script>
-    <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>
-    <script type="text/javascript" th:src="@{/assets/js/canvas.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/iconfont.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/showdate.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>
