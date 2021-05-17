@@ -5,14 +5,26 @@
         <title>用户留言回复</title>
     </head>
     <body>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="1000"
-               style="border-collapse: collapse;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="1000" style="border-collapse: collapse;">
             <tr>
                 <td>
-                    <div style="text-align: center;border: #36649d 1px dashed;margin: 10px;padding: 20px;">
-                        <p>亲爱的 <span style="color:blue;" th:text="${username}"></span> ，您好!</p>
-                        <p style="font-size: 16px;">以下内容是对您填写的问卷 <span style="color:blue;" th:text="${questionnaireTitle}"></span> 的回复，请注意查收！</p>
-                        <p style="color: black;font-size: 20px;font-family: cursive;" th:text="${answer}"></p>
+                    <div style="text-align: center;border: #36649d 1px dashed;margin: 10px;padding: 20px 20px 4px 20px;font-size: 17px;">
+                        <div style="color:#4d4d4d;">
+                            <strong style="display:block;margin-bottom:15px;">
+                                尊敬的用户：<span style="color:#f60;font-size: 25px;" th:text="${username}">用户名</span>&nbsp;您好！
+                            </strong>
+                            <strong style="display:block;margin-bottom:15px;">
+                                下面内容是您填写的问卷&nbsp;<span style="color:blue;" th:text="${questionnaireTitle}">调查问卷</span>&nbsp;的留言内容！
+                            </strong>
+                            <p style="color: black;font-size: 20px;font-family: cursive;" th:text="${ucContent}">留言内容</p>
+                            <strong style="display:block;margin-bottom:15px;">
+                                以下内容是对您填写的问卷&nbsp;<span style="color:blue;" th:text="${questionnaireTitle}">调查问卷</span>&nbsp;的回复，请注意查收！
+                            </strong>
+                            <p style="color: black;font-size: 20px;font-family: cursive;" th:text="${answer}">回复内容</p>
+                        </div>
+                        <div style="border-top:1px solid #ccc;color:#747474;font-size:12px;">
+                            <p>此为系统邮件，请勿回复<br>请保管好您的邮箱，避免账号被他人盗用</p>
+                        </div>
                     </div>
                 </td>
             </tr>

@@ -169,12 +169,20 @@ public interface IUserService {
 
 
     /**
-     * 生成验证码，存入Redis
+     * 生成验证码，发送登录验证码邮件，存入Redis
      *
      * @param codeLength 验证码长度
      * @return 验证码
      */
-    String getCodeReg(String userId, int codeLength);
+    JSONResult LoginCode(String userId, int codeLength);
+
+    /**
+     * 生成验证码，发送修改密码码邮件，存入Redis
+     *
+     * @param codeLength 验证码长度
+     * @return 验证码
+     */
+    JSONResult UpdatePasswordCode(String userId, int codeLength);
 
     /**
      * 从Redis获取验证码，判断验证码是否正确

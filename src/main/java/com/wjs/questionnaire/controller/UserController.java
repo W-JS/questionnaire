@@ -66,7 +66,7 @@ public class UserController {
      *
      * @return 进入显示所有用户信息页面
      */
-    @RequestMapping(value = "/showUser")
+    @GetMapping(value = "/showUser")
     public String jumpShowUserPage() {
         return "/prompt/showUser";
     }
@@ -277,15 +277,27 @@ public class UserController {
     }
 
     /**
-     * 生成验证码，存入Redis
+     * 生成验证码，发送登录验证码邮件，存入Redis
      *
      * @param codeLength 验证码长度
      * @return 验证码
      */
-    @PostMapping(value = "/generateAuthCode")
+    @PostMapping(value = "/generateAuthCode1")
     @ResponseBody
-    public String getCodeReg(String userId, int codeLength) {
-        return userService.getCodeReg(userId, codeLength);
+    public JSONResult LoginCode(String userId, int codeLength) {
+        return userService.LoginCode(userId, codeLength);
+    }
+
+    /**
+     * 生成验证码，发送修改密码验证码邮件，存入Redis
+     *
+     * @param codeLength 验证码长度
+     * @return 验证码
+     */
+    @PostMapping(value = "/generateAuthCode2")
+    @ResponseBody
+    public JSONResult UpdatePasswordCode(String userId, int codeLength) {
+        return userService.UpdatePasswordCode(userId, codeLength);
     }
 
     /**
@@ -352,5 +364,25 @@ public class UserController {
     @ResponseBody
     public JSONResult test() {
         return JSONResult.build(md5AndSha("wjs123"));
+    }
+
+    @GetMapping(value = "/testPage1")
+    public String testPage1() {
+        return "/mail/activation";
+    }
+
+    @GetMapping(value = "/testPage2")
+    public String testPage2() {
+        return "/mail/code";
+    }
+
+    @GetMapping(value = "/testPage3")
+    public String testPage3() {
+        return "/mail/answer";
+    }
+
+    @GetMapping(value = "/testPage4")
+    public String testPage4() {
+        return "/mail/forget";
     }
 }

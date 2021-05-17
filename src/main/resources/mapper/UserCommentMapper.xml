@@ -4,7 +4,7 @@
 
     <!-- 查询 usercomment 表所有字段 -->
     <sql id="selectUserCommentFields">
-        usercomment_id, user_id, admin_user_id, questionnaire_id, usercomment_content, answer_content, usercomment_status, usercomment_create_time
+        usercomment_id, user_id, admin_user_id, questionnaire_id, usercomment_content, answer_content, usercomment_status, usercomment_create_time, answer_create_time
     </sql>
 
     <!-- 根据 ucId 查询留言信息 -->
@@ -82,6 +82,9 @@
             <if test="usercommentCreateTime != null">
                 usercomment_create_time,
             </if>
+            <if test="answerCreateTime != null">
+                answer_create_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="usercommentId != null">
@@ -107,6 +110,9 @@
             </if>
             <if test="usercommentCreateTime != null">
                 #{usercommentCreateTime},
+            </if>
+            <if test="answerCreateTime != null">
+                #{answerCreateTime},
             </if>
         </trim>
     </insert>
@@ -144,6 +150,9 @@
             </if>
             <if test="usercommentCreateTime != null">
                 usercomment_create_time = #{usercommentCreateTime},
+            </if>
+            <if test="answerCreateTime != null">
+                answer_create_time = #{answerCreateTime},
             </if>
         </set>
         WHERE usercomment_id = #{usercommentId}

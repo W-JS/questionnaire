@@ -289,6 +289,7 @@ public class UserServiceImpl implements IUserService {
         } else {
             jsonResult = JSONResult.build("该邮箱不存在！！！");
         }
+
         return jsonResult;
     }
 
@@ -375,7 +376,7 @@ public class UserServiceImpl implements IUserService {
         context.setVariable("username", username);
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);
-        return mailClient.sendMail(email, "调查问卷激活邮件", content);
+        return mailClient.sendMail(email, "调查问卷网站-激活邮件", content);
     }
 
     /**
@@ -406,17 +407,89 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
-     * 生成验证码，存入Redis
+     * 生成验证码，发送登录验证码邮件，存入Redis
      *
      * @param codeLength 验证码长度
      * @return 验证码
      */
     @Override
-    public String getCodeReg(String userId, int codeLength) {
-        String redisKey = userId;
-        String code = StringUtil.getRandomString(codeLength);
-        redisTemplate.opsForValue().set(redisKey, code, 2, TimeUnit.MINUTES);
-        return code;
+    public JSONResult LoginCode(String userId, int codeLength) {
+        UserEntity user = userMapper.findUserByUserId(userId);
+        JSONResult jsonResult;
+        if (user != null) {
+            if (user.getUserStatus() == 1) {
+                String code = StringUtil.getRandomString(codeLength);
+                if (sendLoginCodeHtml(user.getUserEmail(), user.getUserName(), code)) {
+                    redisTemplate.opsForValue().set(userId, code, 2, TimeUnit.MINUTES);
+                    jsonResult = JSONResult.build(OBJECT_EXISTENCE, null, code);
+                } else {
+                    jsonResult = JSONResult.build("该邮箱不存在！！！");
+                }
+            } else {
+                jsonResult = JSONResult.build("账号未激活，请先激活账号再登录！！！");
+            }
+        } else {
+            jsonResult = JSONResult.build("用户不存在！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 生成验证码，发送修改密码码邮件，存入Redis
+     *
+     * @param codeLength 验证码长度
+     * @return 验证码
+     */
+    @Override
+    public JSONResult UpdatePasswordCode(String userId, int codeLength) {
+        UserEntity user = userMapper.findUserByUserId(userId);
+        JSONResult jsonResult;
+        if (user != null) {
+            if (user.getUserStatus() == 1) {
+                String code = StringUtil.getRandomString(codeLength);
+                if (sendUpdatePasswordCodeHtml(user.getUserEmail(), user.getUserName(), code)) {
+                    redisTemplate.opsForValue().set(userId, code, 2, TimeUnit.MINUTES);
+                    jsonResult = JSONResult.build(OBJECT_EXISTENCE, null, code);
+                } else {
+                    jsonResult = JSONResult.build("该邮箱不存在！！！");
+                }
+            } else {
+                jsonResult = JSONResult.build("账号未激活，请先激活账号再登录！！！");
+            }
+        } else {
+            jsonResult = JSONResult.build("用户不存在！！！");
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 登录前，发送登录验证码邮件
+     *
+     * @param email    邮件接收者
+     * @param username 用户名
+     * @param code     验证码
+     */
+    public boolean sendLoginCodeHtml(String email, String username, String code) {
+        Context context = new Context();
+        context.setVariable("username", username);
+        context.setVariable("code", code);
+        String content = templateEngine.process("/mail/code", context);
+        return mailClient.sendMail(email, "调查问卷网站-登录验证码邮件", content);
+    }
+
+    /**
+     * 登录前，发送修改密码验证码邮件
+     *
+     * @param email    邮件接收者
+     * @param username 用户名
+     * @param code     验证码
+     */
+    public boolean sendUpdatePasswordCodeHtml(String email, String username, String code) {
+        Context context = new Context();
+        context.setVariable("username", username);
+        context.setVariable("code", code);
+        String content = templateEngine.process("/mail/forget", context);
+        return mailClient.sendMail(email, "调查问卷网站-修改密码验证码邮件", content);
     }
 
     /**

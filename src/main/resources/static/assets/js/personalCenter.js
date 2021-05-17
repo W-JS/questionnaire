@@ -13,8 +13,13 @@ $(function () {
     $("#userEmail").blur(Email);
 
     $("#oldPassword").blur(OldPassword);
-    $("#newPassword").blur(NewPassword);
-    $("#confirmPassword").blur(ConfirmPassword);
+    $("#newPassword1").blur(NewPassword1);
+    $("#confirmPassword1").blur(ConfirmPassword1);
+
+    $("#sendCode").click(SendCode);
+    $("#code").blur(Code);
+    $("#newPassword2").blur(NewPassword2);
+    $("#confirmPassword2").blur(ConfirmPassword2);
 });
 
 // 保存原始个人信息
@@ -243,6 +248,7 @@ function Reset1() {
     ShowSuccess("个人信息重置成功！！！");
 }
 
+
 // 验证旧密码是否正确
 function OldPassword() {
     let flag = false;
@@ -260,15 +266,15 @@ function OldPassword() {
     return flag;
 }
 
-// 验证新密码是否正确
-function NewPassword() {
+// 验证新密码1是否正确
+function NewPassword1() {
     let flag = false;
-    let newPassword = $.trim($("#newPassword").val());
+    let newPassword1 = $.trim($("#newPassword1").val());
     let passwordValidate = /^[0-9a-zA-Z_]{6,16}$/;
-    if (!newPassword || newPassword.length == 0) {
+    if (!newPassword1 || newPassword1.length == 0) {
         ShowFailure('新密码不能为空');
     } else {
-        if (!passwordValidate.test(newPassword)) {
+        if (!passwordValidate.test(newPassword1)) {
             ShowFailure('密码格式不符合要求,密码长度在6到16个字符之间');
         } else {
             flag = true;
@@ -277,24 +283,24 @@ function NewPassword() {
     return flag;
 }
 
-// 验证确认密码是否正确
-function ConfirmPassword() {
+// 验证确认密码1是否正确
+function ConfirmPassword1() {
     let flag = false;
     let oldPassword = $.trim($("#oldPassword").val());
-    let newPassword = $.trim($("#newPassword").val());
+    let newPassword1 = $.trim($("#newPassword1").val());
 
     if (!OldPassword()) {
         $("#oldPassword").focus();
-    } else if (!NewPassword()) {
-        $("#newPassword").focus();
-    } else if (oldPassword == newPassword) {
-        $("#newPassword").val("");
-        $("#newPassword").focus();
+    } else if (!NewPassword1()) {
+        $("#newPassword1").focus();
+    } else if (oldPassword == newPassword1) {
+        $("#newPassword1").val("");
+        $("#newPassword1").focus();
         ShowFailure("新密码不能与原密码相同！！！");
     } else {
-        let confirmPassword = $.trim($("#confirmPassword").val());
-        if (newPassword != confirmPassword) {
-            $("#confirmPassword").focus();
+        let confirmPassword1 = $.trim($("#confirmPassword1").val());
+        if (newPassword1 != confirmPassword1) {
+            $("#confirmPassword1").focus();
             ShowFailure('确认密码不正确，请重新输入！！！');
         } else {
             flag = true;
@@ -331,7 +337,7 @@ function PasswordExists() {
 
 // 更新密码
 function Update2() {
-    if (!ConfirmPassword()) {
+    if (!ConfirmPassword1()) {
         return false;
     }
 
@@ -340,14 +346,14 @@ function Update2() {
     }
 
     let userId = $("#userId").val();
-    let newPassword = $.trim($("#newPassword").val());
+    let newPassword1 = $.trim($("#newPassword1").val());
     $.ajax({
         async: true, // 异步请求
         type: "post",
         url: CONTEXT_PATH + '/user/updateSubmit2',
         data: {
             'userId': userId,
-            'password': newPassword,
+            'password': newPassword1,
         },
         dataType: 'json',
         success: function (result) {
@@ -366,7 +372,171 @@ function Update2() {
 // 重置密码
 function Reset2() {
     $("#oldPassword").val("");
-    $("#newPassword").val("");
-    $("#confirmPassword").val("");
+    $("#newPassword1").val("");
+    $("#confirmPassword1").val("");
+    $("#oldPassword").focus();
+    ShowSuccess("密码重置成功！！！");
+}
+
+
+// 点击发送验证码
+function SendCode() {
+    let sendCode = $("#sendCode");
+    GenerateAuthCode(sendCode);
+}
+
+// 生成验证码
+function GenerateAuthCode(object) {
+    let userId = $.trim($("#userId").val());
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/user/generateAuthCode2',
+        data: {
+            'userId': userId,
+            'codeLength': 6
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.data != null) {
+                // console.log('发送本地验证码：' + result.data);
+                let countDown = 60;
+                object.attr('disabled', true).html(countDown + 's');
+                let countInterval = setInterval(function () {
+                    countDown--;
+                    object.html(countDown + 's');
+                    if (countDown == 0) {
+                        object.attr('disabled', false).html('重新获取');
+                        clearInterval(countInterval);
+                    }
+                }, 1000);
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
+// 验证验证码是否正确
+function Code() {
+    let flag = false;
+    let code = $.trim($("#code").val());
+    let codeValidate = /^[0-9a-zA-Z]{6}$/;
+    if (!code || code.length == 0) {
+        ShowFailure('验证码不能为空，请点击发送验证码按钮获取验证码');
+    } else {
+        if (!codeValidate.test(code)) {
+            ShowFailure('验证码格式不符合要求,验证码长度为6个字符');
+        } else {
+            flag = true;
+        }
+    }
+    return flag;
+}
+
+// 验证新密码2是否正确
+function NewPassword2() {
+    let flag = false;
+    let newPassword2 = $.trim($("#newPassword2").val());
+    let passwordValidate = /^[0-9a-zA-Z_]{6,16}$/;
+    if (!newPassword2 || newPassword2.length == 0) {
+        ShowFailure('新密码不能为空');
+    } else {
+        if (!passwordValidate.test(newPassword2)) {
+            ShowFailure('密码格式不符合要求,密码长度在6到16个字符之间');
+        } else {
+            flag = true;
+        }
+    }
+    return flag;
+}
+
+// 验证确认密码2是否正确
+function ConfirmPassword2() {
+    let flag = false;
+    let newPassword2 = $.trim($("#newPassword2").val());
+
+    if (!Code()) {
+        $("#code").focus();
+    } else if (!NewPassword2()) {
+        $("#newPassword2").focus();
+    } else {
+        let confirmPassword2 = $.trim($("#confirmPassword2").val());
+        if (newPassword2 != confirmPassword2) {
+            $("#confirmPassword2").focus();
+            ShowFailure('确认密码不正确，请重新输入！！！');
+        } else {
+            flag = true;
+        }
+    }
+    return flag;
+}
+
+// 判断验证码是否与redis中保存的验证码相等
+function CodeExists() {
+    let flag = true;
+    let userId = $("#userId").val();
+    let code = $.trim($("#code").val());
+    $.ajax({
+        async: false, // 同步请求
+        type: "get",
+        url: CONTEXT_PATH + '/user/codeExists',
+        data: {
+            'userId': userId,
+            'code': code,
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 0) {
+                $("#code").val("");
+                $("#code").focus();
+                ShowFailure(result.message);
+                flag = false;
+            }
+        }
+    });
+    return flag;
+}
+
+// 更新密码
+function Update3() {
+    if (!ConfirmPassword2()) {
+        return false;
+    }
+
+    if (!CodeExists()) {
+        return false;
+    }
+
+    let userId = $("#userId").val();
+    let newPassword2 = $.trim($("#newPassword2").val());
+    $.ajax({
+        async: true, // 异步请求
+        type: "post",
+        url: CONTEXT_PATH + '/user/updateSubmit2',
+        data: {
+            'userId': userId,
+            'password': newPassword2,
+        },
+        dataType: 'json',
+        success: function (result) {
+            if (result.state == 1) {
+                ShowSuccess("密码修改成功！！！");
+                setTimeout(function () {
+                    Exit();
+                }, 1000);
+            } else {
+                ShowFailure(result.message);
+            }
+        }
+    });
+}
+
+// 重置密码
+function Reset3() {
+    $("#code").val("");
+    $("#newPassword2").val("");
+    $("#confirmPassword2").val("");
+    $("#code").focus();
     ShowSuccess("密码重置成功！！！");
 }

@@ -1,8 +1,8 @@
-.BtnS{
+.BtnS {
     margin: 25px 0px 0px 260px;
 }
 
-.BtnS .Btn{
+.BtnS .Btn {
     margin-right: 15px;
 }
 
@@ -17,4 +17,29 @@
     line-height: 43px;
     color: #fff;
     overflow: hidden;
+}
+
+.container {
+    position: relative;
+}
+.container button {
+    /*position: absolute;
+    top: 7px;
+    right: 20px;
+    background-color: #fff;
+    border: none; !*去掉边框*!
+    outline: none; !*去掉点击按钮后的边框*!
+    font-size: 17px;*/
+
+    position: absolute;
+    top: 1px;
+    right: 16px;
+    background-color: #3bb4f2;
+    border: 5px solid #3bb4f2;
+    border-radius: 12px;
+    outline: none;
+    font-size: 14px;
+    text-align: center;
+    width: 80px;
+    height: 35px;
 }

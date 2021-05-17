@@ -42,7 +42,10 @@
                     <a href="#tab1">个人信息</a>
                 </li>
                 <li>
-                    <a href="#tab2">修改密码</a>
+                    <a href="#tab2">修改密码（密码）</a>
+                </li>
+                <li>
+                    <a href="#tab3">修改密码（邮箱）</a>
                 </li>
             </ul>
 
@@ -125,29 +128,60 @@
                 <div class="am-tab-panel am-fade" id="tab2">
                     <form class="am-form">
                         <div class="am-g am-margin-top">
-                            <div class="am-u-md-2 am-text-right">原密码</div>
+                            <div class="am-u-md-2 am-text-right">原密码：</div>
                             <div class="am-u-md-4 am-u-end">
                                 <input type="password" class="am-input-sm" id="oldPassword" value="">
                             </div>
                         </div>
 
                         <div class="am-g am-margin-top">
-                            <div class="am-u-md-2 am-text-right">新密码</div>
+                            <div class="am-u-md-2 am-text-right">新密码：</div>
                             <div class="am-u-md-4 am-u-end">
-                                <input type="password" class="am-input-sm" id="newPassword" value="">
+                                <input type="password" class="am-input-sm" id="newPassword1" value="">
                             </div>
                         </div>
 
                         <div class="am-g am-margin-top">
-                            <div class="am-u-md-2 am-text-right">确认密码</div>
+                            <div class="am-u-md-2 am-text-right">确认密码：</div>
                             <div class="am-u-md-4 am-u-end">
-                                <input type="password" class="am-input-sm" id="confirmPassword" value="">
+                                <input type="password" class="am-input-sm" id="confirmPassword1" value="">
                             </div>
                         </div>
 
                         <div class="am-g am-margin-top BtnS">
                             <input type="button" class="am-btn am-btn-primary am-radius Btn" onclick="Update2()" value="修改">
                             <input type="button" class="am-btn am-btn-success am-radius Btn" onclick="Reset2()" value="重置">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="am-tab-panel am-fade" id="tab3">
+                    <form class="am-form">
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">验证码：</div>
+                            <div class="am-u-md-4 am-u-end container">
+                                <input type="text" class="am-input-sm" id="code" value="">
+                                <button type="button" id="sendCode">发送验证码</button>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">新密码：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="password" class="am-input-sm" id="newPassword2" value="">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-md-2 am-text-right">确认密码：</div>
+                            <div class="am-u-md-4 am-u-end">
+                                <input type="password" class="am-input-sm" id="confirmPassword2" value="">
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top BtnS">
+                            <input type="button" class="am-btn am-btn-primary am-radius Btn" onclick="Update3()" value="修改">
+                            <input type="button" class="am-btn am-btn-success am-radius Btn" onclick="Reset3()" value="重置">
                         </div>
                     </form>
                 </div>

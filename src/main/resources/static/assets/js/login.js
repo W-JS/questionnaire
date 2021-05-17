@@ -13,8 +13,6 @@ $(function () {
     // 注册
     $("#usernameReg").blur(UsernameReg);
     $("#phoneReg").blur(PhoneReg);
-    $("#codeRegBtn").click(CodeRegBtn);
-    $("#codeReg").blur(CodeReg);
     $("#emailReg").blur(EmailReg);
     $("#passwordReg").blur(PasswordReg);
     $("#confirmPasswordReg").blur(ConfirmPasswordReg);
@@ -324,46 +322,6 @@ function PhoneRegExists() {
     return flag;
 }
 
-// 点击获取验证码
-function CodeRegBtn() {
-    if (PhoneRegExists()) {
-        let codeBtn = $("#codeRegBtn");
-        GenerateAuthCode(codeBtn);
-    }
-}
-
-// 验证验证码是否正确
-function CodeReg() {
-    let flag = false;
-    let codeReg = $.trim($("#codeReg").val());
-    let codeValidate = /^[0-9a-zA-Z]{6}$/;
-    if (!codeReg || codeReg.length == 0) {
-        ShowFailure('验证码不能为空');
-    } else {
-        if (!codeValidate.test(codeReg)) {
-            ShowFailure('验证码格式不符合要求');
-        } else {
-            flag = true;
-        }
-    }
-    return flag;
-}
-
-// 验证验证码是否存在
-function CodeRegExists() {
-    let flag = false;
-    if (!CodeReg()) {
-        $("#codeReg").focus();
-    } else {
-        let code = $.trim($("#codeReg").val());
-        flag = CodeExists(code);
-        if (!flag) {
-            $("#codeReg").focus();
-        }
-    }
-    return flag;
-}
-
 // 验证电子邮件是否正确
 function EmailReg() {
     let flag = false;
@@ -463,23 +421,15 @@ function Register() {
     if (!UsernameRegExists()) {
         return false;
     }
-
     if (!PhoneRegExists()) {
         return false;
     }
-
-    if (!CodeRegExists()) {
-        return false;
-    }
-
     if (!EmailRegExists()) {
         return false;
     }
-
     if (!ConfirmPasswordReg()) {
         return false;
     }
-
     if (!BirthdayReg()) {
         return false;
     }
@@ -525,31 +475,33 @@ function registerSubmit() {
 
 // 公有
 // 生成验证码
-function GenerateAuthCode(codeBtn) {
+function GenerateAuthCode(object) {
     let userId = $.trim($("#userId").val());
     $.ajax({
         async: true, // 异步请求
         type: "post",
-        url: CONTEXT_PATH + '/user/generateAuthCode',
+        url: CONTEXT_PATH + '/user/generateAuthCode1',
         data: {
             'userId': userId,
             'codeLength': 6
         },
-        dataType: 'text',
+        dataType: 'json',
         success: function (result) {
-            console.log('验证码：' + result);
-
-            // let codeBtn = codeBtn;
-            let countDown = 60;
-            codeBtn.attr('disabled', true).html(countDown + 's');
-            let countInterval = setInterval(function () {
-                countDown--;
-                codeBtn.html(countDown + 's');
-                if (countDown == 0) {
-                    codeBtn.attr('disabled', false).html('重新获取');
-                    clearInterval(countInterval);
-                }
-            }, 1000);
+            if (result.data != null) {
+                // console.log('发送本地验证码：' + result.data);
+                let countDown = 60;
+                object.attr('disabled', true).html(countDown + 's');
+                let countInterval = setInterval(function () {
+                    countDown--;
+                    object.html(countDown + 's');
+                    if (countDown == 0) {
+                        object.attr('disabled', false).html('重新获取');
+                        clearInterval(countInterval);
+                    }
+                }, 1000);
+            } else {
+                ShowFailure(result.message);
+            }
         }
     });
 }

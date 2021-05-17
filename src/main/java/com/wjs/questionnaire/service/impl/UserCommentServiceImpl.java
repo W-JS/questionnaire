@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.wjs.questionnaire.util.DateUtil.StringToDate;
+
 @Service
 public class UserCommentServiceImpl implements IUserCommentService {
 
@@ -113,8 +115,8 @@ public class UserCommentServiceImpl implements IUserCommentService {
         QuestionnaireEntity questionnaire = questionnaireMapper.findQuestionnaireByQnId(userComment.getQuestionnaireId());
 
         JSONResult jsonResult;
-        if (sendAnswerHtml(user.getUserEmail(), user.getUserName(), questionnaire.getQuestionnaireTitle(), answer)) {
-            UserCommentEntity uc = new UserCommentEntity(ucId, adminUserId, answer, 1);
+        if (sendAnswerHtml(user.getUserEmail(), user.getUserName(), questionnaire.getQuestionnaireTitle(), userComment.getUsercommentContent(), answer)) {
+            UserCommentEntity uc = new UserCommentEntity(ucId, adminUserId, answer, 1, StringToDate(answerTime));
             if (userCommentMapper.updateUserCommentByUCId(uc) == 1) {
                 System.out.println(uc);
                 jsonResult = JSONResult.build();
@@ -137,10 +139,11 @@ public class UserCommentServiceImpl implements IUserCommentService {
      * @param answer             回复内容
      * @return 邮件是否发送成功
      */
-    public boolean sendAnswerHtml(String email, String username, String questionnaireTitle, String answer) {
+    public boolean sendAnswerHtml(String email, String username, String questionnaireTitle, String ucContent, String answer) {
         Context context = new Context();
         context.setVariable("username", username);
         context.setVariable("questionnaireTitle", questionnaireTitle);
+        context.setVariable("ucContent", ucContent);
         context.setVariable("answer", answer);
         String content = templateEngine.process("/mail/answer", context);
         return mailClient.sendMail(email, "对问卷 " + questionnaireTitle + " 的回复", content);
