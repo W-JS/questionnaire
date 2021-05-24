@@ -278,7 +278,9 @@ public class UserServiceImpl implements IUserService {
     public JSONResult getRegisterSubmit(String userId, String usernameReg, String phoneReg, String emailReg, String passwordReg, String sexReg, String birthdayReg, int statusReg, int typeReg, String createTimeReg) {
         UserEntity user = new UserEntity(userId, usernameReg, phoneReg, emailReg, md5AndSha(passwordReg), sexReg, StringToDate(birthdayReg), statusReg, typeReg, StringToDate(createTimeReg));
         JSONResult jsonResult;
-        String url = "http://localhost:8080/questionnaire/user/activate/" + user.getUserId();
+//        String url = "http://p274gt8.nat.ipyingshe.com/questionnaire/user/activate/" + user.getUserId();// 公网访问
+//        String url = "http://localhost:8080/questionnaire/user/activate/" + user.getUserId();// 本机访问
+        String url = "http://www.wjs.com:8080/questionnaire/user/activate/" + user.getUserId();// 本机访问
         if (sendActivateHtml(user.getUserEmail(), user.getUserName(), url)) {
             if (userMapper.insertUser(user) == 1) {
                 System.out.println(user);

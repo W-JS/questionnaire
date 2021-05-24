@@ -35,6 +35,15 @@ public interface AnswerMapper {
     List<AnswerEntity> findWriteQuestionnaireNumberByQNId(String qnId);
 
     /**
+     * 获取 该问题的回答列表
+     *
+     * @param qnId 问卷编号
+     * @param qId  问题编号
+     * @return 该问题的选项列表
+     */
+    List<AnswerEntity> findOptionsNumberByQNIdAndQId(String qnId, String qId);
+
+    /**
      * 保存回答信息
      *
      * @param a 回答信息

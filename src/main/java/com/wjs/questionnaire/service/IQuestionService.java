@@ -1,5 +1,6 @@
 package com.wjs.questionnaire.service;
 
+import com.wjs.questionnaire.entity.QuestionEntity;
 import com.wjs.questionnaire.util.JSONResult;
 import com.wjs.questionnaire.util.PageUtil;
 
@@ -110,6 +111,14 @@ public interface IQuestionService {
      * @return JSON格式数据：根据 qnId 查询当前问卷被前置的问题
      */
     JSONResult getPrependedQuestionPageByQnId(String current);
+
+    /**
+     * 一个指定的问题信息
+     *
+     * @param qId 问题编号
+     * @return 一个指定的问题信息
+     */
+    QuestionEntity getQuestion(String qId);
 
     /**
      * 一个指定的问题信息

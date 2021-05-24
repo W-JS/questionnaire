@@ -138,6 +138,22 @@ public class QuestionnaireServiceImpl implements IQuestionnaireService {
      * 根据 qnId 得到问卷信息
      *
      * @param qnId 问卷编号
+     * @return 问卷信息
+     */
+    @Override
+    public QuestionnaireEntity getQuestionnaire(String qnId) {
+        QuestionnaireEntity questionnaire = questionnaireMapper.findQuestionnaireByQnId(qnId);
+        if (questionnaire != null) {
+            return questionnaire;
+        } else {
+            return new QuestionnaireEntity();
+        }
+    }
+
+    /**
+     * 根据 qnId 得到问卷信息
+     *
+     * @param qnId 问卷编号
      * @return JSON格式数据：问卷信息
      */
     @Override

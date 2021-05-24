@@ -4,17 +4,16 @@
         <meta charset="UTF-8">
         <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
-        <link rel="stylesheet" th:href="@{/assets/css/analysisQN.css}">
-        <title>问卷数据分析</title>
+        <link rel="stylesheet" th:href="@{/assets/css/analysisQ.css}">
+        <title>问题数据分析</title>
     </head>
     <body>
         <div class="analysis">
-            <div th:id="${questionnaire.questionnaireId}" class="analysis-left"></div>
-<!--            <div id="analysis" class="analysis-left"></div>-->
+            <div th:id="${question.questionId}" class="analysis-left"></div>
             <div id="analysis2" class="analysis-right"></div>
         </div>
         <div class="analysis-text">
-            <div class="analysis-text-left" th:text="${questionnaire.questionnaireTitle}"></div>
+            <div class="analysis-text-left" th:text="${question.questionTitle}">问题回答情况</div>
             <div class="analysis-text-right">已填问卷满意情况</div>
         </div>
 
@@ -33,6 +32,6 @@
         <script type="text/javascript" th:src="@{/assets/plugins/amcharts/themes/light.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/contextpath.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/public.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/analysisQN.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/analysisQ.js}"></script>
     </body>
 </html>

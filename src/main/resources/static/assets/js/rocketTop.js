@@ -1,14 +1,14 @@
-var x = $(window);
-var e = $("#shape");
+let x = $(window);
+let e = $("#shape");
 
 $("html,body").ready(function () {
-    var scrollbar = x.scrollTop();
-    var isClick = 0;
+    let scrollbar = x.scrollTop();
+    let isClick = 0;
 
     $(window).scroll(function () {
         scrollbar = x.scrollTop();
         (scrollbar <= 500) ? ($("#shape").hide()) : ($("#shape").show());
-    })
+    });
 
     $("#shape").hover(
         function () {
@@ -18,7 +18,7 @@ $("html,body").ready(function () {
         function () {
             $(".shapeColor").hide();
         }
-    )
+    );
 
     $(".shapeColor").click(
         function () {
@@ -31,4 +31,4 @@ $("html,body").ready(function () {
 
         })
 
-})
+});

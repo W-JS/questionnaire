@@ -15,7 +15,7 @@ $(function () {
 
     if ($(".questionnaire").attr("value") == "false") {
         selectedOptionsAndFillContent();// 用户已填写问卷，动态选中选项和填充文本内容
-        $("#save").attr("disabled","disabled");
+        $("#save").attr("disabled", "disabled");
     } else {
         // 生成评分组件
         layui.use('rate', function () {
@@ -220,7 +220,6 @@ function Save() {
                     flag = false;
                     return false;
                 }
-                // console.log();
             }
         }
     });
@@ -293,8 +292,8 @@ function Save() {
 
     $.ajax({
         async: true, // 异步请求
-        type: "post",
-        url: CONTEXT_PATH + '/userIndex/saveSubmit',
+        type: "post",// 提交方式
+        url: CONTEXT_PATH + '/userIndex/saveSubmit',// 提交路径
         data: {
             'userId': $('#onlineUser').val(),
             'qnId': $(".questionnaire .QN-Title").attr("value"),
@@ -304,9 +303,9 @@ function Save() {
             'JSONfb': JSON.stringify(fb),
             'JSONs': JSON.stringify(s),
             'userComments': userComments,
-        },
-        dataType: 'json',
-        success: function (result) {
+        },// 提交数据
+        dataType: 'json',// 回调数据类型
+        success: function (result) {// 回调成功函数
             if (result.state == 1) {
                 ShowSuccess("成功提交问卷，感谢您的参与！！！");
                 setTimeout(function () {
@@ -787,6 +786,8 @@ function selectedOptionsAndFillContent() {
 
 // 关闭当前页面
 function windowClose() {
-    window.close();
     window.location.href = CONTEXT_PATH + "/userIndex/userIndex";
+    setTimeout(function () {
+        window.close();
+    }, 1000);
 }

@@ -329,6 +329,22 @@ public class QuestionServiceImpl implements IQuestionService {
      * @return 一个指定的问题信息
      */
     @Override
+    public QuestionEntity getQuestion(String qId) {
+        QuestionEntity question = questionMapper.findQuestionByQId(qId);
+        if (question != null) {
+            return question;
+        } else {
+            return new QuestionEntity();
+        }
+    }
+
+    /**
+     * 一个指定的问题信息
+     *
+     * @param qId 问题编号
+     * @return 一个指定的问题信息
+     */
+    @Override
     public JSONResult getQuestionByQId(String qId) {
         List<Map<String, Object>> data = new ArrayList<>();
         QuestionEntity question = questionMapper.findQuestionByQId(qId);

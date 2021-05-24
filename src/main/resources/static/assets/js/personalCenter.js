@@ -401,10 +401,10 @@ function GenerateAuthCode(object) {
             if (result.data != null) {
                 // console.log('发送本地验证码：' + result.data);
                 let countDown = 60;
-                object.attr('disabled', true).html(countDown + 's');
+                object.attr('disabled', true).html(countDown + ' 秒后重发');
                 let countInterval = setInterval(function () {
                     countDown--;
-                    object.html(countDown + 's');
+                    object.html(countDown + ' 秒后重发');
                     if (countDown == 0) {
                         object.attr('disabled', false).html('重新获取');
                         clearInterval(countInterval);

@@ -61,6 +61,14 @@ public interface IQuestionnaireService {
      * 根据 qnId 得到问卷信息
      *
      * @param qnId 问卷编号
+     * @return 问卷信息
+     */
+    QuestionnaireEntity getQuestionnaire(String qnId);
+
+    /**
+     * 根据 qnId 得到问卷信息
+     *
+     * @param qnId 问卷编号
      * @return JSON格式数据：问卷信息
      */
     JSONResult getQuestionnaireByQnId(String qnId);

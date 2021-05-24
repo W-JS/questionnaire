@@ -503,21 +503,21 @@ function GenerateAuthCode(object) {
     let userId = $.trim($("#userId").val());
     $.ajax({
         async: true, // 异步请求
-        type: "post",
-        url: CONTEXT_PATH + '/user/generateAuthCode1',
+        type: "post",// 请求方式
+        url: CONTEXT_PATH + '/user/generateAuthCode1',// 请求路径
         data: {
             'userId': userId,
             'codeLength': 6
-        },
-        dataType: 'json',
-        success: function (result) {
+        },// 请求数据
+        dataType: 'json',// 回调数据类型
+        success: function (result) {// 回调成功函数
             if (result.data != null) {
                 // console.log('发送本地验证码：' + result.data);
                 let countDown = 60;
-                $(object).attr('disabled', true).html(countDown + 's');
+                $(object).attr('disabled', true).html(countDown + ' 秒后重发');
                 let countInterval = setInterval(function () {
                     countDown--;
-                    $(object).html(countDown + 's');
+                    $(object).html(countDown + ' 秒后重发');
                     if (countDown == 0) {
                         $(object).attr('disabled', false).html('重新获取');
                         clearInterval(countInterval);
@@ -536,14 +536,14 @@ function CodeExists(code) {
     let userId = $.trim($("#userId").val());
     $.ajax({
         async: false, // 同步请求
-        type: "get",
-        url: CONTEXT_PATH + '/user/codeExists',
+        type: "get",// 请求方式
+        url: CONTEXT_PATH + '/user/codeExists',// 请求路径
         data: {
             'userId': userId,
             'code': code
-        },
-        dataType: 'json',
-        success: function (result) {
+        },// 请求数据
+        dataType: 'json',// 回调数据类型
+        success: function (result) {// 回调成功函数
             if (result.state == 1) {
                 flag = true;
             } else {
@@ -561,10 +561,12 @@ function SwitchReg() {
     $('#divReg').removeClass('hide');
     $('#divLog1').addClass('hide');
     $('#divLog2').addClass('hide');
-    var valOfScroll = $("#divLog1").offset().top;
-    $("html,body").animate({
-        scrollTop: valOfScroll
-    }, 600);
+    /*$("html,body").animate({
+        scrollTop: $("#divLog1").offset().top;
+    }, 600);*/
+
+    canvas.width = window.document.body.clientWidth;
+    canvas.height = window.innerHeight * 1.35;
 }
 
 // 切换到密码登录
@@ -572,10 +574,9 @@ function SwitchLog1() {
     $('#divLog1').removeClass('hide');
     $('#divLog2').addClass('hide');
     $('#divReg').addClass('hide');
-    var valOfScroll = $("#divReg").offset().top;
-    $("html,body").animate({
-        scrollTop: valOfScroll
-    }, 600);
+
+    canvas.width = window.document.body.clientWidth;
+    canvas.height = window.innerHeight;
 }
 
 // 切换到验证码登录
@@ -583,8 +584,7 @@ function SwitchLog2() {
     $('#divLog2').removeClass('hide');
     $('#divLog1').addClass('hide');
     $('#divReg').addClass('hide');
-    var valOfScroll = $("#divReg").offset().top;
-    $("html,body").animate({
-        scrollTop: valOfScroll
-    }, 600);
+
+    canvas.width = window.document.body.clientWidth;
+    canvas.height = window.innerHeight;
 }

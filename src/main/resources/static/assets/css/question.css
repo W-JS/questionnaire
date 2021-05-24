@@ -3,8 +3,8 @@ a {
 }
 
 thead .qTitle {
-    min-width: 470px;
-    max-width: 470px;
+    min-width: 455px;
+    max-width: 455px;
     text-align: center;
 }
 
@@ -15,15 +15,15 @@ thead .qDescription {
 }
 
 thead .operating {
-    min-width: 150px;
-    max-width: 150px;
+    min-width: 165px;
+    max-width: 165px;
     text-align: center;
 }
 
 
 tbody .qTitle {
-    min-width: 470px;
-    max-width: 470px;
+    min-width: 455px;
+    max-width: 455px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -42,8 +42,8 @@ tbody .qDescription {
 }
 
 tbody .operating {
-    min-width: 150px;
-    max-width: 150px;
+    min-width: 165px;
+    max-width: 165px;
     display: flex;
     justify-content: center;
 }

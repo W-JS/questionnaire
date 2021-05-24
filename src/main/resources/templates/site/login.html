@@ -5,9 +5,6 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="icon" type="image/x-icon" th:href="@{/assets/img/questionnaire.ico}">
-        <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/canvas.js}"></script>
         <!--<link type="text/css" rel="styleSheet" href="../questionnaire/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css"/>-->
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/bootstrap-4.6.0-dist/css/bootstrap.css}"/>
         <link type="text/css" rel="stylesheet" th:href="@{/assets/plugins/jedate-6.0.2/skin/jedate.css}">
@@ -18,13 +15,6 @@
 
     <body>
         <canvas id="canvas-banner" class="canvas-style"></canvas>
-        <script type="text/javascript">
-            let canvas = document.getElementById('canvas-banner');
-            canvas.width = window.screen.width;
-            canvas.height = window.screen.height * 1.2;
-            //画canvas
-            DrawCanvas();
-        </script>
 
         <input type="hidden" id="userId" name="userId" value="">
 
@@ -53,6 +43,10 @@
 
             <div class="btn-area clearfix">
                 <button type="button" class="switch fl" onclick="SwitchLog2()">不记得密码？用验证码登录</button>
+                <label for="status1" class="fl switch">
+                    <input type="checkbox" id="status1" name="status" class="fl ma">
+                    <span class="fl"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记住密码
+                </label>
                 <button type="button" class="switch fr" onclick="SwitchReg()">还没有账号？立即注册</button>
             </div>
 
@@ -179,8 +173,11 @@
 
     </body>
     <!--<script type="text/javascript" src="../questionnaire/assets/js/jquery-3.6.0.min.js"></script>-->
+    <script type="text/javascript" th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
     <script type="text/javascript" th:src="@{/assets/plugins/bootstrap-4.6.0-dist/js/bootstrap.js}"></script>
     <script type="text/javascript" th:src="@{/assets/plugins/jedate-6.0.2/jquery.jedate.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/plugins/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/canvas.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/iconfont.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/showdate.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/message.js}"></script>

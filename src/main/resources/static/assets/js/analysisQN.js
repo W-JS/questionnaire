@@ -52,7 +52,7 @@ function makeCharts(theme, bgColor) {
     data.push(object);
 
     // pie chart
-    chart = AmCharts.makeChart("analysis", {
+    chart = AmCharts.makeChart(url_qnId, {
         type: "pie",
         theme: theme,
         dataProvider: data,

@@ -383,8 +383,10 @@ public class UserIndexServiceImpl implements IUserIndexService {
         Date date = new Date();
 
         // 用户留言
-        UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, qnId, userComments, 0, date);
-        userCommentMapper.insertUserComment(userComment);
+        if (userComments != null && userComments != "") {
+            UserCommentEntity userComment = new UserCommentEntity(UUIDGenerator.get16UUID(), userId, qnId, userComments, 0, date);
+            userCommentMapper.insertUserComment(userComment);
+        }
 
         // 单项选择题
         JSONArray sc = JSONArray.fromObject(JSONsc);

@@ -3,8 +3,11 @@
 <mapper namespace="com.wjs.questionnaire.mapper.AnswerMapper">
 
     <!-- 查询 answer 表所有字段 -->
-    <sql id="selectAnswerFields">
+    <!--<sql id="selectAnswerFields">
         answer_id, user_id, questionnaire_id, question_id, questiontype_id, option_id, option_content, answer_create_time
+    </sql>-->
+    <sql id="selectAnswerFields">
+        a.answer_id, a.user_id, a.questionnaire_id, a.question_id, a.questiontype_id, a.option_id, a.option_content, a.answer_create_time
     </sql>
 
     <!-- 获取当前登录用户是否已经填写该问卷（有数据：已填写，无数据：未填写） -->
@@ -59,6 +62,25 @@
         FROM `answer` a
         WHERE a.questionnaire_id = #{qnId}
         GROUP BY a.user_id;
+    </select>
+
+    <!-- 获取 该问题的回答列表 -->
+    <!-- List<AnswerEntity> findOptionsNumberByQNIdAndQId(String qnId, String qId); -->
+    <select id="findOptionsNumberByQNIdAndQId" resultType="AnswerEntity">
+        <!--SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a
+        WHERE a.questionnaire_id = #{qnId}
+        AND a.question_id = #{qId}
+        ORDER BY a.answer_create_time ASC-->
+
+        SELECT
+        <include refid="selectAnswerFields"></include>
+        FROM `answer` a ,`option` o
+        WHERE a.questionnaire_id = #{qnId}
+        AND a.question_id = #{qId}
+        AND a.option_id = o.option_id
+        ORDER BY o.option_create_time ASC
     </select>
 
     <!-- 保存回答信息 -->

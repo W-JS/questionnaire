@@ -1,22 +1,16 @@
+let canvas = document.getElementById('canvas-banner');
 layui.use('jquery', function () {
-    let canvas = document.getElementById('canvas-banner');
-
-    // canvas.width = window.screen.width;
-    // canvas.width = window.document.body.clientWidth;
-
-    // canvas.height = window.screen.height * 1.2;
-    // canvas.height = window.innerHeight * 1.4;
+    canvas.width = window.document.body.clientWidth;
+    canvas.height = window.innerHeight;
 
     //画canvas
-    // DrawCanvas();
+    DrawCanvas();
 });
 
 function DrawCanvas() {
     let $ = layui.jquery;
-    let canvas = document.getElementById('canvas-banner');
-    canvas.width = window.screen.width;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
-    canvas.height = window.screen.height * 1.2;
-    // canvas.width = window.document.body.clientWidth;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
+    canvas.width = window.document.body.clientWidth;    //需要重新设置canvas宽度，因为dom加载完毕后有可能没有滚动条
+    canvas.height = window.innerHeight;
     let ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = (new Color(150)).style;
@@ -107,21 +101,20 @@ function DrawCanvas() {
     };
 
     function createDots() {
-        for (i = 0; i < dots.count; i++) {
+        for (let i = 0; i < dots.count; i++) {
             dots.array.push(new Dot());
         }
     }
 
     function moveDots() {
-        for (i = 0; i < dots.count; i++) {
+        for (let i = 0; i < dots.count; i++) {
 
             let dot = dots.array[i];
 
             if (dot.y < 0 || dot.y > canvas.height) {
                 dot.vx = dot.vx;
                 dot.vy = -dot.vy;
-            }
-            else if (dot.x < 0 || dot.x > canvas.width) {
+            } else if (dot.x < 0 || dot.x > canvas.width) {
                 dot.vx = -dot.vx;
                 dot.vy = dot.vy;
             }
@@ -131,14 +124,14 @@ function DrawCanvas() {
     }
 
     function connectDots1() {
-        let pointx = mousePosition.x;
-        for (i = 0; i < dots.count; i++) {
-            for (j = 0; j < dots.count; j++) {
-                i_dot = dots.array[i];
-                j_dot = dots.array[j];
+        let point_x = mousePosition.x;
+        for (let i = 0; i < dots.count; i++) {
+            for (let j = 0; j < dots.count; j++) {
+                let i_dot = dots.array[i];
+                let j_dot = dots.array[j];
 
                 if ((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > -dots.distance && (i_dot.y - j_dot.y) > -dots.distance) {
-                    if ((i_dot.x - pointx) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - pointx) > -dots.d_radius && (i_dot.y - mousePosition.y) > -dots.d_radius) {
+                    if ((i_dot.x - point_x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - point_x) > -dots.d_radius && (i_dot.y - mousePosition.y) > -dots.d_radius) {
                         ctx.beginPath();
                         ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
                         ctx.moveTo(i_dot.x, i_dot.y);
@@ -152,7 +145,7 @@ function DrawCanvas() {
     }
 
     function drawDots() {
-        for (i = 0; i < dots.count; i++) {
+        for (let i = 0; i < dots.count; i++) {
             let dot = dots.array[i];
             dot.draw();
         }
@@ -161,11 +154,12 @@ function DrawCanvas() {
     function animateDots() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         moveDots();
-        connectDots1()
+        connectDots1();
         drawDots();
 
         requestAnimationFrame(animateDots);
     }
+
     //鼠标在canvas上移动
     $('canvas').on('mousemove', function (e) {
         mousePosition.x = e.pageX;
@@ -186,9 +180,8 @@ function DrawCanvas() {
 //监听窗口大小改变
 window.addEventListener("resize", resizeCanvas, false);
 
-//窗口大小改变时改变canvas宽度
+//窗口大小改变时改变canvas宽度和高度
 function resizeCanvas() {
-    let canvas = document.getElementById('canvas-banner');
     canvas.width = window.document.body.clientWidth;
-    canvas.height = window.innerHeight * 1 / 3;
+    canvas.height = window.innerHeight * 1.35;
 }

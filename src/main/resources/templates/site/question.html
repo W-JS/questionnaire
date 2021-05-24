@@ -240,6 +240,12 @@
                                                         title="查看问题">
                                                     <span class="am-icon-eye"></span>
                                                 </button>
+                                                <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                                   th:href="@{/dataAnalysis/dataAnalysisQ(qnId=${map.question.questionnaireId},qId=${map.question.questionId})}"
+                                                   target="_blank"
+                                                   title="分析问题">
+                                                    <span class="am-icon-pie-chart"></span>
+                                                </a>
                                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
                                                         data-am-modal="{target: '#questionPopups1'}" onclick="UpdateQuestion()"
                                                         title="修改问题">

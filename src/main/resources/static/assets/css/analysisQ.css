@@ -1,0 +1,48 @@
+.analysis {
+    width: auto;
+    height: auto;
+}
+
+.analysis .analysis-left {
+    width: 750px;
+    height: 500px;
+    float: left;
+}
+
+.analysis .analysis-right {
+    width: 750px;
+    height: 500px;
+    float: right;
+}
+
+.analysis-text .analysis-text-left {
+    width: 750px;
+    height: 50px;
+    float: left;
+    text-align: center;
+}
+
+.analysis-text .analysis-text-right {
+    width: 750px;
+    height: 50px;
+    float: right;
+    text-align: center;
+}
+
+.windowClose {
+    text-align: center;
+    margin: 25px 0px 0px 0px;
+}
+
+.foods {
+    margin-top: 25px;
+    width: 100%;
+    background-color: #5b6e84;
+    height: 43px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    line-height: 43px;
+    color: #fff;
+    overflow: hidden;
+}
